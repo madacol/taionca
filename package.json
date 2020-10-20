@@ -9,6 +9,7 @@
     "start": "node __sapper__/build"
   },
   "dependencies": {
+    "pg": "^8.4.1",
     "polka": "next",
     "sirv": "^1.0.0"
   },
