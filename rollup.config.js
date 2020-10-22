@@ -4,6 +4,7 @@ import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
 import url from '@rollup/plugin-url';
 import svelte from 'rollup-plugin-svelte';
+import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
@@ -89,6 +90,7 @@ export default {
 			resolve({
 				dedupe: ['svelte']
 			}),
+			json(),
 			commonjs()
 		],
 		external: Object.keys(pkg.dependencies).concat(require('module').builtinModules),

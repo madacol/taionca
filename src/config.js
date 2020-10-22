@@ -24,3 +24,8 @@ export const session_options = {
   rolling: true,  // Cookie's expiration time will be refreshed on each request
   saveUninitialized: false,
 }
+
+// Password hashing algorithm config
+export const argon = {
+  timeCost: 10
+}

@@ -1,8 +1,11 @@
 import sirv from 'sirv';
 import polka from 'polka';
 import * as sapper from '@sapper/server';
+import jsonHelper from './middlewares/jsonHelper';
 import sessions from './middlewares/sessions';
 import morgan from 'morgan';
+import { json } from 'body-parser';
+
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
@@ -12,6 +15,8 @@ export default polka() // You can also use Express
 		morgan(dev ? 'dev' : 'combined'),
 		sirv('static', { dev }),
 		sessions(dev),
+		json(),
+		jsonHelper,
 		sapper.middleware()
 	)
 	.listen(PORT, err => {
