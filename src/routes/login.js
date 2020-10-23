@@ -4,22 +4,35 @@ import { query } from "../db";
 export async function post(req, res){
     const {username, password} = req.body;
 
-    const result = await query(
-        `SELECT "password_hash", array_agg(roles.name) as roles
-            FROM users
-            LEFT JOIN (
-                join_users_roles
-                JOIN roles USING ("role_id")
-            ) USING ("user_id")
-            WHERE username=$1
-            GROUP BY "user_id"`,
-        [username]
-    )
+    let user;
+    {
+        const result = await query(
+            `SELECT user_id, users.name, password_hash, array_agg(roles.name) as roles
+                FROM users
+                LEFT JOIN (
+                    join_users_roles
+                    JOIN roles USING ("role_id")
+                ) USING ("user_id")
+                WHERE username=$1
+                GROUP BY "user_id"`,
+            [username]
+        )
+        user = result.rows[0];
+    }
+    if (!user) return res.json({error: `Usuario "${username}" no existe`})
 
-    const {password_hash, roles} = result.rows[0];
+    {
+        const isPasswordValid = await argon2.verify(user.password_hash, password);
+        if (!isPasswordValid) return res.json({error: "Contraseña incorrecta"})
+    }
 
-    const isValid = await argon2.verify(password_hash, password);
+    { // Save user in session, and a cookie will be set in the client
+        const {user_id, name, roles} = user;
+        req.session.user = {user_id, name, roles, username};
+    }
 
-    req.session.user = {roles}
-    res.json({isValid})
+    res.json({
+        success: "Inicio de sesión exitoso",
+        session: req.session.user,
+    });
 }
