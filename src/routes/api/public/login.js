@@ -1,5 +1,5 @@
 import argon2 from "argon2";
-import { query } from "../db";
+import { query } from "../../../db";
 
 export async function post(req, res){
     const {username, password} = req.body;
