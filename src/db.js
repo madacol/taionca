@@ -1,7 +1,7 @@
 import { Client, Pool } from 'pg';
 import { database as config } from './config';
 
-const pool = new Pool(config.pool);
+export const pool = new Pool(config.pool);
 const client = new Client(config.client);
 
 /**

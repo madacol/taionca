@@ -13,6 +13,8 @@
     "migrate": "node-pg-migrate"
   },
   "dependencies": {
+    "connect-pg-simple": "^6.2.1",
+    "express-session": "^1.17.1",
     "pg": "^8.4.1",
     "polka": "next",
     "sirv": "^1.0.0"
