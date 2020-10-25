@@ -3,19 +3,19 @@
 /**
  * Validate if `userPermissions` contains all `permissionsRequired`
  *
- * @param {number[]} permissionsRequired - List of `permission_id` to be validated
+ * @param {number[]} permissions_ids - List of `permission_id` to be validated
  * @param {number[]} userPermissions - List of `permission_id` the user has
  *
  * @return {boolean}
  */
-const checkPermissions = (permissionsRequired, userPermissions) => {
-    return permissionsRequired.every(permissionRequired => {  // All permissionsRequired must pass validation
-        return userPermissions.includes(permissionRequired);
+const checkPermissions = (permissions_ids, userPermissions) => {
+    return permissions_ids.every(permission_id => {  // All *permissions_ids* must pass validation
+        return userPermissions.includes(permission_id);
     })
 }
 
 /**
- * @param {number[]} permissionsRequired
+ * @param {[string, number][]} permissionsRequired
  * @param {{session: {user: {permissions: number[]}}}} req
  * @param {*} res
  * @param {*} next
@@ -23,13 +23,19 @@ const checkPermissions = (permissionsRequired, userPermissions) => {
 const checkPermissions_semiMW = async (permissionsRequired, req, res, next) => {
     const {permissions: userPermissions} = req.session.user;
 
-    const isAuthorized = checkPermissions(permissionsRequired, userPermissions);
+    let permissions_names=[], permissions_ids=[];
+    permissionsRequired.forEach( permission => {
+        const [name, id] = permission;
+        permissions_names.push(name);
+        permissions_ids.push(id);
+    })
+
+    const isAuthorized = checkPermissions(permissions_ids, userPermissions);
     if (isAuthorized) return next();
 
     res.statusCode=403;
     res.json({
-        error: "No está autorizado para realizar esta acción",
-        log: permissionsRequired
+        error: `No está autorizado para realizar esta acción.\n Necesita los siguientes permisos: ${permissions_names.join(', ')}`,
     })
 }
 
@@ -46,3 +52,11 @@ function checkPermissionsMW (...permissionsRequired) {
 }
 
 export default checkPermissionsMW;
+
+
+/**
+ * Los menús y permisos ahora se declaran en el archivo `/contatrib-erp/utils/checkPermissions.js`
+ *
+ * **utils** es un módulo donde se pondrán todas las funciones y clases que se usen en el **back** y en el **front**,
+ * ya que es accesible desde ambos.
+ */
