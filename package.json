@@ -12,6 +12,7 @@
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
     "create:permission": "node -r esm ./src/scripts/create_permission.js",
+    "create:crudPermissions": "node -r esm ./src/scripts/create_crudPermissions.js",
     "migrate": "node-pg-migrate"
   },
   "dependencies": {
