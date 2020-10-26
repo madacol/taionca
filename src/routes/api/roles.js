@@ -1,5 +1,5 @@
 import { compose } from "compose-middleware";
-import { ROLES_CREATE } from "../../constants/PERMISSIONS";
+import { ROLES_CREATE, ROLES_READ } from "../../constants/PERMISSIONS";
 import { query } from "../../db";
 import checkPermissionsMW from "../../middlewares/checkPermissionsMW";
 
@@ -24,5 +24,29 @@ export const post = compose(
             success: 'Rol creado exitosamente',
             data: {role_id}
         })
+    }
+)
+
+// List roles
+export const get = compose(
+    checkPermissionsMW(ROLES_READ),
+    async (req, res) => {
+
+        const {rows: roles} = await query(
+            `SELECT
+                role_id,
+                roles.name,
+                roles.created_at,
+                array_agg(jsonb_build_object(
+                    'permission_id', permission_id,
+                    'name', permissions.name)
+                ) permissions
+            FROM roles, permissions
+            GROUP BY role_id;`
+        );
+
+        res.json({
+            data: {roles}
+        });
     }
 )
