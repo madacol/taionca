@@ -1,5 +1,5 @@
 import { compose } from "compose-middleware";
-import { ROLES_CREATE, ROLES_READ } from "../../constants/PERMISSIONS";
+import { ROLES_CREATE, ROLES_DELETE, ROLES_READ } from "../../constants/PERMISSIONS";
 import { query } from "../../db";
 import checkPermissionsMW from "../../middlewares/checkPermissionsMW";
 
@@ -47,6 +47,23 @@ export const get = compose(
 
         res.json({
             data: {roles}
+        });
+    }
+)
+
+// Delete role
+export const del = compose(
+    checkPermissionsMW(ROLES_DELETE),
+    async (req, res) => {
+        const {role_id} = req.body;
+
+        await query(
+            `DELETE FROM roles WHERE role_id = $1;`,
+            [role_id]
+        );
+
+        res.json({
+            success: 'Rol eliminado exitosamente',
         });
     }
 )
