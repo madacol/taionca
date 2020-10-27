@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "moduleResolution": "node",
+        "target": "es2017",
         "checkJs": true
     },
     "include": ["src/**/*", "src/node_modules/**/*"],
