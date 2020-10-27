@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * Validate if `userPermissions` contains all `permissionsRequired`
  *
