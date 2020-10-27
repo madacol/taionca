@@ -6,7 +6,7 @@ export const database = {
   },
   get pool(){return {
     ...this.common,
-    max: 1,
+    max: 3,
     idleTimeoutMillis: 30000,
   }},
   get client(){return this.common},
