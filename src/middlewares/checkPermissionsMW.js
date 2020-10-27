@@ -40,7 +40,7 @@ const checkPermissions_semiMW = async (permissionsRequired, req, res, next) => {
 /**
  * Pass as arguments all permissions you need to validate
  *
- * @param  {...number} permissionsRequired - List of `permission_id` to be validated
+ * @param  {...(string | number)[]} permissionsRequired - List of `permission_id` to be validated
  *
  * @return {import("polka").Middleware}
  */
