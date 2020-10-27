@@ -58,7 +58,7 @@ export const patch = compose(
     checkPermissionsMW(ROLES_UPDATE),
     async (req, res) => {
         const {role_id, name, permissions: {add, remove}} = req.body;
-        if (!role_id) return res.json({error: "No se recibió el id del rol para poder actualizarlo"})
+        if (!role_id) return res.json({error: "No se recibió el id del rol a actualizar"})
 
         const promises = [];
         if (name) {
