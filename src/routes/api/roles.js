@@ -41,7 +41,9 @@ export const get = compose(
                     'permission_id', permission_id,
                     'name', permissions.name)
                 ) permissions
-            FROM roles, permissions
+            FROM roles
+            JOIN join_roles_permissions USING (role_id)
+            JOIN permissions USING (permission_id)
             GROUP BY role_id;`
         );
 
