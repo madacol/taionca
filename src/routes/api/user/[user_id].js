@@ -18,8 +18,10 @@ export const get = compose(
                     'name', roles.name)
                 ) roles
             FROM users
-            JOIN join_users_roles USING (user_id)
-            JOIN roles USING (role_id)
+            LEFT JOIN (
+                join_users_roles
+                JOIN roles USING (role_id)
+            ) USING (user_id)
             WHERE user_id = $1
             GROUP BY user_id;`,
             [user_id]
