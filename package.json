@@ -43,10 +43,12 @@
     "esm": "^3.2.25",
     "node-pg-migrate": "^5.8.1",
     "npm-run-all": "^4.1.5",
+    "carbon-components-svelte": "^0.20.0",
     "rollup": "^2.3.4",
     "rollup-plugin-svelte": "^6.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "sapper": "^0.28.0",
-    "svelte": "^3.17.3"
+    "svelte": "^3.17.3",
+    "svelte-select": "^3.12.0"
   }
 }

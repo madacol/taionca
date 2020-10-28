@@ -1,50 +1,42 @@
 <script>
-	import successkid from 'images/successkid.jpg';
+	import 'carbon-components-svelte/css/white.css';
+	import Select from '../components/Select.svelte';
+	import { TextInput } from "carbon-components-svelte";
+	import { TextArea } from "carbon-components-svelte";
+	import {
+    FormGroup,
+    RadioButtonGroup,
+    RadioButton,
+  } from "carbon-components-svelte";
+	let items = [
+	{value: 'cajachica', label: 'Caja Chica'},
+	{value: 'chase', label: 'Chase'},
+	{value: 'bod', label: 'Bod'},
+	{value: 'venezuela', label: 'Venezuela'},
+	{value: 'provincial', label: 'Provincial'},
+	{value: 'banesco', label: 'Banesco'},
+	{value: 'mercantil', label: 'Mercantil'},
+	{value: 'davivienda', label: 'Davivienda'},
+	{value: 'revolut', label: 'Revolut'},
+	{value: 'btc', label: 'Bitcoin'}
+	];
 </script>
 
-<style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	}
+<TextInput labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." />
 
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
+<FormGroup legendText="Moneda">
+	<RadioButtonGroup selected="dolar">
+		<RadioButton labelText="Dólares $" value="dolar" />
+		<RadioButton labelText="Bolívares Bs" value="bolivar" />
+		<RadioButton labelText="Pesos COP" value="peso" />
+		<RadioButton labelText="Euros €" value="euro" />
+		<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
+	</RadioButtonGroup>
+</FormGroup>
 
-	figure {
-		margin: 0 0 1em 0;
-	}
+<Select {items}/>
 
-	img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
-	}
+<TextInput labelText="Cliente" placeholder="Ingrese el cliente..." />
 
-	p {
-		margin: 1em auto;
-	}
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del trabajo..." />
 
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	}
-</style>
-
-<svelte:head>
-	<title>Sapper project template</title>
-</svelte:head>
-
-<h1>Great success!</h1>
-
-<figure>
-	<img alt="Success Kid" src="{successkid}">
-	<figcaption>Have fun with Sapper!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
