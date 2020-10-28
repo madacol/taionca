@@ -13,10 +13,13 @@ export const get = compose(
                 user_id,
                 users.name,
                 users.created_at,
-                array_agg(jsonb_build_object(
-                    'role_id', role_id,
-                    'name', roles.name)
-                ) roles
+                CASE WHEN count(role_id) = 0
+                    THEN '{}'
+                    ELSE array_agg(jsonb_build_object(
+                        'role_id', role_id,
+                        'name', roles.name)
+                    )
+                END roles
             FROM users
             LEFT JOIN (
                 join_users_roles
