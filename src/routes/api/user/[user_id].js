@@ -24,6 +24,7 @@ export const get = compose(
             GROUP BY user_id;`,
             [user_id]
         );
+        if (!user) return res.json({error: `Usuario con id "${user_id}" no existe`})
 
         res.json({
             data: {user}
