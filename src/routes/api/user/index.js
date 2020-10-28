@@ -1,8 +1,8 @@
 import argon2 from "argon2";
-import { argon as config } from "../../config";
-import { query } from "../../db";
+import { argon as config } from "../../../config";
+import { query } from "../../../db";
 
-// List user
+// Get profile
 export async function get (req, res) {
     const {user_id} = req.session.user;
     const {rows: [user]} = await query(
