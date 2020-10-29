@@ -2,6 +2,8 @@
 
 ## Quick setup
 
+*This assumes you already have a PostgreSQL server running, with an empty database created*
+
 1. Install **git** and **node v12**
 2. Clone this repository
 3. Open terminal in repo's folder
@@ -9,6 +11,13 @@
 5. Set the environment variable `DATABASE_URL` in your shell. Example: `export DATABASE_URL=postgres://user:password@domain:5432/db_name`
 6. Run `npm run build:db` to migrate db, and build `PERMISSIONS.js`
 7. Run development server `npm run dev`
+
+### To deploy to vercel
+
+1. Fork this repo and configure it in vercel as a Sapper app
+2. Set the environment variables
+   - `DATABASE_URL`
+   - `SECRET_SESSION` ─ *you can get one with `openssl rand -base64 30`*
 
 ---
 
