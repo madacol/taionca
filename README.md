@@ -55,7 +55,7 @@ I made some scripts to automate this process, *see [CRUD permissions](#create-cr
 `PERMISSIONS.js` is a file that is not included in the repo, because it's builded after each DB-migration. *See [PERMISSIONS.js.README](src/constants/PERMISSIONS.js.README.md)* for more details\
 It allows you to easily import permission's ids and names when developing API endpoints, to validate permissions.
 
-To build that file, run `npm run build:permissions`, but most likely you will be running `npm run build:db` which migrates any pending changes and then builds the file.
+To build that file, run `npm run build:permissions.js`, but most likely you will be running `npm run build:db` which migrates any pending changes and then builds the file.
 
 ### Create CRUD permissions
 
