@@ -3,7 +3,7 @@
   "description": "taionca administrative software",
   "version": "0.0.1",
   "engines": {
-    "node": "14.x"
+    "node": "12.x"
   },
   "scripts": {
     "dev": "sapper dev",
