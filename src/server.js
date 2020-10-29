@@ -11,6 +11,7 @@ import requireLogin from './middlewares/requireLogin';
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
+// @ts-ignore
 export default polka() // You can also use Express
 	.use(
 		morgan(dev ? 'dev' : 'combined'),
