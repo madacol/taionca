@@ -2,7 +2,7 @@
 
 ## Quick setup
 
-1. Install **git** and **node v14**
+1. Install **git** and **node v12**
 2. Clone this repository
 3. Open terminal in repo's folder
 4. Run `npm install`
