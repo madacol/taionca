@@ -1,7 +1,7 @@
 export default (req, res, next)=>{
     if (
         req.path.startsWith('/public') // These paths are exempt, continue
-        || req.session?.user // Everything else require login to continue
+        || req.session.user // Everything else require login to continue
     ) return next()
 
     /**
