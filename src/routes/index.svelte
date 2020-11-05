@@ -1,4 +1,5 @@
 <script>
+	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
 	import Select from '../components/Select.svelte';
 	import { TextInput } from "carbon-components-svelte";
@@ -22,6 +23,12 @@
 	];
 </script>
 
+<style>
+	* {
+		align-content: space-around;		
+	}
+</style>
+
 <TextInput labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." />
 
 <FormGroup legendText="Moneda">
@@ -39,4 +46,6 @@
 <TextInput labelText="Cliente" placeholder="Ingrese el cliente..." />
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del trabajo..." />
+
+<Button>Enviar</Button>
 
