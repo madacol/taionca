@@ -46,6 +46,6 @@
 
 <SelectSearch placeholder="Cuentas..." {items}/>
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del trabajo..." />
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
 
 <Button>Enviar</Button>

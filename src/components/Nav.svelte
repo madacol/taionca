@@ -51,9 +51,10 @@
 <nav>
 	<ul>
 		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href=".">Inicio</a></li>
-		<li><a aria-current="{segment === 'gasto_inventario' ? 'page' : undefined}" href="gasto_inventario">Gasto Inventario</a></li>
-		<li><a aria-current="{segment === 'gasto_gad' ? 'page' : undefined}" href="gasto_gad">Gasto GAD</a></li>
+		<li><a aria-current="{segment === 'gasto_inventario' ? 'page' : undefined}" href="gasto_inventario">Gasto de Inventario</a></li>
+		<li><a aria-current="{segment === 'gasto_admin' ? 'page' : undefined}" href="gasto_admin">Gasto Administrativo</a></li>
 		<li><a aria-current="{segment === 'gastos_generales' ? 'page' : undefined}" href="gastos_generales">Gastos Generales</a></li>
 		<li><a aria-current="{segment === 'nueva_odt' ? 'page' : undefined}" href="nueva_odt">Nueva ODT</a></li>
+		<li><a aria-current="{segment === 'cambio_moneda' ? 'page' : undefined}" href="cambio_moneda">Cambios de Moneda</a></li>
 	</ul>
 </nav>
