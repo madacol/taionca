@@ -1,7 +1,8 @@
 <script>
 	import SvelteSelect from 'svelte-select';
+	/** @type {any} */
 	export let items
 	let selectedValue = undefined;
 </script>
 
-<SvelteSelect {items} bind:selectedValue></SvelteSelect>
+<SvelteSelect {...$$restProps} {items} bind:selectedValue></SvelteSelect>
