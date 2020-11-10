@@ -66,12 +66,12 @@
 <TextInput labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." />
 
 <FormGroup legendText="Moneda">
-	<RadioButtonGroup selected={currency}>
-		<RadioButton on:change={()=>currency="dolar"} labelText="Dólares $" value="dolar" />
-		<RadioButton on:change={()=>currency="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-		<RadioButton on:change={()=>currency="peso"} labelText="Pesos COP" value="peso" />
-		<RadioButton on:change={()=>currency="euro"} labelText="Euros €" value="euro" />
-		<RadioButton on:change={()=>currency="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
+	<RadioButtonGroup bind:selected={currency}>
+		<RadioButton labelText="Dólares $" value="dolar" />
+		<RadioButton labelText="Bolívares Bs" value="bolivar" />
+		<RadioButton labelText="Pesos COP" value="peso" />
+		<RadioButton labelText="Euros €" value="euro" />
+		<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
 	</RadioButtonGroup>
 </FormGroup>
 
