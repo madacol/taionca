@@ -8,11 +8,11 @@
     FormGroup,
     RadioButtonGroup,
     RadioButton,
-  } 
+  }
   	from "carbon-components-svelte";
-	  
+	import Accounts from "../components/Accounts.svelte";
+
 	let opts;
-	let currency;
 
 	let articles = [
 	{value: 'electrodo', label: 'Electrodo'},
@@ -23,37 +23,6 @@
 	{value: 'electrodorecubierto', label: 'Electrodo recubierto'},
 	{value: 'cintaaislante', label: 'Cinta Aislante'}
 	];
-	  
-  	const ACCOUNTS = {
-		  dolar: [
-		  {value: 'cajachica', label: 'Caja Chica'},
-		  {value: 'chase', label: 'Chase'},
-		  {value: 'revolut', label: 'Revolut'}
-		  ],
-	  
-		  bolivar: [
-		  {value: 'cajachica', label: 'Caja Chica'},
-		  {value: 'bod', label: 'Bod'},
-		  {value: 'venezuela', label: 'Venezuela'},
-		  {value: 'provincial', label: 'Provincial'},
-		  {value: 'banesco', label: 'Banesco'},
-		  {value: 'mercantil', label: 'Mercantil'}
-		  ],
-	  
-		  peso: [
-		  {value: 'cajachica', label: 'Caja Chica'},
-		  {value: 'davivienda', label: 'Davivienda'}
-		  ],
-	  
-		  euro: [
-		  {value: 'cajachica', label: 'Caja Chica'},
-		  {value: 'revolut', label: 'Revolut'}
-		  ],
-	  
-		  bitcoin: [
-		  {value: 'btc', label: 'Bitcoin'}
-		  ]
-	  }
 
 	let pays = [
 	{value: 'pago1', label: 'Pagos a Marisol'},
@@ -62,10 +31,9 @@
 	{value: 'pago4', label: 'Pagos a IVSS'},
 	{value: 'pago5', label: 'Pagos a INPSASEL'}
 	];
-	
-	let account;
 
-	$: account = ACCOUNTS[currency];
+	let account;
+	let currency;
 
 </script>
 
@@ -91,17 +59,7 @@
 	<TextInput labelText="Nombre de Gasto" placeholder="Ingrese la nombre del gasto..." />
 	<TextInput labelText="Monto" placeholder="Ingrese el monto del gasto..." />
 
-	<FormGroup legendText="Moneda">
-		<RadioButtonGroup selected={currency}>
-			<RadioButton on:change={()=>currency="dolar"} labelText="Dólares $" value="dolar" />
-			<RadioButton on:change={()=>currency="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-			<RadioButton on:change={()=>currency="peso"} labelText="Pesos COP" value="peso" />
-			<RadioButton on:change={()=>currency="euro"} labelText="Euros €" value="euro" />
-			<RadioButton on:change={()=>currency="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
-		</RadioButtonGroup>
-	</FormGroup>
-
-	<SelectSearch placeholder="Cuentas..." items={account}/>
+	<Accounts bind:account bind:currency/>
 
 	<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
 

@@ -1,61 +1,14 @@
 <script>
 	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
-	import SelectSearch from '../components/Select.svelte';
 	import { TextInput } from "carbon-components-svelte";
 	import { TextArea } from "carbon-components-svelte";
-	import {
-    FormGroup,
-    RadioButtonGroup,
-    RadioButton,
-  } from "carbon-components-svelte";
-
-	let currencies = [
-	{value: 'dolar', label: 'Dólares $'},
-	{value: 'bolivar', label: 'Bolívares Bs'},
-	{value: 'peso', label: 'Pesos COP'},
-	{value: 'euro', label: 'Euros €'},
-	{value: 'bitcoin', label: 'Bitcoin BTC'}
-	];
-
-	const ACCOUNTS = {
-		dolar: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'chase', label: 'Chase'},
-		{value: 'revolut', label: 'Revolut'}
-		],
-	
-		bolivar: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'bod', label: 'Bod'},
-		{value: 'venezuela', label: 'Venezuela'},
-		{value: 'provincial', label: 'Provincial'},
-		{value: 'banesco', label: 'Banesco'},
-		{value: 'mercantil', label: 'Mercantil'}
-		],
-	
-		peso: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'davivienda', label: 'Davivienda'}
-		],
-	
-		euro: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'revolut', label: 'Revolut'}
-		],
-	
-		bitcoin: [
-		{value: 'btc', label: 'Bitcoin'}
-		]
-	}
+	import Accounts from "../components/Accounts.svelte";
 
 	let account1;
 	let account2;
 	let currency1;
 	let currency2;
-
-	$: account1 = ACCOUNTS[currency1];
-	$: account2 = ACCOUNTS[currency2];
 
 </script>
 
@@ -83,28 +36,12 @@
 </div>
 
 <div class="OnSameLine">
-	<FormGroup legendText="Moneda">
-		<RadioButtonGroup orientation="vertical" selected={currency1}>
-			<RadioButton on:change={()=>currency1="dolar"} labelText="Dólares $" value="dolar" />
-			<RadioButton on:change={()=>currency1="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-			<RadioButton on:change={()=>currency1="peso"} labelText="Pesos COP" value="peso" />
-			<RadioButton on:change={()=>currency1="euro"} labelText="Euros €" value="euro" />
-			<RadioButton on:change={()=>currency1="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
-		</RadioButtonGroup>
-	</FormGroup>
-	<FormGroup legendText="Moneda">
-		<RadioButtonGroup orientation="vertical" selected={currency2}>
-			<RadioButton on:change={()=>currency2="dolar"} labelText="Dólares $" value="dolar" />
-			<RadioButton on:change={()=>currency2="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-			<RadioButton on:change={()=>currency2="peso"} labelText="Pesos COP" value="peso" />
-			<RadioButton on:change={()=>currency2="euro"} labelText="Euros €" value="euro" />
-			<RadioButton on:change={()=>currency2="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
-		</RadioButtonGroup>
-	</FormGroup>
-</div>
-<div class="OnSameLine">
-	<SelectSearch placeholder="Cuentas..." items={account1}/>
-	<SelectSearch placeholder="Cuentas..." items={account2}/>
+	<div>
+		<Accounts orientation="vertical" bind:account={account1} bind:currency={currency1}/>
+	</div>
+	<div>
+		<Accounts orientation="vertical" bind:account={account2} bind:currency={currency2}/>
+	</div>
 </div>
 
 <TextInput labelText="Tasa" placeholder="Ingrese la tasa de cambio..." />

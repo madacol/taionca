@@ -1,66 +1,18 @@
 <script>
 	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
-	import SelectSearch from '../components/Select.svelte';
 	import { TextInput } from "carbon-components-svelte";
 	import { TextArea } from "carbon-components-svelte";
-	import {
-    FormGroup,
-    RadioButtonGroup,
-    RadioButton,
-  } 
-  	from "carbon-components-svelte";
-
-	const ACCOUNTS = {
-		dolar: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'chase', label: 'Chase'},
-		{value: 'revolut', label: 'Revolut'}
-		],
-	
-		bolivar: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'bod', label: 'Bod'},
-		{value: 'venezuela', label: 'Venezuela'},
-		{value: 'provincial', label: 'Provincial'},
-		{value: 'banesco', label: 'Banesco'},
-		{value: 'mercantil', label: 'Mercantil'}
-		],
-	
-		peso: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'davivienda', label: 'Davivienda'}
-		],
-	
-		euro: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'revolut', label: 'Revolut'}
-		],
-	
-		bitcoin: [
-		{value: 'btc', label: 'Bitcoin'}
-		]
-	}
+	import Accounts from "../components/Accounts.svelte";
 
 	let account;
 	let currency;
 
-	$: account = ACCOUNTS[currency];
 </script>
 
 <TextInput labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." />
 
-<FormGroup legendText="Moneda">
-	<RadioButtonGroup selected={currency}>
-		<RadioButton on:change={()=>currency="dolar"} labelText="Dólares $" value="dolar" />
-		<RadioButton on:change={()=>currency="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-		<RadioButton on:change={()=>currency="peso"} labelText="Pesos COP" value="peso" />
-		<RadioButton on:change={()=>currency="euro"} labelText="Euros €" value="euro" />
-		<RadioButton on:change={()=>currency="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
-	</RadioButtonGroup>
-</FormGroup>
-
-<SelectSearch placeholder="Cuentas..." items={account}/>
+<Accounts bind:account bind:currency/>
 
 <TextInput labelText="Cliente" placeholder="Ingrese el cliente..." />
 
