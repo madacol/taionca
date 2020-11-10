@@ -38,10 +38,10 @@
 </script>
 
 <FormGroup legendText="Tipo de gasto">
-	<RadioButtonGroup selected={opts}>
-		<RadioButton on:change={()=>opts="inventoried"} labelText="Inventariado" value="inventoried" />
-		<RadioButton on:change={()=>opts="recurrent"} labelText="Recurrentes" value="recurrent" />
-		<RadioButton on:change={()=>opts="others"} labelText="Otros" value="others" />
+	<RadioButtonGroup bind:selected={opts}>
+		<RadioButton labelText="Inventariado" value="inventoried" />
+		<RadioButton labelText="Recurrentes" value="recurrent" />
+		<RadioButton labelText="Otros" value="others" />
 	</RadioButtonGroup>
 </FormGroup>
 
