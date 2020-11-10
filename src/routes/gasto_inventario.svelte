@@ -23,7 +23,7 @@
 
 </script>
 
-<TextInput labelText="Cantidad gastada" placeholder="Ingrese el monto gastado..." />
+<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
 
 <SelectSearch placeholder="Artículos..." items={articles}/>
 

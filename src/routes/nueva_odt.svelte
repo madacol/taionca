@@ -10,33 +10,57 @@
     RadioButton,
   } 
   	from "carbon-components-svelte";
-	let items = [
-	{value: 'cajachica', label: 'Caja Chica'},
-	{value: 'chase', label: 'Chase'},
-	{value: 'bod', label: 'Bod'},
-	{value: 'venezuela', label: 'Venezuela'},
-	{value: 'provincial', label: 'Provincial'},
-	{value: 'banesco', label: 'Banesco'},
-	{value: 'mercantil', label: 'Mercantil'},
-	{value: 'davivienda', label: 'Davivienda'},
-	{value: 'revolut', label: 'Revolut'},
-	{value: 'btc', label: 'Bitcoin'}
-	];
+
+	const ACCOUNTS = {
+		dolar: [
+		{value: 'cajachica', label: 'Caja Chica'},
+		{value: 'chase', label: 'Chase'},
+		{value: 'revolut', label: 'Revolut'}
+		],
+	
+		bolivar: [
+		{value: 'cajachica', label: 'Caja Chica'},
+		{value: 'bod', label: 'Bod'},
+		{value: 'venezuela', label: 'Venezuela'},
+		{value: 'provincial', label: 'Provincial'},
+		{value: 'banesco', label: 'Banesco'},
+		{value: 'mercantil', label: 'Mercantil'}
+		],
+	
+		peso: [
+		{value: 'cajachica', label: 'Caja Chica'},
+		{value: 'davivienda', label: 'Davivienda'}
+		],
+	
+		euro: [
+		{value: 'cajachica', label: 'Caja Chica'},
+		{value: 'revolut', label: 'Revolut'}
+		],
+	
+		bitcoin: [
+		{value: 'btc', label: 'Bitcoin'}
+		]
+	}
+
+	let account;
+	let currency;
+
+	$: account = ACCOUNTS[currency];
 </script>
 
 <TextInput labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." />
 
 <FormGroup legendText="Moneda">
-	<RadioButtonGroup selected="dolar">
-		<RadioButton labelText="Dólares $" value="dolar" />
-		<RadioButton labelText="Bolívares Bs" value="bolivar" />
-		<RadioButton labelText="Pesos COP" value="peso" />
-		<RadioButton labelText="Euros €" value="euro" />
-		<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
+	<RadioButtonGroup selected={currency}>
+		<RadioButton on:change={()=>currency="dolar"} labelText="Dólares $" value="dolar" />
+		<RadioButton on:change={()=>currency="bolivar"} labelText="Bolívares Bs" value="bolivar" />
+		<RadioButton on:change={()=>currency="peso"} labelText="Pesos COP" value="peso" />
+		<RadioButton on:change={()=>currency="euro"} labelText="Euros €" value="euro" />
+		<RadioButton on:change={()=>currency="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
 	</RadioButtonGroup>
 </FormGroup>
 
-<SelectSearch placeholder="Cuentas..." {items}/>
+<SelectSearch placeholder="Cuentas..." items={account}/>
 
 <TextInput labelText="Cliente" placeholder="Ingrese el cliente..." />
 

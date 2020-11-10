@@ -10,42 +10,101 @@
     RadioButton,
   } 
   	from "carbon-components-svelte";
-	let items = [
-	{value: 'cajachica', label: 'Caja Chica'},
-	{value: 'chase', label: 'Chase'},
-	{value: 'bod', label: 'Bod'},
-	{value: 'venezuela', label: 'Venezuela'},
-	{value: 'provincial', label: 'Provincial'},
-	{value: 'banesco', label: 'Banesco'},
-	{value: 'mercantil', label: 'Mercantil'},
-	{value: 'davivienda', label: 'Davivienda'},
-	{value: 'revolut', label: 'Revolut'},
-	{value: 'btc', label: 'Bitcoin'}
+	  
+	let opts;
+	let currency;
+
+	let articles = [
+	{value: 'electrodo', label: 'Electrodo'},
+	{value: 'discoesmeril', label: 'Disco de esmeril'},
+	{value: 'oxigeno', label: 'Oxigeno'},
+	{value: 'gas', label: 'Gas'},
+	{value: 'electrododesnudo', label: 'Electrodo desnudo'},
+	{value: 'electrodorecubierto', label: 'Electrodo recubierto'},
+	{value: 'cintaaislante', label: 'Cinta Aislante'}
 	];
+	  
+  	const ACCOUNTS = {
+		  dolar: [
+		  {value: 'cajachica', label: 'Caja Chica'},
+		  {value: 'chase', label: 'Chase'},
+		  {value: 'revolut', label: 'Revolut'}
+		  ],
+	  
+		  bolivar: [
+		  {value: 'cajachica', label: 'Caja Chica'},
+		  {value: 'bod', label: 'Bod'},
+		  {value: 'venezuela', label: 'Venezuela'},
+		  {value: 'provincial', label: 'Provincial'},
+		  {value: 'banesco', label: 'Banesco'},
+		  {value: 'mercantil', label: 'Mercantil'}
+		  ],
+	  
+		  peso: [
+		  {value: 'cajachica', label: 'Caja Chica'},
+		  {value: 'davivienda', label: 'Davivienda'}
+		  ],
+	  
+		  euro: [
+		  {value: 'cajachica', label: 'Caja Chica'},
+		  {value: 'revolut', label: 'Revolut'}
+		  ],
+	  
+		  bitcoin: [
+		  {value: 'btc', label: 'Bitcoin'}
+		  ]
+	  }
+
+	let pays = [
+	{value: 'pago1', label: 'Pagos a Marisol'},
+	{value: 'pago2', label: 'Pagos a IVA'},
+	{value: 'pago3', label: 'Pagos a Alcaldía'},
+	{value: 'pago4', label: 'Pagos a IVSS'},
+	{value: 'pago5', label: 'Pagos a INPSASEL'}
+	];
+	
+	let account;
+
+	$: account = ACCOUNTS[currency];
+
 </script>
 
 <FormGroup legendText="Tipo de gasto">
-	<RadioButtonGroup selected="inventoried">
-		<RadioButton labelText="Inventariado" value="inventoried" />
-		<RadioButton labelText="Recurrentes" value="recurrent" />
-		<RadioButton labelText="Otros" value="others" />
+	<RadioButtonGroup selected={opts}>
+		<RadioButton on:change={()=>opts="inventoried"} labelText="Inventariado" value="inventoried" />
+		<RadioButton on:change={()=>opts="recurrent"} labelText="Recurrentes" value="recurrent" />
+		<RadioButton on:change={()=>opts="others"} labelText="Otros" value="others" />
 	</RadioButtonGroup>
 </FormGroup>
 
-<TextInput labelText="Monto" placeholder="Ingrese el monto del gasto..." />
+{#if opts==="inventoried"}
 
-<FormGroup legendText="Moneda">
-	<RadioButtonGroup selected="dolar">
-		<RadioButton labelText="Dólares $" value="dolar" />
-		<RadioButton labelText="Bolívares Bs" value="bolivar" />
-		<RadioButton labelText="Pesos COP" value="peso" />
-		<RadioButton labelText="Euros €" value="euro" />
-		<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
-	</RadioButtonGroup>
-</FormGroup>
+	<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
+	<SelectSearch placeholder="Artículos..." items={articles}/>
 
-<SelectSearch placeholder="Cuentas..." {items}/>
+{:else if opts==="recurrent"}
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
+	<SelectSearch placeholder="Transacciones..." items={pays}/>
+
+{:else if opts==="others"}
+
+	<TextInput labelText="Nombre de Gasto" placeholder="Ingrese la nombre del gasto..." />
+	<TextInput labelText="Monto" placeholder="Ingrese el monto del gasto..." />
+
+	<FormGroup legendText="Moneda">
+		<RadioButtonGroup selected={currency}>
+			<RadioButton on:change={()=>currency="dolar"} labelText="Dólares $" value="dolar" />
+			<RadioButton on:change={()=>currency="bolivar"} labelText="Bolívares Bs" value="bolivar" />
+			<RadioButton on:change={()=>currency="peso"} labelText="Pesos COP" value="peso" />
+			<RadioButton on:change={()=>currency="euro"} labelText="Euros €" value="euro" />
+			<RadioButton on:change={()=>currency="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
+		</RadioButtonGroup>
+	</FormGroup>
+
+	<SelectSearch placeholder="Cuentas..." items={account}/>
+
+	<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
+
+{/if}
 
 <Button>Enviar</Button>
