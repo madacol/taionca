@@ -62,18 +62,16 @@
 	{value: 'pago4', label: 'Pagos a IVSS'},
 	{value: 'pago5', label: 'Pagos a INPSASEL'}
 	];
-	
-	let account;
 
 	$: account = ACCOUNTS[currency];
 
 </script>
 
 <FormGroup legendText="Tipo de gasto">
-	<RadioButtonGroup selected={opts}>
-		<RadioButton on:change={()=>opts="inventoried"} labelText="Inventariado" value="inventoried" />
-		<RadioButton on:change={()=>opts="recurrent"} labelText="Recurrentes" value="recurrent" />
-		<RadioButton on:change={()=>opts="others"} labelText="Otros" value="others" />
+	<RadioButtonGroup bind:selected={opts}>
+		<RadioButton labelText="Inventariado" value="inventoried" />
+		<RadioButton labelText="Recurrentes" value="recurrent" />
+		<RadioButton labelText="Otros" value="others" />
 	</RadioButtonGroup>
 </FormGroup>
 
@@ -92,12 +90,12 @@
 	<TextInput labelText="Monto" placeholder="Ingrese el monto del gasto..." />
 
 	<FormGroup legendText="Moneda">
-		<RadioButtonGroup selected={currency}>
-			<RadioButton on:change={()=>currency="dolar"} labelText="Dólares $" value="dolar" />
-			<RadioButton on:change={()=>currency="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-			<RadioButton on:change={()=>currency="peso"} labelText="Pesos COP" value="peso" />
-			<RadioButton on:change={()=>currency="euro"} labelText="Euros €" value="euro" />
-			<RadioButton on:change={()=>currency="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
+		<RadioButtonGroup bind:selected={currency}>
+			<RadioButton labelText="Dólares $" value="dolar" />
+			<RadioButton labelText="Bolívares Bs" value="bolivar" />
+			<RadioButton labelText="Pesos COP" value="peso" />
+			<RadioButton labelText="Euros €" value="euro" />
+			<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
 		</RadioButtonGroup>
 	</FormGroup>
 

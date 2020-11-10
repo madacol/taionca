@@ -49,8 +49,6 @@
 		]
 	}
 
-	let account1;
-	let account2;
 	let currency1;
 	let currency2;
 
@@ -84,21 +82,21 @@
 
 <div class="OnSameLine">
 	<FormGroup legendText="Moneda">
-		<RadioButtonGroup orientation="vertical" selected={currency1}>
-			<RadioButton on:change={()=>currency1="dolar"} labelText="Dólares $" value="dolar" />
-			<RadioButton on:change={()=>currency1="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-			<RadioButton on:change={()=>currency1="peso"} labelText="Pesos COP" value="peso" />
-			<RadioButton on:change={()=>currency1="euro"} labelText="Euros €" value="euro" />
-			<RadioButton on:change={()=>currency1="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
+		<RadioButtonGroup orientation="vertical" bind:selected={currency1}>
+			<RadioButton labelText="Dólares $" value="dolar" />
+			<RadioButton labelText="Bolívares Bs" value="bolivar" />
+			<RadioButton labelText="Pesos COP" value="peso" />
+			<RadioButton labelText="Euros €" value="euro" />
+			<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
 		</RadioButtonGroup>
 	</FormGroup>
 	<FormGroup legendText="Moneda">
-		<RadioButtonGroup orientation="vertical" selected={currency2}>
-			<RadioButton on:change={()=>currency2="dolar"} labelText="Dólares $" value="dolar" />
-			<RadioButton on:change={()=>currency2="bolivar"} labelText="Bolívares Bs" value="bolivar" />
-			<RadioButton on:change={()=>currency2="peso"} labelText="Pesos COP" value="peso" />
-			<RadioButton on:change={()=>currency2="euro"} labelText="Euros €" value="euro" />
-			<RadioButton on:change={()=>currency2="bitcoin"} labelText="Bitcoin BTC" value="bitcoin" />
+		<RadioButtonGroup orientation="vertical" bind:selected={currency2}>
+			<RadioButton labelText="Dólares $" value="dolar" />
+			<RadioButton labelText="Bolívares Bs" value="bolivar" />
+			<RadioButton labelText="Pesos COP" value="peso" />
+			<RadioButton labelText="Euros €" value="euro" />
+			<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
 		</RadioButtonGroup>
 	</FormGroup>
 </div>

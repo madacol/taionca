@@ -50,7 +50,6 @@
 	{value: 'pago5', label: 'Pagos a INPSASEL'}
 	];
 	
-	let account;
 	let currency;
 
 	$: account = ACCOUNTS[currency];
