@@ -51,10 +51,10 @@ npm run migrate create name of migration
 
 *DO NOT USE THIS TO CREATE PERMISSIONS*, see [Permissions](#Permissions) section
 
-That will create an empty migration like `/migrations/1603225902395_name-of-migration.js`, see other migrations to see how this works, or check [library's docs](https://salsita.github.io/node-pg-migrate/#/?id=quick-example)
+That will create an empty migration like `/migrations/1603225902395_name-of-migration.js`, see [existing migrations](/migrations) to see how this works, or check [node-pg-migrate's docs](https://salsita.github.io/node-pg-migrate/#/?id=quick-example)
 
 ### More Information
-[Library's docs](https://salsita.github.io/node-pg-migrate/#/?id=quick-example)
+[node-pg-migrate's docs](https://salsita.github.io/node-pg-migrate/#/?id=quick-example)
 
 ## Permissions
 
