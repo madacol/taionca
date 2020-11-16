@@ -47,8 +47,8 @@
 
 {#if opts==="inventoried"}
 
-	<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
 	<SelectSearch placeholder="Artículos..." items={articles}/>
+	<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
 
 {:else if opts==="recurrent"}
 

@@ -23,9 +23,9 @@
 
 </script>
 
-<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
-
 <SelectSearch placeholder="Artículos..." items={articles}/>
+
+<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
 
 <SelectSearch placeholder="ODTs..." items={odts}/>
 
