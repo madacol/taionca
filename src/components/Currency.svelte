@@ -6,18 +6,18 @@
   }
 	from "carbon-components-svelte";
 
-	export let currency;
+	export let selectedCurrency;
 	/** @type {"vertical" | "horizontal"}*/
 	export let orientation = "horizontal";
+	export let currencies;
 
 </script>
 
+
 <FormGroup legendText="Moneda">
-	<RadioButtonGroup {orientation} bind:selected={currency}>
-		<RadioButton labelText="Dólares $" value="dolar" />
-		<RadioButton labelText="Bolívares Bs" value="bolivar" />
-		<RadioButton labelText="Pesos COP" value="peso" />
-		<RadioButton labelText="Euros €" value="euro" />
-		<RadioButton labelText="Bitcoin BTC" value="bitcoin" />
+	<RadioButtonGroup {orientation} bind:selected={selectedCurrency}>
+		{#each currencies as currency}
+			<RadioButton labelText={currency.name} value={currency.id_currency} />	
+		{/each}
 	</RadioButtonGroup>
 </FormGroup>
