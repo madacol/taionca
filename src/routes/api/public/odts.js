@@ -8,7 +8,7 @@ export const post =
     async (req, res) => {
         console.log(req.body)
         const {rows: currencies} = await query(
-            'select name, id_currency from currencies;'
+            'select name_plural, id_currency from currencies;'
         );
 
         res.json(

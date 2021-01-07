@@ -8,7 +8,7 @@ export const get =
     async (req, res) => {
 
         const {rows: currencies} = await query(
-            'select name, id_currency from currencies;'
+            'select * from currencies;'
         );
 
         res.json(

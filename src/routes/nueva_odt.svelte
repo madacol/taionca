@@ -1,12 +1,3 @@
-<script context="module">
-	export async function preload() {
-        const response = await this.fetch('/api/public/currencies');
-        const currencies = await response.json();
-        return {
-            currencies
-        };
-    }
-</script>
 <script>
 	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
@@ -14,7 +5,6 @@
 	import { TextArea } from "carbon-components-svelte";
 	import Currency from "../components/Currency.svelte";
 
-	export let currencies;
 	let selectedCurrency;
 	let contractAmount;
 	let client;
@@ -32,7 +22,7 @@
 
 <TextInput labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." bind:value={contractAmount}/>
 
-<Currency bind:selectedCurrency {currencies}/>
+<Currency bind:selectedCurrency/>
 
 <TextInput labelText="Cliente" placeholder="Ingrese el cliente..." bind:value={client}/>
 

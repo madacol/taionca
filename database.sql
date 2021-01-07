@@ -1,4 +1,5 @@
 drop table if exists payments;
+drop table if exists expenses;
 drop table if exists odts;
 drop table if exists accounts;
 drop table if exists currencies;
@@ -14,7 +15,10 @@ create table clients(
 --Tabla de Monedas
 create table currencies(
     id_currency serial primary key,
-    name varchar(32) not null
+    name_singular varchar(32) not null,
+    name_plural varchar(32),
+    symbol varchar(5),
+    code varchar(5)
 );
 
 --Tabla de Cuentas Bancarias
@@ -91,6 +95,7 @@ alter table expenses
     foreign key (id_account)
     references accounts(id_account);
 
+--Tabla 
 -----------------------------------------------------------------------
  -- Agregamos una restricción "foreign key" a la tabla "libros":
  alter table libros
