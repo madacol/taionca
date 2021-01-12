@@ -42,11 +42,12 @@ Any DB-related-command you run in another terminal window, will not work, you'll
 - To migrate all pending migrations: `npm run migrate up`
 - To undo **one** migration `npm run migrate down`
 - To undo `n` migrations `npm run migrate down {n}`
+- To redo `n` migrations `npm run migrate redo {n}`
 
 #### Create migrations
 
 ```bash
-npm run migrate create name of migration
+npm run migrate create 'name of migration'
 ```
 
 *DO NOT USE THIS TO CREATE PERMISSIONS*, see [Permissions](#Permissions) section

@@ -1,8 +1,7 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "target": "es2017",
-        "checkJs": true
+        "target": "es2017"
     },
     "include": ["src/**/*", "src/node_modules/**/*"],
     "exclude": ["node_modules/*", "__sapper__/*", "static/*"]
