@@ -3,46 +3,28 @@
 	import SelectSearch from '../components/Select.svelte';
 
 	export let account;
-	export let currency;
+	// export let currency;
 	/** @type {"vertical" | "horizontal"}*/
-	export let orientation = "horizontal";
+	import { onMount } from 'svelte';
+	
+	/**
+	 * Get accounts, If needed
+	 */
+	let accounts = [];
+	onMount(async ()=>{
+		const response = await fetch('/api/public/accounts');
+		accounts = await response.json();
+	})
+	
+	$: console.log(accounts, accountsToList);
+	let accountsToList = [];
+	$: if (accounts.length > 0) {
+		console.log(accounts);
+		accountsToList = accounts.map(({id_account, name, symbol}) => ({value: id_account, label: `${name} (${symbol})`}))
+	}
 
-    const ACCOUNTS = {
-		dolar: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'chase', label: 'Chase'},
-		{value: 'revolut', label: 'Revolut'}
-		],
-
-		bolivar: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'bod', label: 'Bod'},
-		{value: 'venezuela', label: 'Venezuela'},
-		{value: 'provincial', label: 'Provincial'},
-		{value: 'banesco', label: 'Banesco'},
-		{value: 'mercantil', label: 'Mercantil'}
-		],
-
-		peso: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'davivienda', label: 'Davivienda'}
-		],
-
-		euro: [
-		{value: 'cajachica', label: 'Caja Chica'},
-		{value: 'revolut', label: 'Revolut'}
-		],
-
-		bitcoin: [
-		{value: 'btc', label: 'Bitcoin'}
-		]
-    }
-
-
-
-	$: account = ACCOUNTS[currency];
 </script>
 
-<Currency bind:currency {orientation}/>
+<!-- <Currency bind:selectedCurrency={currency} {orientation}/> -->
 
-<SelectSearch placeholder="Cuentas..." items={account}/>
+<SelectSearch placeholder="Cuentas..." bind:selected={account} items={accountsToList}/>

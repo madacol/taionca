@@ -29,7 +29,7 @@
 	<RadioButtonGroup {orientation} bind:selected={selectedCurrency}>
 		{#if currencies}
 			{#each currencies as currency}
-				<RadioButton labelText={`${currency.name_plural} ${currency.symbol}`} value={currency.id_currency} />	
+				<RadioButton labelText={`${currency.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase())} ${currency.symbol}`} value={currency} />	
 			{/each}
 		{/if}
 	</RadioButtonGroup>

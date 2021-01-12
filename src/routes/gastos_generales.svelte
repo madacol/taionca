@@ -15,14 +15,6 @@
 	import { TextArea } from "carbon-components-svelte";
 	import Accounts from "../components/Accounts.svelte";
 
-	let pays = [
-	{value: 'pago1', label: 'Pagos a Marisol'},
-	{value: 'pago2', label: 'Pagos a IVA'},
-	{value: 'pago3', label: 'Pagos a Alcaldía'},
-	{value: 'pago4', label: 'Pagos a IVSS'},
-	{value: 'pago5', label: 'Pagos a INPSASEL'}
-	];
-
 	let odts = [
 	{value: 'odt1', label: 'ODT1'},
 	{value: 'odt2', label: 'ODT2'},
@@ -32,6 +24,7 @@
 	export let currencies;
 	let account;
 	let selectedCurrency;
+
 
 </script>
 
