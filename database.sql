@@ -56,20 +56,17 @@ alter table odts
     references currencies(id_currency);
 
 --Tabla de Pagos
+create type movement_category as ENUM ('odts', 'currencyChanges');
 create table incomes(
     id_income serial primary key,
-    id_odt integer not null,
+    id_movement_category integer not null,
     id_account integer not null,
     amount decimal(30,10) not null,
     dollar_exchange_rate decimal(30,10),
-    category varchar(50) not null,
+    description varchar(512),
+    movement_category movement_category,
     created_at timestamp with time zone default current_timestamp
 );
-
-alter table incomes
-    add constraint FK_incomes_odts
-    foreign key (id_odt)
-    references odts(id_odt);
 
 alter table incomes
     add constraint FK_incomes_accounts
@@ -79,13 +76,13 @@ alter table incomes
 --Tabla de Gastos
 create table expenses(
     id_expense serial primary key,
-    id_odt integer not null,
+    id_movement_category integer not null,
     id_account integer not null,
     amount decimal(30,10) not null,
     dollar_exchange_rate decimal(30,10),
-    description varchar(512) not null,
+    description varchar(512),
     evidence varchar(256) not null,
-    category varchar(50) not null, -- enum o tabla referencia
+    movement_category movement_category,
     created_at timestamp with time zone default current_timestamp
 );
 
@@ -106,7 +103,7 @@ create table currencyChanges(
     id_expense integer not null,
     id_income integer not null,
     description varchar(512) not null,
-    responsable varchar (50) not null,
+    id_responsable integer not null,
     created_at timestamp with time zone default current_timestamp
 );
 
@@ -119,16 +116,6 @@ alter table currencyChanges
     add constraint FK_currencyChanges_incomes
     foreign key (id_income)
     references incomes(id_income);
-    
-alter table currencyChanges
-    add constraint FK_currencyChanges_accounts
-    foreign key (id_account_out)
-    references accounts(id_account);
-
-alter table currencyChanges
-    add constraint FK_currencyChanges_accounts
-    foreign key (id_account_in)
-    references accounts(id_account);
 
 --Tabla de Gastos Recurrentes
 create table usualExpenses(
@@ -146,18 +133,6 @@ alter table usualExpenses
     foreign key (id_account)
     references accounts(id_account);
 
+-----------------------------------------------------------------------
 --Tabla de Gastos Inventariados
 
------------------------------------------------------------------------
- -- Agregamos una restricción "foreign key" a la tabla "libros":
- alter table libros
-   add constraint FK_libros_codigoeditorial
-   foreign key (codigoeditorial)
-   references editoriales(codigo);
-
- -- Ingresamos un libro con un código de editorial existente:
- insert into libros(titulo,autor,codigoeditorial) values('Aprenda ASP.Net','Jose Paez',2);
-
- -- Ingresamos un libro con un código de editorial inexistente:
- insert into libros(titulo,autor,codigoeditorial) values('JSP basico','Tornado Luis',7);
- --Aparece un mensaje de error y no se ejecuta la inserción.

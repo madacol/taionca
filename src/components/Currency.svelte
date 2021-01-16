@@ -6,7 +6,7 @@
 	}
 	from "carbon-components-svelte";
 
-	export let selectedCurrency;
+	export let selectedCurrency = null;
 	/** @type {"vertical" | "horizontal"}*/
 	export let orientation = "horizontal";
 
@@ -21,15 +21,20 @@
 			const response = await fetch('/api/public/currencies');
 			currencies = await response.json();
 		}
+		if( screen.width <= 480 ) {
+			orientation="vertical"
+			// is mobile
+		}
 	})
+		
+
 </script>
 
-
 <FormGroup legendText="Moneda">
-	<RadioButtonGroup {orientation} bind:selected={selectedCurrency}>
+	<RadioButtonGroup id="currency" {orientation} bind:selected={selectedCurrency}>
 		{#if currencies}
 			{#each currencies as currency}
-				<RadioButton labelText={`${currency.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase())} ${currency.symbol}`} value={currency} />	
+				<RadioButton labelText={`${currency.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase())} (${currency.symbol})`} value={currency} />	
 			{/each}
 		{/if}
 	</RadioButtonGroup>

@@ -16,7 +16,7 @@
 		accounts = await response.json();
 	})
 	
-	$: console.log(accounts, accountsToList);
+	$: console.log(account, accountsToList);
 	let accountsToList = [];
 	$: if (accounts.length > 0) {
 		console.log(accounts);
@@ -24,7 +24,5 @@
 	}
 
 </script>
-
-<!-- <Currency bind:selectedCurrency={currency} {orientation}/> -->
 
 <SelectSearch placeholder="Cuentas..." bind:selected={account} items={accountsToList}/>

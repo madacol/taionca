@@ -1,6 +1,6 @@
 exports.up = pgm => {
-    pgm.sql(
-        `INSERT INTO public.currencies (
+    pgm.sql`
+        INSERT INTO public.currencies (
             name_singular, name_plural, symbol, code) VALUES (
             'dólar'::character varying, 'dólares'::character varying, '$'::character varying, 'usd'::character varying)
              returning id_currency;
@@ -20,11 +20,14 @@ exports.up = pgm => {
             name_singular, name_plural, symbol, code) VALUES (
             'bitcoin'::character varying, 'bitcoins'::character varying, '₿'::character varying, 'btc'::character varying)
              returning id_currency;`
-    )
+    
 };
 
 exports.down = pgm => {
-    pgm.sql(
-        `DELETE FROM currencies;`
-    )
+    pgm.sql`
+        ALTER SEQUENCE currencies_id_currency_seq RESTART WITH 1;
+
+        DELETE FROM currencies;
+        `
+    
 };
