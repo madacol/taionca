@@ -5,35 +5,57 @@
         return {
             currencies
         };
-    }
+	}
 </script>
 <script>
 	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
-	import SelectSearch from '../components/Select.svelte';
+	import Select_Odts from '../components/Select_Odts.svelte';
 	import { TextInput } from "carbon-components-svelte";
 	import { TextArea } from "carbon-components-svelte";
 	import Accounts from "../components/Accounts.svelte";
 
-	let odts = [
-	{value: 'odt1', label: 'ODT1'},
-	{value: 'odt2', label: 'ODT2'},
-	{value: 'odt3', label: 'ODT3'}
-	];
+	let currency_expense;
+	let account_expense;
+	let odt;
+	let description;
+	let amount_expense;
+	let evidence="Supuesta evidencia";
 
-	export let currencies;
-	let account;
-	let selectedCurrency;
+	async function create_expense(){
+		await fetch("/api/public/expenses",{
+			method: 'POST',
+			body: JSON.stringify({
+				id_movement_category: odt.value,
+				id_account: account_expense.value,
+				amount: amount_expense,
+				description,
+				evidence,
+				movement_category: 'odts'
 
+			}),
+			headers: {'Content-Type': 'application/json'}
+		})
+		cleanWindows()
+		alert("Los datos han sido registrados")
+	}
+
+	function cleanWindows(){
+		amount_expense=null
+		account_expense=null
+		currency_expense=null
+		odt=null
+		description=""
+	}
 
 </script>
 
-<TextInput labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." />
+<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." bind:value={amount_expense}/>
 
-<Accounts bind:account bind:selectedCurrency {currencies}/>
+<Accounts orientation="vertical" bind:account={account_expense} bind:currency={currency_expense}/>
 
-<SelectSearch placeholder="ODTs..." items={odts}/>
+<Select_Odts bind:odt={odt}/>
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." bind:value={description}/>
 
-<Button>Enviar</Button>
+<Button on:click={create_expense}>Enviar</Button>

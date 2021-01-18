@@ -9,7 +9,7 @@ exports.up = pgm => {
             SELECT user_id, role_id FROM inserted_user, inserted_role
         )
         INSERT INTO join_roles_permissions (role_id, permission_id)
-        SELECT role_id, permission_id FROM role_id, permissions;`
+        SELECT role_id, permission_id FROM inserted_role, permissions;`
     )
 };
 
