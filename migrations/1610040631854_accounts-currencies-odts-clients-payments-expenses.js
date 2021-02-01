@@ -51,7 +51,7 @@ exports.up = pgm => {
             references currencies(id_currency);
         
         --Tabla de Pagos
-        create type movement_category as ENUM ('odts', 'currencyChanges');
+        create type movement_category as ENUM ('odts', 'currencyChanges','adminExpenses');
         create table incomes(
             id_income serial primary key,
             id_movement_category integer not null,
@@ -82,19 +82,42 @@ exports.up = pgm => {
         alter table expenses
             add constraint FK_expenses_accounts
             foreign key (id_account)
-            references accounts(id_account);`
+            references accounts(id_account);
+            
+        --Tabla de Gastos administrativos
+        create table adminExpenses(
+            id_adminExpense serial primary key,
+            description varchar(512),
+            created_at timestamp with time zone default current_timestamp
+        );
+           
+        --Tabla de Gastos administrativos Recurrentes
+        create table recurrentExpenses(
+            id_recurrentExpense serial primary key,
+            name varchar(32) not null,
+            id_currency integer not null,
+            amount decimal(30,10) not null,
+            description varchar(512),
+            created_at timestamp with time zone default current_timestamp
+        ); 
+
+        alter table recurrentExpenses
+            add constraint FK_recurrentExpenses_currencies
+            foreign key (id_currency)
+            references currencies(id_currency);
+        `
     
 };
-
 exports.down = pgm => {
     pgm.sql`
         drop table incomes;
+        drop table adminExpenses;
         drop table expenses;
         drop table odts;
+        drop table recurrentExpenses;
         drop table accounts;
         drop table currencies;
         drop table clients;
         drop type movement_category;
-        `
-    
+        ` 
 };

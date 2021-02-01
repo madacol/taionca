@@ -1,9 +1,7 @@
 <script>
-    import Currency from "./Currency.svelte";
-	import SelectSearch from '../components/Select.svelte';
+    import SelectSearch from '../components/Select.svelte';
 
 	export let account;
-	// export let currency;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
 	
@@ -20,7 +18,12 @@
 	let accountsToList = [];
 	$: if (accounts.length > 0) {
 		console.log(accounts);
-		accountsToList = accounts.map(({id_account, name, symbol}) => ({value: id_account, label: `${name} (${symbol})`}))
+		accountsToList = accounts.map((account) => {
+			account.value=account.id_account
+			account.label= `${account.name} (${account.symbol})`
+			return account
+		})
+
 	}
 
 </script>

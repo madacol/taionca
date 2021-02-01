@@ -27,14 +27,14 @@
 			body: JSON.stringify({
 				description,
 				expense: {
-					id_account: account_expense.value,
+					id_account: account_expense.id_account,
 					amount: amount_expense,
 					description,
 					evidence,
 					movement_category: 'currencyChanges'
 				},
 				income: {
-					id_account: account_income.value,
+					id_account: account_income.id_account,
 					amount: amount_income,
 					description,
 					movement_category: 'currencyChanges'

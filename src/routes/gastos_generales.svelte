@@ -27,7 +27,7 @@
 			method: 'POST',
 			body: JSON.stringify({
 				id_movement_category: odt.value,
-				id_account: account_expense.value,
+				id_account: account_expense.id_account,
 				amount: amount_expense,
 				description,
 				evidence,

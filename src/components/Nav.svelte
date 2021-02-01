@@ -51,10 +51,14 @@
 <nav>
 	<ul>
 		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href=".">Inicio</a></li>
-		<li><a aria-current="{segment === 'gasto_inventario' ? 'page' : undefined}" href="gasto_inventario">Gasto de Inventario</a></li>
-		<li><a aria-current="{segment === 'gasto_admin' ? 'page' : undefined}" href="gasto_admin">Gasto Administrativo</a></li>
-		<li><a aria-current="{segment === 'gastos_generales' ? 'page' : undefined}" href="gastos_generales">Gastos Generales</a></li>
+		<li><a aria-current="{segment === 'login' ? 'page' : undefined}" href="login">Inicio de sesión</a></li>
+		<li><a aria-current="{segment === 'gasto_inventario' ? 'page' : undefined}" href="gasto_inventario">Gasto de inventario</a></li>
+		<li><a aria-current="{segment === 'gasto_admin' ? 'page' : undefined}" href="gasto_admin">Gasto administrativo</a></li>
+		<li><a aria-current="{segment === 'gastos_generales' ? 'page' : undefined}" href="gastos_generales">Gastos generales</a></li>
 		<li><a aria-current="{segment === 'nueva_odt' ? 'page' : undefined}" href="nueva_odt">Nueva ODT</a></li>
-		<li><a aria-current="{segment === 'cambio_moneda' ? 'page' : undefined}" href="cambio_moneda">Cambios de Moneda</a></li>
+		<li><a aria-current="{segment === 'cambio_moneda' ? 'page' : undefined}" href="cambio_moneda">Cambios de moneda</a></li>
+		<li><a aria-current="{segment === 'solicitud_cambio_moneda' ? 'page' : undefined}" href="solicitud_cambio_moneda">Solicitud de cambios de moneda</a></li>
+		<li><a aria-current="{segment === 'solicitud_prestamo' ? 'page' : undefined}" href="solicitud_prestamo">Solicitud de prestamos</a></li>
+		<li><a aria-current="{segment === 'lista_responsabilidades' ? 'page' : undefined}" href="lista_responsabilidades">Responsabilidades</a></li>
 	</ul>
 </nav>
