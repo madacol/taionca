@@ -21,11 +21,19 @@
 	{value: 'odt3', label: 'ODT3'}
 	];
 
+	let brands = [
+	{value: '1', label: 'Hoffman'},
+	{value: '2', label: 'Lincoln'}
+	];
+
 </script>
 
 <SelectSearch placeholder="Artículos..." items={articles}/>
 
-<TextInput labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
+<SelectSearch placeholder="Marca..." items={brands}/>
+
+
+<TextInput type="Number" labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
 
 <SelectSearch placeholder="ODTs..." items={odts}/>
 

@@ -27,7 +27,6 @@ exports.down = pgm => {
     pgm.sql`
         ALTER SEQUENCE currencies_id_currency_seq RESTART WITH 1;
 
-        DELETE FROM currencies;
         `
     
 };
