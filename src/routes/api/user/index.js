@@ -56,3 +56,9 @@ export async function patch (req, res) {
         success: 'Contraseña actualizada exitosamente',
     })
 }
+
+// Log out
+export async function del (req, res) {
+    req.session.destroy();
+    res.json({success: 'Cerrada sesión exitosamente'});
+}
