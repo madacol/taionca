@@ -3,6 +3,12 @@
 	import 'carbon-components-svelte/css/white.css';
 	import { Button } from "carbon-components-svelte";
 	import Logout32 from "carbon-icons-svelte/lib/Logout32";
+
+	function logout(){
+		fetch("/api/user", {
+			method: "DELETE"
+		})
+	}
 </script>
 
 <style>
@@ -75,10 +81,11 @@
 			<li><a aria-current="{segment === 'aprovaciones' ? 'page' : undefined}" href="aprovaciones">Aprovaciones</a></li>
 			<li><a aria-current="{segment === 'reposicion_inv' ? 'page' : undefined}" href="reposicion_inv">Reposicion de Inventario</a></li>
 			<li><a aria-current="{segment === 'control_inv' ? 'page' : undefined}" href="control_inv">Control de Inventario</a></li>
-			<li><a aria-current="{segment === 'ingreso_inv' ? 'page' : undefined}" href="ingreso_inv">Ingreso de Inventario</a></li>
+			<li><a aria-current="{segment === 'ingreso_spendable_inv' ? 'page' : undefined}" href="ingreso_spendable_inv">Ingreso de Inventario consumible</a></li>
+			<li><a aria-current="{segment === 'ingreso_no_spendable_inv' ? 'page' : undefined}" href="ingreso_no_spendable_inv">Ingreso de Inventario no consumible</a></li>
 		</ul>
 	</nav>
 	
-	<Button  kind="ghost" iconDescription="Cerrar sesión" icon={Logout32}></Button>
+	<Button on:click={logout} kind="ghost" iconDescription="Cerrar sesión" icon={Logout32}></Button>
 
 </div>

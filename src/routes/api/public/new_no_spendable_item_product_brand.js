@@ -1,0 +1,49 @@
+import { compose } from "compose-middleware";
+import { USERS_READ } from "../../../constants/PERMISSIONS";
+import { query } from "../../../db";
+import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
+
+export const post =
+    async (req, res) => {
+        const { code, description, brand , cost, price } = req.body;
+        const {rows: no_spendable_items} = await query(
+           `
+            WITH new_no_spendable_product as (
+                INSERT INTO public.no_spendable_products
+                    (code, description)
+                    VALUES ($1::character varying, $2::character varying)
+                    ON CONFLICT(code) DO NOTHING
+                    RETURNING id_no_spendable_product
+            ), new_brand as (
+                INSERT INTO public.brands
+                    (name)
+                    VALUES ($3::character varying)
+                    ON CONFLICT(name) DO NOTHING
+                    RETURNING id_brand
+            )
+                INSERT INTO public.no_spendable_items
+                    ( id_brand, id_no_spendable_product, cost, price)
+                    SELECT
+                        brand.id_brand,
+                        no_spendable_product.id_no_spendable_product,
+                        $4::numeric,
+                        $5::numeric
+                    FROM
+                        (
+                            SELECT COALESCE(
+                                (SELECT id_no_spendable_product FROM new_no_spendable_product),
+                                (SELECT id_no_spendable_product FROM no_spendable_products WHERE code = $1)
+                            ) AS id_no_spendable_product
+                        ) AS no_spendable_product,
+                        (
+                            SELECT COALESCE(
+                                (SELECT id_brand FROM new_brand),
+                                (SELECT id_brand FROM brands WHERE name = $3)
+                            ) AS id_brand
+                        ) AS brand
+                    LIMIT 1;
+            `, [ code, description, brand , cost, price ]
+        );
+
+        res.json( no_spendable_items[0] );
+    }
