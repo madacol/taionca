@@ -83,6 +83,7 @@
 			<li><a aria-current="{segment === 'control_inv' ? 'page' : undefined}" href="control_inv">Control de Inventario</a></li>
 			<li><a aria-current="{segment === 'ingreso_spendable_inv' ? 'page' : undefined}" href="ingreso_spendable_inv">Ingreso de Inventario consumible</a></li>
 			<li><a aria-current="{segment === 'ingreso_no_spendable_inv' ? 'page' : undefined}" href="ingreso_no_spendable_inv">Ingreso de Inventario no consumible</a></li>
+			<li><a aria-current="{segment === 'ingreso_storages' ? 'page' : undefined}" href="ingreso_storages">Ingreso de Almacenes</a></li>
 		</ul>
 	</nav>
 	

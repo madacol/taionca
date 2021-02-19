@@ -4,6 +4,7 @@
 	import SelectSearch from '../components/Select.svelte';
 	import { TextInput } from "carbon-components-svelte";
 	import { TextArea } from "carbon-components-svelte";
+	import Brands from "../components/Brands.svelte";
 
 	let articles = [
 	{value: 'electrodo', label: 'Electrodo'},
@@ -21,17 +22,13 @@
 	{value: 'odt3', label: 'ODT3'}
 	];
 
-	let brands = [
-	{value: '1', label: 'Hoffman'},
-	{value: '2', label: 'Lincoln'}
-	];
+	let brand;
 
 </script>
 
 <SelectSearch placeholder="Artículos..." items={articles}/>
 
-<SelectSearch placeholder="Marca..." items={brands}/>
-
+<Brands bind:brand={brand} />
 
 <TextInput type="Number" labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
 

@@ -1,0 +1,38 @@
+<script>
+	import 'carbon-components-svelte/css/white.css';
+	import { TextInput, Button, TextArea } from "carbon-components-svelte";
+	import No_spendable_products from '../components/no_spendable_products.svelte';
+	import Brands from '../components/Brands.svelte';
+    
+	let description;
+	let name;
+	let location;
+
+	async function add_item(){
+		await fetch("/api/public/new_storage",{
+			method: 'POST',
+			body: JSON.stringify({
+				name,
+				location,
+				description
+			}),
+			headers: {'Content-Type': 'application/json'}
+		})
+		cleanWindows()
+		alert("Los datos han sido registrados")
+	}
+
+	function cleanWindows(){
+		description=""
+		location=""
+		name=null
+	}
+</script>
+
+<TextInput type="Text" labelText="Almacén" placeholder="Ingrese el nombre..." bind:value={name}/>
+
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del artículo..." bind:value={description}/>
+
+<TextArea labelText="Localización" placeholder="Ingrese el lugar del almacén..." bind:value={location}/>
+
+<Button on:click={add_item}>Enviar</Button>

@@ -5,13 +5,13 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
     async (req, res) => {
-        const { code, description, brand , cost, price } = req.body;
+        const { code, description, brand , cost, price, storage, measure } = req.body;
         const {rows: no_spendable_items} = await query(
            `
             WITH new_no_spendable_product as (
                 INSERT INTO public.no_spendable_products
-                    (code, description)
-                    VALUES ($1::character varying, $2::character varying)
+                    (code, description, id_measure)
+                    VALUES ($1::character varying, $2::character varying, $7::integer)
                     ON CONFLICT(code) DO NOTHING
                     RETURNING id_no_spendable_product
             ), new_brand as (
@@ -20,7 +20,7 @@ export const post =
                     VALUES ($3::character varying)
                     ON CONFLICT(name) DO NOTHING
                     RETURNING id_brand
-            )
+            ), new_no_spendable_item as (
                 INSERT INTO public.no_spendable_items
                     ( id_brand, id_no_spendable_product, cost, price)
                     SELECT
@@ -41,8 +41,15 @@ export const post =
                                 (SELECT id_brand FROM brands WHERE name = $3)
                             ) AS id_brand
                         ) AS brand
-                    LIMIT 1;
-            `, [ code, description, brand , cost, price ]
+                    LIMIT 1
+                    RETURNING id_no_spendable_item
+            )
+            INSERT INTO public.no_spendable_stocks
+                ( id_no_spendable_item, id_storage )
+                SELECT id_no_spendable_item, $6
+                FROM new_no_spendable_item
+                RETURNING id_no_spendable_stock;
+            `, [ code, description, brand , cost, price, storage, measure ]
         );
 
         res.json( no_spendable_items[0] );
