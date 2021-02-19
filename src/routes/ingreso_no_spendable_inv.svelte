@@ -1,7 +1,7 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
 	import { TextInput, Button, TextArea } from "carbon-components-svelte";
-	import No_spendable_products from '../components/no_spendable_products.svelte';
+	import No_spendable_products from '../components/No_spendable_products.svelte';
 	import Brands from '../components/Brands.svelte';
 	import Measures from '../components/Measures.svelte';
 	import Storages from '../components/Storages.svelte';
