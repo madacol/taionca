@@ -21,9 +21,9 @@
 				code: code.value,
 				brand: brand.value,
 				measure: measure.value,
+				storage: storage.value,
 				cost,
 				price,
-				storage,
 				description
 			}),
 			headers: {'Content-Type': 'application/json'}

@@ -1,6 +1,5 @@
 exports.up = pgm => {
-    pgm.sql(
-        `
+    pgm.sql`
         INSERT INTO public.measures 
             ( name, unit ) 
             VALUES ( 'Unidad'::character varying, 'und'::character varying)
@@ -45,8 +44,9 @@ exports.up = pgm => {
             ( name, unit ) 
             VALUES ( 'Hora'::character varying, 'h'::character varying)
              returning id_measure;
+
         `
-    )
+    
 };
 
 exports.down = pgm => {
@@ -54,7 +54,10 @@ exports.down = pgm => {
         `
         ALTER SEQUENCE measures_id_measure_seq RESTART WITH 1;
 
-        DELETE FROM expenses;
+        DELETE FROM spendable_stocks;
+        DELETE FROM spendable_items;
+        DELETE FROM spendable_products;
+        DELETE FROM measures;
         `
     )
 };

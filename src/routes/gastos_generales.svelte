@@ -8,11 +8,9 @@
 	}
 </script>
 <script>
-	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
-	import Select_Odts from '../components/Select_Odts.svelte';
-	import { TextInput } from "carbon-components-svelte";
-	import { TextArea } from "carbon-components-svelte";
+	import Odts from '../components/Odts.svelte';
+	import { TextInput, Button, TextArea } from "carbon-components-svelte";
 	import Accounts from "../components/Accounts.svelte";
 
 	let currency_expense;
@@ -54,7 +52,7 @@
 
 <Accounts orientation="vertical" bind:account={account_expense} bind:currency={currency_expense}/>
 
-<Select_Odts bind:odt={odt}/>
+<Odts bind:odt={odt}/>
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." bind:value={description}/>
 

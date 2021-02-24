@@ -14,10 +14,8 @@
 		accounts = await response.json();
 	})
 	
-	$: console.log(account, accountsToList);
 	let accountsToList = [];
 	$: if (accounts.length > 0) {
-		console.log(accounts);
 		accountsToList = accounts.map((account) => {
 			account.value=account.id_account
 			account.label= `${account.name} (${account.symbol})`

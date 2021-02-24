@@ -1,39 +1,55 @@
 <script>
-	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
+	import { Button, TextInput, TextArea } from "carbon-components-svelte";
 	import SelectSearch from '../components/Select.svelte';
-	import { TextInput } from "carbon-components-svelte";
-	import { TextArea } from "carbon-components-svelte";
-	import Brands from "../components/Brands.svelte";
+	import All_inv_items from '../components/All_inv_items.svelte';
+	import Odts from "../components/Odts.svelte";
 
-	let articles = [
-	{value: 'electrodo', label: 'Electrodo'},
-	{value: 'discoesmeril', label: 'Disco de esmeril'},
-	{value: 'oxigeno', label: 'Oxigeno'},
-	{value: 'gas', label: 'Gas'},
-	{value: 'electrododesnudo', label: 'Electrodo desnudo'},
-	{value: 'electrodorecubierto', label: 'Electrodo recubierto'},
-	{value: 'cintaaislante', label: 'Cinta Aislante'}
-	];
+	let amount;
+	let item;
+	let description;
+	let odt;
+	let api;
+	
+	async function create_expense(api){
+		const response = await fetch(`${api}`,{
+			method: 'POST',
+			body: JSON.stringify({
+				id_spendable_stock: item.id,
+				amount,
+				id_odt: odt.value,
+				description
+			}),headers: {'Content-Type': 'application/json'}
+		});
+		cleanWindows()
+		alert("Los datos han sido registrados")
+	}
 
-	let odts = [
-	{value: 'odt1', label: 'ODT1'},
-	{value: 'odt2', label: 'ODT2'},
-	{value: 'odt3', label: 'ODT3'}
-	];
+	function cleanWindows(){
+		item=null
+		amount=null
+		odt=null
+		description=""
+	}
 
-	let brand;
+	function apiType(){
+		if (item.category==="consumibles"){
+			api="/api/public/spendable_inv_odt_expenses"
+			create_expense(api)
+		}else{
+			api="/api/public/no_spendable_inv_odt_expenses"
+			create_expense(api)
+		}
+	}
 
 </script>
 
-<SelectSearch placeholder="Artículos..." items={articles}/>
+<All_inv_items bind:item={item}/>
 
-<Brands bind:brand={brand} />
+<TextInput type="Number" labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." bind:value={amount}/>
 
-<TextInput type="Number" labelText="Cantidad gastada" placeholder="Ingrese la cantidad gastada..." />
+<Odts bind:odt={odt}/>
 
-<SelectSearch placeholder="ODTs..." items={odts}/>
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." bind:value={description}/>
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
-
-<Button>Enviar</Button>
+<Button on:click={apiType}>Enviar</Button>

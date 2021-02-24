@@ -8,9 +8,11 @@
     let email;
     let name;
     let lastname;
+
+    
     
     async function signup(){
-		await fetch("/api/public/signup",{
+		await fetch("/api/users",{
 			method: 'POST',
 			body: JSON.stringify({
                 username: user,

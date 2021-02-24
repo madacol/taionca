@@ -13,10 +13,16 @@ export async function get (req, res) {
             array_agg(jsonb_build_object(
                 'role_id', role_id,
                 'name', roles.name)
-            ) roles
+            ) roles,
+            array_agg(jsonb_build_object(
+                'permission_id', permission_id,
+                'name', permissions.name)
+            ) permissions
         FROM users
         JOIN join_users_roles USING (user_id)
         JOIN roles USING (role_id)
+        JOIN join_roles_permissions USING (role_id)
+        JOIN permissions USING (permission_id)
         WHERE user_id = $1
         GROUP BY user_id;`,
         [user_id]
