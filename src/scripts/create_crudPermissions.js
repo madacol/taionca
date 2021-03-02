@@ -23,14 +23,24 @@ crudPermissions.forEach(crudPermission_raw => {
         migration_name = "data_crudPermission_" + crudPermission;
         const permissions_normalized = permissions.map(permission=>`'${permission}'`);
         const sqlFormatValues = permissions_normalized.map(permission=>`(${permission})`).join(',');
-        upSqlQuery = `INSERT INTO permissions (name) VALUES ${sqlFormatValues};`;
+        upSqlQuery = `
+        WITH new_permissions as(
+            INSERT INTO permissions (name) VALUES ${sqlFormatValues}
+            RETURNING permission_id
+        )
+        INSERT INTO join_roles_permissions (role_id, permission_id)
+            SELECT role_id, permission_id
+            FROM roles, new_permissions
+            WHERE roles.name = 'master'
+        ;
+        `;
         downSqlQuery = `DELETE FROM permissions WHERE name IN (${permissions_normalized.join(',')})`;
     }
 
     const filepath = `./migrations/${Date.now()}_${migration_name}.js`
     const file_content =
-`exports.up = pgm => pgm.sql(\`${upSqlQuery}\`);
-exports.down = pgm => pgm.sql(\`${downSqlQuery}\`);`
+`exports.up = pgm => pgm.sql\`${upSqlQuery}\`;
+exports.down = pgm => pgm.sql\`${downSqlQuery}\`;`
 
     fs.writeFile(filepath, file_content, (err) => {
         process.exit();
