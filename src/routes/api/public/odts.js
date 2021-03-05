@@ -7,7 +7,7 @@ export const get =
         const {rows: odts} = await query(
             `select *
             from odts
-            join currencies using(id_currency)
+            join currencys using(id_currency)
             join clients using(id_client);`
         );
 

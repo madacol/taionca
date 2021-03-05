@@ -1,7 +1,6 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
 	import { Button, TextInput, TextArea } from "carbon-components-svelte";
-	import SelectSearch from '../components/Select.svelte';
 	import All_inv_items from '../components/All_inv_items.svelte';
 	import Odts from "../components/Odts.svelte";
 
@@ -35,11 +34,10 @@
 	function apiType(){
 		if (item.category==="consumibles"){
 			api="/api/public/spendable_inv_odt_expenses"
-			create_expense(api)
 		}else{
 			api="/api/public/no_spendable_inv_odt_expenses"
-			create_expense(api)
 		}
+		create_expense(api)
 	}
 
 </script>

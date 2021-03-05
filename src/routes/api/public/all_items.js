@@ -10,9 +10,16 @@ export const get =
 
             id_spendable_stock,
             spendable_stocks.amount as spendable_stocks_amount,
+            id_storage,
             storages.name as storages_name,
             spendable_products.code as spendable_products_code,
-            measures.unit
+            measures.unit,
+            spendable_products.description,
+            spendable_items.cost,
+            spendable_items.price,
+            min_stock,
+            mid_stock,
+            max_stock
 
             from spendable_items
             join brands using(id_brand)
@@ -29,9 +36,16 @@ export const get =
 
             id_no_spendable_stock,
             no_spendable_stocks.amount as no_spendable_stocks_amount,
+            id_storage,
             storages.name as storages_name,
             no_spendable_products.code as no_spendable_products_code,
-            measures.unit
+            measures.unit,
+            no_spendable_products.description,
+            no_spendable_items.cost,
+            no_spendable_items.price,
+            min_stock,
+            mid_stock,
+            max_stock
 
             from no_spendable_items
             join brands using(id_brand)

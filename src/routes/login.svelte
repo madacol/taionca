@@ -2,12 +2,13 @@
 	import 'carbon-components-svelte/css/white.css';
 	import { FluidForm, TextInput, Button, PasswordInput } from "carbon-components-svelte";
 	import Login32 from "carbon-icons-svelte/lib/Login32";
+	import { session } from '../stores';
 
 	let username;
 	let password;
 
     async function login(){
-		await fetch("/api/public/login",{
+		const response = await fetch("/api/public/login",{
 			method: 'POST',
 			body: JSON.stringify({
                 username,
@@ -15,16 +16,18 @@
 			}),
 			headers: {'Content-Type': 'application/json'}
         })
-        username=null
+		const result = await response.json();
+		console.log(result);
+		$session = result.session;
         password=null
     }
 
  
 </script>
-	<FluidForm>
-		<TextInput type="user" labelText="Usuario" placeholder="Ingrese su usuario..." bind:value={username}/>
+	<FluidForm on:submit={login}>
+		<TextInput name="username" labelText="Usuario" placeholder="Ingrese su usuario..." bind:value={username}/>
 	
-		<PasswordInput type="password" labelText="Contraseña" placeholder="Ingrese su contraseña..." bind:value={password}/>
+		<PasswordInput labelText="Contraseña" placeholder="Ingrese su contraseña..." bind:value={password}/>
 
-		<Button on:click={login} icon={Login32}>Iniciar sesión</Button>
+		<Button type=submit on:click={login} icon={Login32}>Iniciar sesión</Button>
 	</FluidForm>

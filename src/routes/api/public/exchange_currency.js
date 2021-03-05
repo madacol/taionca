@@ -5,34 +5,30 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
     async (req, res) => {
-        console.log(req.body);
-        const {description, income, expense} = req.body;
+        const {description, income, expense, id_entity} = req.body;
         const {rows: currencyChange} = await query(
             `
-                WITH inserted_currencyChange as (
-                    INSERT INTO public.currencyChanges
+                WITH new_exchange_currencys as (
+                    INSERT INTO exchange_currencys
                         (description)
                         VALUES ($1::character varying)
-                        RETURNING id_currencyChange
-                ), inserted_expense as (
-                    INSERT INTO public.expenses
-                        (id_movement_category, id_account, amount, description, evidence, movement_category )
-                        SELECT id_currencyChange, $2::integer, $3::decimal, $4::character varying, $5::character varying, 'currencyChanges'
-                        FROM inserted_currencyChange
-                        RETURNING id_expense
-                ), inserted_income as (
-                    INSERT INTO public.incomes
-                        (id_movement_category, id_account, amount, description, movement_category )
-                        SELECT id_currencyChange, $6::integer, $7::decimal, $8::character varying, 'currencyChanges'
-                        FROM inserted_currencyChange
-                        RETURNING id_income
+                        RETURNING id_exchange_currency
                 )
-                SELECT id_currencyChange, id_expense, id_income
-                FROM inserted_currencyChange, inserted_expense, inserted_income;
+                SELECT alter_balance(
+                    id_balance,
+                    CASE WHEN id_account=$2 THEN -$3::numeric ELSE $5::numeric END,
+                    id_exchange_currency,
+                    'exchange_currency' 
+                ) FROM balances, new_exchange_currencys
+                WHERE id_account IN ($2::integer, $4::integer) AND id_entity = $6
+                ;
             `, [
                 description,
-                expense.id_account, expense.amount, expense.description, expense.evidence,
-                income.id_account, income.amount, income.description,
+                expense.id_account, 
+                expense.amount,
+                income.id_account, 
+                income.amount,
+                id_entity
             ]
         );
 

@@ -2,16 +2,17 @@
 	import { Button, TextArea, Tile, TextInput } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
 	import Accounts from "../components/Accounts.svelte";
+	import Entitys from "../components/Entitys.svelte";
 
 	let account_expense;
 	let account_income;
 	let currency_expense;
 	let currency_income;
-	let exchange_rate = "";
+	let exchange_rate;
 	let amount_expense;
 	let amount_income;
 	let description;
-	let evidence="Supuesta evidencia";
+	let id_entity;
 
 	$: {
 		exchange_rate= (amount_expense/amount_income) || ""
@@ -30,7 +31,6 @@
 					id_account: account_expense.id_account,
 					amount: amount_expense,
 					description,
-					evidence,
 					movement_category: 'currencyChanges'
 				},
 				income: {
@@ -38,7 +38,8 @@
 					amount: amount_income,
 					description,
 					movement_category: 'currencyChanges'
-				}
+				},
+				id_entity: id_entity.value
 			}),
 			headers: {'Content-Type': 'application/json'}
 		})
@@ -55,7 +56,9 @@
 		account_income=null
 		currency_income=null
 		description=""
+		id_entity=null
 	}
+	$:console.log(id_entity);
 </script>
 
 <style>
@@ -91,6 +94,8 @@
 </div>
 
 <Tile>Tasa: {exchange_rate}</Tile>
+
+<Entitys bind:entity={id_entity}/>
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del cambio de moneda..." bind:value={description}/>
 

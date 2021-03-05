@@ -1,35 +1,22 @@
-<script context="module">
-	export async function preload() {
-        const response = await this.fetch('/api/public/currencies');
-        const currencies = await response.json();
-        return {
-            currencies
-        };
-	}
-</script>
 <script>
 	import 'carbon-components-svelte/css/white.css';
 	import Odts from '../components/Odts.svelte';
 	import { TextInput, Button, TextArea } from "carbon-components-svelte";
 	import Accounts from "../components/Accounts.svelte";
 
-	let currency_expense;
-	let account_expense;
+	let account;
 	let odt;
 	let description;
-	let amount_expense;
-	let evidence="Supuesta evidencia";
+	let amount;
 
 	async function create_expense(){
-		await fetch("/api/public/expenses",{
+		await fetch("/api/public/general_expenses",{
 			method: 'POST',
 			body: JSON.stringify({
-				id_movement_category: odt.value,
-				id_account: account_expense.id_account,
-				amount: amount_expense,
+				id_account: account.id_account,
+				id_odt: odt.value,
+				amount,
 				description,
-				evidence,
-				movement_category: 'odts'
 
 			}),
 			headers: {'Content-Type': 'application/json'}
@@ -39,18 +26,16 @@
 	}
 
 	function cleanWindows(){
-		amount_expense=null
-		account_expense=null
-		currency_expense=null
+		amount=null
+		account=null
 		odt=null
 		description=""
 	}
-
 </script>
 
-<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." bind:value={amount_expense}/>
+<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." bind:value={amount}/>
 
-<Accounts orientation="vertical" bind:account={account_expense} bind:currency={currency_expense}/>
+<Accounts orientation="vertical" bind:account={account}/>
 
 <Odts bind:odt={odt}/>
 

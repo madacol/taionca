@@ -1,14 +1,14 @@
 import { query } from "../../../db";
 
-// List currencys
+// List entitys
 export const get =
     async (req, res) => {
 
-        const {rows: currencys} = await query(
-            'select * from currencys;'
+        const {rows: entitys} = await query(
+            `select * from entitys;`
         );
 
         res.json(
-            currencys
+            entitys
         );
     }

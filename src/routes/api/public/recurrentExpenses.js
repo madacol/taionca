@@ -7,7 +7,7 @@ export const get =
         const {rows: recurrentExpenses} = await query(
             `select *
             from recurrentExpenses
-            join currencies using(id_currency);`
+            join currencys using(id_currency);`
         );
 
         res.json(

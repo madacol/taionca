@@ -9,7 +9,7 @@ export const post =
         const {rows: odts} = await query(
             `INSERT INTO public.odts
                 ( id_client, id_user, id_currency, id_entity, amount, description )
-                VALUES ($1::integer, $2::integer, $3::integer, $4::integer,$5::numeric, $6::character varying)
+                VALUES ($1::integer, $2::integer, $3::integer, $4::integer, $5::numeric, $6::character varying)
                 RETURNING id_odt;
             `, [ id_client, id_user, id_currency, id_entity, amount, description ]
         );

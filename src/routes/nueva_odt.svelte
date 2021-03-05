@@ -18,7 +18,6 @@
 		id_user=user.users[0].user_id
 	})
 	
-	
 	async function create_odt(){
 		await fetch("/api/public/nueva_odt",{
 			method: 'POST',
@@ -38,9 +37,12 @@
 
 	function cleanWindows(){
 		amount=null
+		currency=null
 		client=null
 		description=""
 	}
+
+	$: console.log(currency);
 </script>
 
 <TextInput type="number"labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." bind:value={amount}/>

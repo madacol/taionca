@@ -45,7 +45,7 @@
 
     <PasswordInput type="password" labelText="Contraseña" placeholder="Ingrese su contraseña..." bind:value={password1}/>
     
-    <PasswordInput type="password" invalid={password1 != password2} invalidText="Las contraseñas no concuerdan." labelText="Repita Contraseña" placeholder="Ingrese su contraseña..." bind:value={password2}/>
+    <PasswordInput type="password" invalid={password1 !== password2} invalidText="Las contraseñas no concuerdan." labelText="Repita Contraseña" placeholder="Ingrese su contraseña..." bind:value={password2}/>
 
     <Button on:click={signup}>Crear usuario</Button>
 </FluidForm>

@@ -13,13 +13,13 @@
     import { onMount } from 'svelte';
 	
 	/**
-	 * Get currencies, If needed
+	 * Get currencys, If needed
 	 */
-	let currencies;
+	let currencys;
 	onMount(async ()=>{
-		if (!currencies) {
+		if (!currencys) {
 			const response = await fetch('/api/public/currencys');
-			currencies = await response.json();
+			currencys = await response.json();
 		}
 		if( screen.width <= 480 ) {
 			orientation="vertical"
@@ -30,8 +30,8 @@
 
 <FormGroup legendText="Moneda">
 	<RadioButtonGroup id="currency" {orientation} bind:selected={currency}>
-		{#if currencies}
-			{#each currencies as currency}
+		{#if currencys}
+			{#each currencys as currency}
 				<RadioButton labelText={`${currency.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase())} (${currency.symbol})`} value={currency} />	
 			{/each}
 		{/if}

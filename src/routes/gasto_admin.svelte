@@ -9,7 +9,7 @@
 
 </script>
 
-<FormGroup legendText="Tipo de gasto">
+<!-- <FormGroup legendText="Tipo de gasto">
 	<RadioButtonGroup bind:selected={opts}>
 		<RadioButton labelText="Inventariado" value="1" />
 		<RadioButton labelText="Recurrentes" value="2" />
@@ -25,8 +25,8 @@
 
 	<Gasto_admin_recurrentes/>
 
-{:else if opts==="3"}
+{:else if opts==="3"} -->
 
 	<Gasto_admin_otros/>
 	
-{/if}
+<!-- {/if} -->

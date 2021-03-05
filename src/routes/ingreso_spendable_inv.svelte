@@ -6,6 +6,9 @@
 	import Storages from '../components/Storages.svelte';
 	import Brands from '../components/Brands.svelte';
     
+	let min;
+	let mid;
+	let top;
 	let description;
 	let brand;
 	let code;
@@ -24,6 +27,9 @@
 				storage: storage.value,
 				cost,
 				price,
+				min_stock: min,
+				mid_stock: mid,
+				max_stock: top,
 				description
 			}),
 			headers: {'Content-Type': 'application/json'}
@@ -54,6 +60,12 @@
 <TextInput type="Number" labelText="Costo" placeholder="Ingrese el monto..." bind:value={cost}/>
 
 <TextInput type="Number" labelText="Precio de Venta" placeholder="Ingrese el monto..." bind:value={price}/>
+
+<TextInput type="Number" labelText="Cantidad mínima de stock" placeholder="Ingrese el monto..." bind:value={min}/>
+
+<TextInput type="Number" labelText="Cantidad media de stock" placeholder="Ingrese el monto..." bind:value={mid}/>
+
+<TextInput type="Number" labelText="Cantidad máxima de stock" placeholder="Ingrese el monto..." bind:value={top}/>
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del artículo..." bind:value={description}/>
 

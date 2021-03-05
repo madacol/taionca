@@ -5,13 +5,13 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
     async (req, res) => {
-        const { code, description, brand , cost, price, storage, measure } = req.body;
+        const { code, description, brand , cost, price, storage, measure, min_stock, mid_stock, max_stock } = req.body;
         const {rows: no_spendable_items} = await query(
            `
             WITH new_no_spendable_product as (
                 INSERT INTO public.no_spendable_products
-                    (code, description, id_measure)
-                    VALUES ($1::character varying, $2::character varying, $7::integer)
+                    (code, description, id_measure, min_stock, mid_stock, max_stock)
+                    VALUES ($1::character varying, $2::character varying, $7::integer, $8::numeric, $9::numeric, $10::numeric)
                     ON CONFLICT(code) DO NOTHING
                     RETURNING id_no_spendable_product
             ), new_brand as (
@@ -49,7 +49,7 @@ export const post =
                 SELECT id_no_spendable_item, $6
                 FROM new_no_spendable_item
                 RETURNING id_no_spendable_stock;
-            `, [ code, description, brand , cost, price, storage, measure ]
+            `, [ code, description, brand , cost, price, storage, measure, min_stock, mid_stock, max_stock ]
         );
 
         res.json( no_spendable_items[0] );

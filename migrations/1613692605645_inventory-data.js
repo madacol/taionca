@@ -50,14 +50,18 @@ exports.up = pgm => {
 };
 
 exports.down = pgm => {
-    pgm.sql(
-        `
+    pgm.sql`
+
         ALTER SEQUENCE measures_id_measure_seq RESTART WITH 1;
 
+        DELETE FROM no_spendable_stocks;
+        DELETE FROM no_spendable_items;
+        DELETE FROM no_spendable_products;
+        DELETE FROM spendable_inv_odt_expenses;
         DELETE FROM spendable_stocks;
         DELETE FROM spendable_items;
         DELETE FROM spendable_products;
         DELETE FROM measures;
         `
-    )
+    
 };

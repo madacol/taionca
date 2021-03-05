@@ -21,7 +21,6 @@
 			account.label= `${account.name} (${account.symbol})`
 			return account
 		})
-
 	}
 
 </script>

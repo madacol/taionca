@@ -1,44 +1,53 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
-	import SelectSearch from '../components/Select.svelte';
 	import Accounts from "../components/Accounts.svelte";
 	import { TextInput, Button} from "carbon-components-svelte";
+	import AllInvItems from '../components/All_inv_items.svelte';
 
-	let articles = [
-	{value: 'electrodo', label: 'Electrodo'},
-	{value: 'discoesmeril', label: 'Disco de esmeril'},
-	{value: 'oxigeno', label: 'Oxigeno'},
-	{value: 'gas', label: 'Gas'},
-	{value: 'electrododesnudo', label: 'Electrodo desnudo'},
-	{value: 'electrodorecubierto', label: 'Electrodo recubierto'},
-	{value: 'cintaaislante', label: 'Cinta Aislante'}
-	];
-
-	let odts = [
-	{value: 'odt1', label: 'ODT1'},
-	{value: 'odt2', label: 'ODT2'},
-	{value: 'odt3', label: 'ODT3'}
-	];
-
-	let brands = [
-	{value: '1', label: 'Hoffman'},
-	{value: '2', label: 'Lincoln'}
-    ];
-    
+	let item;
     let account;
-    let currency;
+    let amount;
+    let cost;
+	let api;
 
+	async function send_register(api){
+		const response = await fetch(`${api}`,{
+			method: 'POST',
+			body: JSON.stringify({
+				id_spendable_stock: item.id,
+				id_account: account.id_account,
+				amount,
+				cost
+			}),headers: {'Content-Type': 'application/json'}
+		});
+		cleanWindows()
+		alert("Los datos han sido registrados")
+	}
+
+	function cleanWindows(){
+		item=null
+		account=null
+		amount=null
+		cost=null
+	}
+
+	function apiType(){
+		if (item.category==="consumibles"){
+			api="/api/public/spendable_inv_odt_incomes"
+			send_register(api)
+		}else{
+			api="/api/public/no_spendable_inv_odt_incomes"
+			send_register(api)
+		}
+	}
 </script>
 
-<SelectSearch placeholder="Artículos..." items={articles}/>
+<AllInvItems bind:item={item}/>
 
-<SelectSearch placeholder="Marca..." items={brands}/>
+<TextInput type="Number" labelText="Cantidad repuesta" placeholder="Ingrese la cantidad repuesta..." bind:value={amount}/>
 
-<TextInput type="Number" labelText="Cantidad repuesta" placeholder="Ingrese la cantidad repuesta..." />
+<Accounts orientation="vertical" bind:account={account}/>
 
-<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto gastado..." />
+<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto gastado..." bind:value={cost}/>
 
-<Accounts orientation="vertical" bind:account={account} bind:currency={currency}/>
-
-
-<Button>Enviar</Button>
+<Button on:click={apiType}>Enviar</Button>

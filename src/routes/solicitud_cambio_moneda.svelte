@@ -2,7 +2,7 @@
 	import { Button, TextArea, TextInput } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
 	import Accounts from "../components/Accounts.svelte";
-	import Entities from "../components/Entities.svelte";
+	import Entitys from "../components/Entitys.svelte";
 
 	let account;
 	let currency;
@@ -20,7 +20,7 @@
 
 <Accounts orientation="vertical" bind:account={account} bind:currency={currency}/>
 
-<Entities orientation="vertical" bind:entity={entity}/>
+<Entitys orientation="vertical" bind:entity={entity}/>
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del cambio de moneda..." bind:value={description}/>
 
