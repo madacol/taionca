@@ -1,7 +1,7 @@
 exports.up = pgm => {
     pgm.sql`
         WITH inserted_user as (
-            INSERT INTO users (username, name, password_hash, email, lastname) VALUES ('master', 'Mauro', '$argon2i$v=19$m=4096,t=10,p=1$LU4KP3vETVtzvV2Mkrvd+A$9dcyOO3f2ehegvj9gwLYsVKuBsIx5Nu/3YBD4nodDhk','mauroalejandro20@gmail.com', 'D''Agostini') RETURNING user_id
+            INSERT INTO users (username, name, password_hash, email, lastname) VALUES ('master', 'master', '$argon2i$v=19$m=4096,t=10,p=1$LU4KP3vETVtzvV2Mkrvd+A$9dcyOO3f2ehegvj9gwLYsVKuBsIx5Nu/3YBD4nodDhk','mauroalejandro20@gmail.com', 'master') RETURNING user_id
         ), inserted_role as (
             INSERT INTO roles (name) VALUES ('master') RETURNING role_id
         ), t as (

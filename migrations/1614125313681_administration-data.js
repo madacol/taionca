@@ -36,7 +36,7 @@ exports.up = pgm => {
             id_entity, name) VALUES (
             3::integer ,'Inventario'::character varying)
              returning id_entity;
-
+        
         --Currencys
         INSERT INTO public.currencys (
             name_singular, name_plural, symbol, code) VALUES (

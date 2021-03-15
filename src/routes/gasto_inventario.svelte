@@ -17,7 +17,8 @@
 				id_spendable_stock: item.id,
 				amount,
 				id_odt: odt.value,
-				description
+				description,
+				currency_code: odt.code
 			}),headers: {'Content-Type': 'application/json'}
 		});
 		cleanWindows()

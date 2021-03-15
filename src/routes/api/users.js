@@ -22,6 +22,7 @@ export const get = compose(
             FROM users
             JOIN join_users_roles USING (user_id)
             JOIN roles USING (role_id)
+            WHERE special_user = FALSE
             GROUP BY user_id;`
         );
 
@@ -44,10 +45,21 @@ export async function post(req, res){
     const hash = await argon2.hash(password, config);
 
     await query(
-        `INSERT INTO users (username, password_hash, name, email, lastname)
-            VALUES ($1,$2,$3,$4,$5)`,
+        `
+        WITH new_entity AS (
+            INSERT INTO public.entitys (name)
+                VALUES ($1::character varying)
+                RETURNING id_entity
+        ), t_ as(
+            INSERT INTO balances (id_account, id_entity)
+            SELECT id_account, id_entity FROM accounts, new_entity
+        )
+        INSERT INTO users (username, password_hash, name, email, lastname, id_entity)
+            SELECT $1,$2,$3,$4,$5,id_entity
+            FROM new_entity
+        ;
+            `,
         [username, hash, name, email, lastname]
     );
-
     res.json({success: 'Usuario creado exitosamente'});
 }

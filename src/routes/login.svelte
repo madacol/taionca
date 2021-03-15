@@ -2,6 +2,7 @@
 	import 'carbon-components-svelte/css/white.css';
 	import { FluidForm, TextInput, Button, PasswordInput } from "carbon-components-svelte";
 	import Login32 from "carbon-icons-svelte/lib/Login32";
+	import { goto } from '@sapper/app'
 	import { session } from '../stores';
 
 	let username;
@@ -17,8 +18,14 @@
 			headers: {'Content-Type': 'application/json'}
         })
 		const result = await response.json();
-		console.log(result);
 		$session = result.session;
+		if (!$session){
+			alert(result.error)
+		}
+		else{
+			alert(result.success)
+			goto("/");
+		}
         password=null
     }
 

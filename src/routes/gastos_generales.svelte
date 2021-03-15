@@ -15,6 +15,8 @@
 			body: JSON.stringify({
 				id_account: account.id_account,
 				id_odt: odt.value,
+				odt_currency_code: odt.code,
+				expense_currency_code: account.code,
 				amount,
 				description,
 

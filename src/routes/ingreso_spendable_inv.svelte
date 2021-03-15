@@ -46,6 +46,9 @@
 		price=null
 		measure=null
 		storage=null
+		min=null
+		mid=null
+		top=null
 	}
 </script>
 

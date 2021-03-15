@@ -58,7 +58,6 @@
 		description=""
 		id_entity=null
 	}
-	$:console.log(id_entity);
 </script>
 
 <style>
