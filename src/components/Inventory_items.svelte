@@ -9,6 +9,7 @@
 		const headers = [
 			{ key: 'code', value: 'Código' }, 
 			{ key: 'description', value: 'Descripción' },
+			{ key: 'manufacture', value: 'Manufactura' },
 			{ key: 'price_cost', value: 'Precio Compra' },
 			{ key: 'price_sell', value: 'Precio Venta' },
 			{ key: 'amount', value: 'Stock' },
@@ -50,6 +51,7 @@
 			return ({id: spendable_item.id_spendable_stock,
 					code: spendable_item.spendable_products_code,
 					description: spendable_item.description,
+					manufacture: spendable_item.manufacture,
 					amount: `${Number(spendable_item.spendable_stocks_amount).toFixed(2)} ${spendable_item.unit}`,
                     price_sell: `$ ${Number(spendable_item.price).toFixed(2)}`,
                     price_cost: `$ ${Number(spendable_item.cost).toFixed(2)}`,
@@ -68,6 +70,7 @@
 			return ({id: -no_spendable_item.id_no_spendable_stock,
 					code: no_spendable_item.no_spendable_products_code,
 					description: no_spendable_item.description,
+					manufacture: no_spendable_item.manufacture,
 					amount: `${Number(no_spendable_item.no_spendable_stocks_amount).toFixed(2)} ${no_spendable_item.unit}`,
 					price_sell: `$ ${Number(no_spendable_item.price).toFixed(2)}`,
 					price_cost: `$ ${Number(no_spendable_item.cost).toFixed(2)}`,
