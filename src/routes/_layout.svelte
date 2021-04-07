@@ -126,8 +126,8 @@
 					{#if checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions)}<SideNavMenuItem href="reposicion_inv" text="Reposicion de Inventario"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_spendable_inv" text="Ingreso de Inventario consumible"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_no_spendable_inv" text="Ingreso de Inventario no consumible"/>{/if}
-					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_storages" text="Registrar almacenes"/>{/if}
-					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_suppliers" text="Registrar proveedores"/>{/if}
+					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_storages" text="Registrar almacenes"/>{/if}
+					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_suppliers" text="Registrar proveedores"/>{/if}
 				</SideNavMenu>
 			{/if}
 			

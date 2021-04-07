@@ -20,14 +20,16 @@ export const get =
             spendable_items.price,
             min_stock,
             mid_stock,
-            max_stock
+            max_stock,
+            suppliers.name as supplier
 
             from spendable_items
             join brands using(id_brand)
             join spendable_products using(id_spendable_product)
             join spendable_stocks using(id_spendable_item)
             join storages using(id_storage)
-            join measures using(id_measure);
+            join measures using(id_measure)
+            join suppliers using(id_supplier);
             `
         );
 
@@ -47,14 +49,16 @@ export const get =
             no_spendable_items.price,
             min_stock,
             mid_stock,
-            max_stock
+            max_stock,
+            suppliers.name as supplier
 
             from no_spendable_items
             join brands using(id_brand)
             join no_spendable_products using(id_no_spendable_product)
             join no_spendable_stocks using(id_no_spendable_item)
             join storages using(id_storage)
-            join measures using(id_measure);
+            join measures using(id_measure)
+            join suppliers using(id_supplier);
             `
         );
         
