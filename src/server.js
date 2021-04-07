@@ -1,5 +1,5 @@
 import sirv from 'sirv';
-import polka from 'polka';
+import express from 'express';
 import * as sapper from '@sapper/server';
 import jsonHelper from './middlewares/jsonHelper';
 import sessions from './middlewares/sessions';
@@ -12,7 +12,8 @@ const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
 // @ts-ignore
-export default polka() // You can also use Express
+export default express() // You can also use Express
+	.set('trust proxy', 1)
 	.use(
 		morgan(dev ? 'dev' : 'combined'),
 		sirv('static', { dev }),
