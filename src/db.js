@@ -2,7 +2,6 @@ import { Client, Pool } from 'pg';
 import { database as config } from './config';
 
 export const pool = new Pool(config.pool);
-const client = new Client(config.client);
 
 /**
  * @param  { [ string, any[]? ] } args
@@ -17,6 +16,7 @@ export async function query(...args) {
         }
     }
     // Otherwise create a disposable client
+    const client = new Client(config.client);
     await client.connect();
     const result = await client.query(...args);
     client.end();

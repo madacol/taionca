@@ -8,7 +8,7 @@ If there are no permissions in the DB, then you need to run the migrations `npm 
 
 ### To create / update this file
 
-    npm run build:permissions
+    npm run build:permissions.js
 
 ---
 

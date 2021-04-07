@@ -1,10 +1,8 @@
 <script>
-    import Currency from "./Currency.svelte";
-	import SelectSearch from '../components/Select.svelte';
+    import SelectSearch from '../components/Select.svelte';
 
 	export let account;
-	// export let currency;
-	/** @type {"vertical" | "horizontal"}*/
+	export let id_currency_filter = null;
 	import { onMount } from 'svelte';
 	
 	/**
@@ -15,16 +13,20 @@
 		const response = await fetch('/api/public/accounts');
 		accounts = await response.json();
 	})
-	
-	$: console.log(accounts, accountsToList);
+
 	let accountsToList = [];
 	$: if (accounts.length > 0) {
-		console.log(accounts);
-		accountsToList = accounts.map(({id_account, name, symbol}) => ({value: id_account, label: `${name} (${symbol})`}))
+		accountsToList = accounts
+							.filter(({id_currency})=> id_currency_filter
+														? id_currency === id_currency_filter
+														: true
+							).map((account) => {
+								account.value=account.id_account
+								account.label= `${account.name} (${account.symbol})`
+								return account
+							})
 	}
 
 </script>
-
-<!-- <Currency bind:selectedCurrency={currency} {orientation}/> -->
 
 <SelectSearch placeholder="Cuentas..." bind:selected={account} items={accountsToList}/>

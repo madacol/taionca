@@ -1,7 +1,7 @@
 import { compose } from "compose-middleware";
 import { USERS_READ, USERS_UPDATE } from "../../../constants/PERMISSIONS";
-import { query } from "../../../db";
 import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
+import { query } from "../../../db";
 
 // Get user
 export const get = compose(

@@ -1,17 +1,20 @@
-import { compose } from "compose-middleware";
-import { USERS_READ } from "../../../constants/PERMISSIONS";
 import { query } from "../../../db";
-import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
-// List currencies
-export const post =
+// List active odts
+export const get =
     async (req, res) => {
-        console.log(req.body)
-        const {rows: currencies} = await query(
-            'select name_plural, id_currency from currencies;'
+
+        const {rows: odts} = await query(
+            `select odts.*, currencys.*, clients.*
+            from odts
+            join currencys using(id_currency)
+            join clients using(id_client)
+            left join closure_odts using(id_odt)
+            where id_closure_odt is null;
+            `
         );
 
         res.json(
-            currencies
+            odts
         );
     }

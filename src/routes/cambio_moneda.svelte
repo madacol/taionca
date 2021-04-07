@@ -1,15 +1,63 @@
 <script>
-	import { Button } from "carbon-components-svelte";
+	import { Button, TextArea, Tile, TextInput } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
-	import { TextInput } from "carbon-components-svelte";
-	import { TextArea } from "carbon-components-svelte";
 	import Accounts from "../components/Accounts.svelte";
+	import Entitys from "../components/Entitys.svelte";
 
-	let account1;
-	let account2;
-	let currency1;
-	let currency2;
+	let account_expense;
+	let account_income;
+	let currency_expense;
+	let currency_income;
+	let exchange_rate;
+	let amount_expense;
+	let amount_income;
+	let description;
+	let id_entity;
 
+	$: {
+		exchange_rate= (amount_expense/amount_income) || ""
+		if(exchange_rate<=1){
+			exchange_rate=1/exchange_rate;
+		}
+	}
+
+	function create_exchange_currency(){
+
+		fetch("/api/public/exchange_currency",{
+			method: 'POST',
+			body: JSON.stringify({
+				description,
+				expense: {
+					id_account: account_expense.id_account,
+					amount: amount_expense,
+					description,
+					movement_category: 'currencyChanges'
+				},
+				income: {
+					id_account: account_income.id_account,
+					amount: amount_income,
+					description,
+					movement_category: 'currencyChanges'
+				},
+				id_entity: id_entity.value
+			}),
+			headers: {'Content-Type': 'application/json'}
+		})
+
+		cleanWindows()
+		alert("Los datos han sido registrados")
+	}
+
+	function cleanWindows(){
+		amount_expense=null
+		account_expense=null
+		currency_expense=null
+		amount_income=null
+		account_income=null
+		currency_income=null
+		description=""
+		id_entity=null
+	}
 </script>
 
 <style>
@@ -30,22 +78,24 @@
 </style>
 
 <div class="OnSameLine">
-<TextInput labelText="Monto a cambiar" placeholder="Ingrese el monto a cambiar..." />
+<TextInput type="number" labelText="Monto a cambiar" placeholder="Ingrese el monto a cambiar..." bind:value={amount_expense} />
 <h3 class="icons">➤</h3>
-<TextInput labelText="Monto a cambiado" placeholder="Ingrese el monto cambiado..." />
+<TextInput type="number" labelText="Monto a cambiado" placeholder="Ingrese el monto cambiado..." bind:value={amount_income} />
 </div>
 
 <div class="OnSameLine">
 	<div>
-		<Accounts orientation="vertical" bind:account={account1} bind:currency={currency1}/>
+		<Accounts orientation="vertical" bind:account={account_expense} bind:currency={currency_expense}/>
 	</div>
 	<div>
-		<Accounts orientation="vertical" bind:account={account2} bind:currency={currency2}/>
+		<Accounts orientation="vertical" bind:account={account_income} bind:currency={currency_income}/>
 	</div>
 </div>
 
-<TextInput labelText="Tasa" placeholder="Ingrese la tasa de cambio..." />
+<Tile>Tasa: {exchange_rate}</Tile>
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del cambio de moneda..." />
+<Entitys bind:entity={id_entity}/>
 
-<Button>Enviar</Button>
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del cambio de moneda..." bind:value={description}/>
+
+<Button on:click={create_exchange_currency}>Enviar</Button>

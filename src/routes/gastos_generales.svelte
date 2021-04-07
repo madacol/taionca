@@ -1,39 +1,46 @@
-<script context="module">
-	export async function preload() {
-        const response = await this.fetch('/api/public/currencies');
-        const currencies = await response.json();
-        return {
-            currencies
-        };
-    }
-</script>
 <script>
-	import { Button } from "carbon-components-svelte";
 	import 'carbon-components-svelte/css/white.css';
-	import SelectSearch from '../components/Select.svelte';
-	import { TextInput } from "carbon-components-svelte";
-	import { TextArea } from "carbon-components-svelte";
+	import Odts from '../components/Odts.svelte';
+	import { TextInput, Button, TextArea } from "carbon-components-svelte";
 	import Accounts from "../components/Accounts.svelte";
 
-	let odts = [
-	{value: 'odt1', label: 'ODT1'},
-	{value: 'odt2', label: 'ODT2'},
-	{value: 'odt3', label: 'ODT3'}
-	];
-
-	export let currencies;
 	let account;
-	let selectedCurrency;
+	let odt;
+	let description;
+	let amount;
 
+	async function create_expense(){
+		await fetch("/api/public/general_expenses",{
+			method: 'POST',
+			body: JSON.stringify({
+				id_account: account.id_account,
+				id_odt: odt.value,
+				odt_currency_code: odt.code,
+				expense_currency_code: account.code,
+				amount,
+				description,
 
+			}),
+			headers: {'Content-Type': 'application/json'}
+		})
+		cleanWindows()
+		alert("Los datos han sido registrados")
+	}
+
+	function cleanWindows(){
+		amount=null
+		account=null
+		odt=null
+		description=""
+	}
 </script>
 
-<TextInput labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." />
+<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto del gasto..." bind:value={amount}/>
 
-<Accounts bind:account bind:selectedCurrency {currencies}/>
+<Accounts orientation="vertical" bind:account={account}/>
 
-<SelectSearch placeholder="ODTs..." items={odts}/>
+<Odts bind:odt={odt}/>
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." />
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del gasto..." bind:value={description}/>
 
-<Button>Enviar</Button>
+<Button on:click={create_expense}>Enviar</Button>
