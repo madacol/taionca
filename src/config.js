@@ -25,6 +25,7 @@ export const session_options = {
     sameSite: true // Strict
     //domain: "example.com",
   },
+  proxy: true,
   rolling: true,  // Cookie's expiration time will be refreshed on each request
   saveUninitialized: false,
 }
