@@ -11,24 +11,25 @@ import requireLogin from './middlewares/requireLogin';
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
-// @ts-ignore
-export default express() // You can also use Express
-	.set('trust proxy', 1)
-	.use(
-		morgan(dev ? 'dev' : 'combined'),
-		sirv('static', { dev }),
-		sessions(dev),
-	)
-	.use('/api',
-		jsonHelper,
-		requireLogin,
-		json(),
-	)
-	.use(
-		sapper.middleware({
-			session: (req) => ({user: req.session.user})
-		})
-	)
-	.listen(PORT, err => {
-		if (err) console.log('error', err);
-	});
+const app = express() // You can also use Express
+app.set('trust proxy', 1)
+app.use(
+	   morgan(dev ? 'dev' : 'combined'),
+	   sirv('static', { dev }),
+	   sessions(dev),
+   )
+   .use('/api',
+	   jsonHelper,
+	   requireLogin,
+	   json(),
+   )
+   .use(
+	   sapper.middleware({
+		   session: (req) => ({user: req.session.user})
+	   })
+   )
+   .listen(PORT, err => {
+	   if (err) console.log('error', err);
+   });
+
+export default app
