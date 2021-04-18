@@ -22,3 +22,53 @@ export async function query(...args) {
     client.end();
     return result;
 }
+
+/**
+ * Query using [tagged template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates).
+ * 
+ * For example:
+ * 
+ * Instead of using `query()` like this
+ * ```js
+ *  query(`INSERT INTO table (name, description) VALUES ($1, $2)`, [name, description])
+ * ```
+ * 
+ * Call `sql()` like this:
+ * ```js
+ *  sql`INSERT INTO table (name, description) VALUES (${name}, ${description})`
+ * ```
+ * This *Tagged template* is equivalent to calling the function like this:
+ * ```js
+ *  sql(
+ *      [
+ *          'INSERT INTO table (name, description) VALUES (',
+ *          ', ',
+ *          ')'
+ *      ], // This is what would go into `querySegments`
+ *      // Following parameters are aggregated as an array into `params`
+ *      name,
+ *      description
+ *  )
+ * ```
+ * 
+ * @param {string[]} querySegments
+ * @param {any[]} params
+ */
+export async function sql(querySegments, ...params) {
+    let queryString = querySegments[0];
+
+    for (let i = 0; i < params.length; i++) {
+
+        const idx = i+1;
+        /**
+         * This constant `idx` has double purpose / semantic
+         * 
+         * 1. An index that starts from 1, as required by the `query()` function to refer to params, e.g `$1` `$2`
+         * 2. Next `querySegment` that will be concatenated
+         */
+        queryString += `$${idx}`;
+        queryString += querySegments[idx];
+    }
+
+    return await query(queryString, params);
+}

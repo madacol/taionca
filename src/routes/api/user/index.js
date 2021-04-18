@@ -1,12 +1,12 @@
 import argon2 from "argon2";
 import { argon as config } from "../../../config";
-import { query } from "../../../db";
+import { query, sql } from "../../../db";
 
 // Get profile
 export async function get (req, res) {
     const {user_id} = req.session.user;
-    const {rows: [session]} = await query(
-        `SELECT
+    const {rows: [session]} = await sql`
+        SELECT
             user_id,
             users.name,
             users.created_at,
@@ -20,10 +20,9 @@ export async function get (req, res) {
         JOIN roles USING (role_id)
         JOIN join_roles_permissions USING (role_id)
         JOIN permissions USING (permission_id)
-        WHERE user_id = $1
-        GROUP BY user_id;`,
-        [user_id]
-    );
+        WHERE user_id = ${user_id}
+        GROUP BY user_id;
+    `;
 
     res.json({
         session
