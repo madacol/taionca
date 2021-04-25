@@ -34,7 +34,7 @@ export const post = async (req, res) => {
             WHERE id_no_spendable_stock = $2
         ), selected_balance as (
             SELECT * FROM balances, amount_de_verdad
-            WHERE id_balance = auto_select_balance(1, amount, 1)
+            WHERE id_balance = auto_select_balance(1, amount_de_verdad.amount, 1)
         )
         SELECT alter_balance(
             balances.id_balance,
