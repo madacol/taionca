@@ -16,13 +16,14 @@
 				id_currency: account.id_currency,
 				amount,
 				description,
-
+				expense_currency_code: account.code,
 			}),
 			headers: {'Content-Type': 'application/json'}
 		})
 		cleanWindows()
 		alert("Los datos han sido registrados")
 	}
+	// $: console.log(account.code);
 
 	function cleanWindows(){
 		amount=null

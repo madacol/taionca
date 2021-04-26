@@ -14,7 +14,8 @@
 			STOCKS_CREATE,
 			STOCKS_READ,
 			STORAGES_CREATE,
-			USERS_CREATE
+			USERS_CREATE,
+			PRESIDENT
 		} from '../constants/PERMISSIONS';
 
 	import {
@@ -112,11 +113,11 @@
 				</SideNavMenu>
 			{/if}
 
-			{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([USERS_CREATE[1]], user_permissions)}
+			{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}
 				<SideNavMenu text="Gestión monetaria">
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="cambio_moneda" text="Cambios de moneda"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
-					<SideNavMenuItem href="closure_odts" text="Cierre"/>
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="closure_odts" text="Cierre"/>{/if}
 				</SideNavMenu>
 			{/if}
 

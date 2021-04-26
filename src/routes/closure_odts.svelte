@@ -1,16 +1,19 @@
 <script>
-    import 'carbon-components-svelte/css/white.css';
+	import 'carbon-components-svelte/css/white.css';
 	import { onMount } from 'svelte';
     import { DataTable, DatePickerInput } from "carbon-components-svelte";
 	import Entitys from "../components/Entitys.svelte";
-
-// Movements
-
+	
+	// Movements
+	
 	let movements = [];
+	let movements_filtered = [];
 	let rows_movements = [];
     let DatePicker;
 	let date1;
 	let date2;
+	let currencys;
+
 	onMount(async ()=>{
 		const response = await fetch('/api/public/balance_movements');
 		movements = await response.json();
@@ -26,16 +29,15 @@
     { key: "created_at", value: "Fecha" },
 	];
 	
+	const _1D_in_ms = 1000*60*60*24;
 	//ROWS
 	$: if (movements.length>0){
-		let datevar1=new Date(date1);
-		let datevar2=new Date(date2);
-		let movements_filtered = movements.filter(({created_at}) => {
+		let date_inicial=new Date(date1);
+		let date_final=new Date( Date.parse(date2) + _1D_in_ms);
+		console.log(date1, date2, date_inicial, date_final)
+		movements_filtered = movements.filter(({created_at}) => {
 
-			console.log(created_at);
-			console.log((new Date(created_at)));
-
-			return datevar1<=(new Date(created_at)) && (new Date(created_at))<=datevar2
+			return date_inicial<=(new Date(created_at)) && (new Date(created_at))<=date_final
 		});
 		rows_movements = movements_filtered.map(movement => ({
 			id_balance: movement.id_balance,
@@ -44,6 +46,7 @@
 			odt: movement.id_odt,
 			account: `${movement.account} ${movement.currency}`,
 			amount: Number(movement.amount).toFixed(2),
+			end_balance: Number(movement.end_balance).toFixed(2),
 			created_at: (new Date(movement.created_at)).toLocaleDateString()
 		}));
 	}
@@ -52,7 +55,7 @@
 	
 	let entity;
 	let balances = [];
-	let rows_balances_past = [];
+	let rows_balances = [];
 	onMount(async ()=>{
 		const response = await fetch('/api/public/balances');
 		balances = await response.json();
@@ -61,57 +64,49 @@
     //HEADERS
 	let headers_balances = [
 		{ key: "name", value: "Cuentas"  },
-		{ key: "balance", value: "Saldo inicial" },
-		{ key: "balance_actual", value: "Saldo final" }
+		{ key: "balance_inicial", value: "Saldo inicial" },
+		{ key: "balance_final", value: "Saldo final" }
 	];
 	
 	
 	//ROWS
-	$: if (entity && balances.length>0){
-		let balances_filtered = balances.filter(({id_entity}) => id_entity === entity.value);
-		rows_balances_past = balances_filtered.map(balance => ({
-			amount: balance.balance,
-			id: balance.id_balance,
-			balance: `${Number(balance.balance).toFixed(2)} ${balance.symbol}`,
-			balance_actual: `${Number(balance.balance).toFixed(2)} ${balance.symbol}`,
-			name: `(${balance.symbol}) ${balance.name}`
-		}));
-		for (var i = 0; i < rows_balances_past.length; i++) {
-			for (var j = 0; j < rows_movements.length; j++){
-				if (rows_balances_past[i].id === rows_movements[j].id_balance){
-					let amount_balance = Number(rows_balances_past[i].amount);
-					let amount_movement = Number(rows_movements[j].amount);
-					rows_balances_past[i].balance = amount_balance - amount_movement;
+	let balances_filtered = [];
+	$: if (entity && balances.length>0) balances_filtered = balances.filter(({id_entity}) => id_entity === entity.value);
+	$: if (entity && balances.length>0 && movements_filtered.length>0){
+		rows_balances = balances_filtered.map(balance => {
+			const movements_filtered_by_entity_and_account = movements_filtered.filter( movement => (balance.id_balance === movement.id_balance) )
 
-					console.log(amount_balance);
-					console.log(amount_movement);
-					console.log(rows_balances_past[i].balance);
-					console.log(i);
-				}
+			let balance_inicial = Number(balance.balance);
+			let balance_final = Number(balance.balance);
+			if (movements_filtered_by_entity_and_account.length > 0) {
+				balance_inicial = Number(movements_filtered_by_entity_and_account[0].end_balance) - Number(movements_filtered_by_entity_and_account[0].amount);
+				balance_final = Number(movements_filtered_by_entity_and_account[movements_filtered_by_entity_and_account.length-1].end_balance);
 			}
-		}
-	// 	rows_balances_past.forEach( balance => {
-	// 		if (balance.id === ){
 
-	// 		}
-	// 	});
+			// Validate balance
+			let validate_balance_final = balance_inicial;
+			movements_filtered_by_entity_and_account.forEach( movement => {
+					validate_balance_final += Number(movement.amount);
+			});
+			if (validate_balance_final !== balance_final) {
+				console.error({validate_balance_final, balance_final});
+				// alert('ERROR: Balance final no concuerda. Esto no debe pasar, avisar inmediatamente a maurito');
+			}
+			return {
+				amount: balance.balance,
+				id: balance.id_balance,
+				balance_inicial: `${Number(balance_inicial).toFixed(2)} ${balance.symbol}`,
+				balance_inicial_num: balance_inicial,
+				balance_final: `${Number(balance_final).toFixed(2)} ${balance.symbol}`,
+				balance_final_num: balance_final,
+				name: `(${balance.symbol}) ${balance.name}`,
+				currency: balance.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase()),
+				symbol: balance.symbol
+			}
+		});
 	}
 
-
-// Balances_ACTUAL
-
-	//ROWS
-	let rows_balances_actual = [];
-	$: if (entity && balances.length>0){
-	let balances_filtered = balances.filter(({id_entity}) => id_entity === entity.value);
-	rows_balances_actual = balances_filtered.map(balance => ({
-		amount: balance.balance,
-		id: balance.id_balance,
-		balance: `${Number(balance.balance).toFixed(2)} ${balance.symbol}`,
-		name: `(${balance.symbol}) ${balance.name}`
-	}));
-}
-//Currencies
+	
     //HEADERS
 	let headers_currencies = [
 		{ key: "currency", value: "Moneda"  },
@@ -119,14 +114,23 @@
 		{ key: "balance_final", value: "Saldo final"  }
 	];
 
-	let rows_currencies=[
-		{id: "1" , currency: "Dólares" , balance_inicial:"0.00" , balance_final:"0.00"	},
-		{id: "2" , currency: "Bolívares" , balance_inicial:"0.00" , balance_final:"0.00" 	},
-		{id: "3" , currency: "Pesos" , balance_inicial:"0.00" , balance_final:"0.00" 	},
-		{id: "4" , currency: "Euros" , balance_inicial:"0.00" , balance_final:"0.00" 	},
-		{id: "5" , currency: "Bitcoins" , balance_inicial:"0.00" , balance_final:"0.00" 	}
-	];
+	let rows_currencies = [];
+	$: if (entity && rows_balances.length>0){
+		const currencies_auxiliar = {};
 
+		rows_balances.forEach(balance => {
+			if (currencies_auxiliar[balance.currency] === undefined) {
+				return currencies_auxiliar[balance.currency] = {...balance};
+			}
+			currencies_auxiliar[balance.currency].balance_final_num += balance.balance_final_num;
+			currencies_auxiliar[balance.currency].balance_final = `${Number(currencies_auxiliar[balance.currency].balance_final_num).toFixed(2)} ${balance.symbol}`;
+			currencies_auxiliar[balance.currency].balance_inicial_num += balance.balance_inicial_num;
+			currencies_auxiliar[balance.currency].balance_inicial = `${Number(currencies_auxiliar[balance.currency].balance_inicial_num).toFixed(2)} ${balance.symbol}`;
+		});
+
+		rows_currencies = Object.entries(currencies_auxiliar).map(([key, balance]) => balance)
+		console.log(rows_currencies);
+	}
 </script>
 
 <style>
@@ -143,10 +147,10 @@
 <div class="OnSameLine">
 {#if DatePicker}
 	<svelte:component this={DatePicker} bind:value={date1} datePickerType="single" locale={navigator.language}>
-		<DatePickerInput labelText="Fecha inicial" placeholder="mm/dd/aaaa" />
+		<DatePickerInput placeholder="Fecha inicial" />
 	</svelte:component>
 	<svelte:component this={DatePicker} bind:value={date2} datePickerType="single" locale={navigator.language}>
-		<DatePickerInput labelText="Fecha final" placeholder="mm/dd/aaaa" />
+		<DatePickerInput placeholder="Fecha final" />
 	</svelte:component>
 {/if}	
 </div>
@@ -156,7 +160,7 @@
 <Entitys bind:entity={entity}/>
 
 <div class="OnSameLine">
-	{#if rows_balances_past.length!=0}<DataTable size="short" title="Balance" sortable headers={headers_balances} rows={rows_balances_past} />{/if}
+	{#if rows_balances.length!=0}<DataTable size="short" title="Balance" sortable headers={headers_balances} rows={rows_balances} />{/if}
 </div>
 
 <DataTable size="short" title="Balance de monedas" sortable headers={headers_currencies} rows={rows_currencies} />
