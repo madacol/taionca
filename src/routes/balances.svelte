@@ -32,6 +32,4 @@
 
 <Entitys bind:entity={entity}/>
 
-{#if rows.length!=0}<DataTable size="short" title="Control de Inventario" sortable {headers} {rows} />{/if}
-
-
+{#if rows.length!=0}<DataTable size="short" title="Balance de cuentas" sortable {headers} {rows} />{/if}
