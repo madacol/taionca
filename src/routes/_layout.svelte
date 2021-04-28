@@ -117,7 +117,7 @@
 				<SideNavMenu text="Gestión monetaria">
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="cambio_moneda" text="Cambios de moneda"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
-					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="closure_odts" text="Cierre"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="accountant_review" text="Cierre"/>{/if}
 				</SideNavMenu>
 			{/if}
 

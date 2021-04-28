@@ -36,7 +36,6 @@
 		let date_final=new Date( Date.parse(date2) + _1D_in_ms);
 		console.log(date1, date2, date_inicial, date_final)
 		movements_filtered = movements.filter(({created_at}) => {
-
 			return date_inicial<=(new Date(created_at)) && (new Date(created_at))<=date_final
 		});
 		rows_movements = movements_filtered.map(movement => ({
@@ -90,7 +89,8 @@
 			});
 			if (validate_balance_final !== balance_final) {
 				console.error({validate_balance_final, balance_final});
-				// alert('ERROR: Balance final no concuerda. Esto no debe pasar, avisar inmediatamente a maurito');
+				alert(`ERROR: Balance final no concuerda. Esto no debe pasar, avisar inmediatamente a maurito. ${validate_balance_final} - ${balance_final}`);
+				return;
 			}
 			return {
 				amount: balance.balance,
@@ -117,7 +117,7 @@
 	let rows_currencies = [];
 	$: if (entity && rows_balances.length>0){
 		const currencies_auxiliar = {};
-
+		console.log({rows_balances});
 		rows_balances.forEach(balance => {
 			if (currencies_auxiliar[balance.currency] === undefined) {
 				return currencies_auxiliar[balance.currency] = {...balance};
@@ -129,7 +129,7 @@
 		});
 
 		rows_currencies = Object.entries(currencies_auxiliar).map(([key, balance]) => balance)
-		console.log(rows_currencies);
+		console.log({rows_currencies});
 	}
 </script>
 
