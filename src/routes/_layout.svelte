@@ -121,9 +121,9 @@
 				</SideNavMenu>
 			{/if}
 
-			{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions) || checkPermissions([STOCKS_CREATE[1]], user_permissions) || checkPermissions([STORAGES_CREATE[1]], user_permissions)}
+			{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions) || checkPermissions([STOCKS_CREATE[1]], user_permissions) || checkPermissions([STORAGES_CREATE[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}
 				<SideNavMenu text="Gestión de inventario">
-					{#if checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="control_inv" text="Control de inventario"/>{/if}
+					{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="control_inv" text="Control de inventario"/>{/if}
 					{#if checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions)}<SideNavMenuItem href="reposicion_inv" text="Reposicion de Inventario"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_spendable_inv" text="Ingreso de Inventario consumible"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_no_spendable_inv" text="Ingreso de Inventario no consumible"/>{/if}
