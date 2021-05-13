@@ -2,52 +2,65 @@
 	import 'carbon-components-svelte/css/white.css';
     import { DataTable, Grid, Row, Column } from "carbon-components-svelte";
 	import Odts from '../components/Odts.svelte';
-	import { onMount } from 'svelte';
 
-	onMount(async ()=>{
-		const response = await fetch('/api/public/balance_movements');
-		movements = await response.json();
-	})
+	$: if (odt) {
+		(async () => {
+			const response = await fetch(`/api/public/odt_movements/${odt.id_odt}`);
+			movements = await response.json();
+		})();
+	}
 	
 	let odt;
 	let movements = [];
-	let movements_filtered = [];
 
 	//HEADERS
 		let headers_movements = [
 			{ key: "entity", value: "Entidad"  },
 			{ key: "id_balance_movement", value: "Id del movimiento"  },
 			{ key: "account", value: "Cuenta" },
-			{ key: "amount", value: "Monto" },
+			{ key: "amount_label", value: "Monto" },
 			{ key: "created_at", value: "Fecha" },
 	];
 
 	let headers_currencies = [
 		{ key: "currency", value: "Moneda"  },
-		{ key: "expense_balance", value: "Saldo gastado"  }
+		{ key: "balance", value: "Saldo gastado"  }
 	];
 
 
 	//ROWS
 	let rows_movements=[];
 	$: if (movements.length>0 && odt){
-		movements_filtered = movements.filter(({id_odt}) => {
-			return id_odt === odt.id_odt
-		});
-		rows_movements = movements_filtered.map(movement => ({
+		rows_movements = movements.map(movement => ({
 			id_balance: movement.id_balance,
-			id: movement.id_balance_movement,
 			entity: movement.entity,
 			id_balance_movement: movement.id_balance_movement,
-			account: `${movement.account} ${movement.currency}`,
-			amount: Number(movement.amount).toFixed(2),
+			account: movement.account,
 			end_balance: Number(movement.end_balance).toFixed(2),
-			created_at: (new Date(movement.created_at)).toLocaleDateString()
+			created_at: (new Date(movement.created_at)).toLocaleDateString(),
+			id: movement.id_balance_movement,
+			amount: movement.amount,
+			amount_label: `${Number(movement.amount).toFixed(2)} ${movement.symbol}`,
+			currency: movement.currency.replace(/(^|\s)\S/g, l => l.toUpperCase())
 		}));
 	}
-
 	let rows_currencies = [];
-	
+	$: if (rows_movements.length>0){
+		const currencies_auxiliar = {};
+		rows_movements.forEach(movement => {
+			if (currencies_auxiliar[movement.currency] === undefined) {
+				currencies_auxiliar[movement.currency] = 0;
+			}
+			currencies_auxiliar[movement.currency] += Number(movement.amount)
+		});
+		console.log(currencies_auxiliar);
+		rows_currencies = Object.entries(currencies_auxiliar).map(([currency, balance], id) => ({
+			currency,
+			balance: Number(balance).toFixed(2),
+			id
+		}))
+		console.log(rows_currencies);
+	}
 
 	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	$: console.log(odt);
@@ -102,8 +115,8 @@
 	</Grid>
 
 	{#if rows_movements.length!=0 || rows_currencies.length!=0}
-		<DataTable size="short" title="Movimientos" sortable headers={headers_movements} rows={rows_movements} />
+		<DataTable size="short" title="Gastos de la ODT" sortable headers={headers_movements} rows={rows_movements} />
 
-		<DataTable size="short" title="Balance de monedas" sortable headers={headers_currencies} rows={rows_currencies} />
+		<DataTable size="short" title="Gastos por moneda" sortable headers={headers_currencies} rows={rows_currencies} />
 	{/if}
 {/if}
