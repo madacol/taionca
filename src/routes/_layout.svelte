@@ -15,7 +15,8 @@
 			STOCKS_READ,
 			STORAGES_CREATE,
 			USERS_CREATE,
-			PRESIDENT
+			PRESIDENT,
+			ODT_READ
 		} from '../constants/PERMISSIONS';
 
 	import {
@@ -98,17 +99,18 @@
 				</SideNavMenu>
 			{/if}
 
-			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions)}
+			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de ODTs">
-					{#if checkPermissions([ODT_CREATE[1]], user_permissions)}<SideNavMenuItem href="nueva_odt" text="Nueva ODT"/>{/if}
-					{#if checkPermissions([ODT_UPDATE[1]], user_permissions)}<SideNavMenuItem href="cerrar_odt" text="Cerrar ODT"/>{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="open_odts_review" text="Registro ODTs abiertas"/>{/if}
+					{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="nueva_odt" text="Nueva ODT"/>{/if}
+					{#if checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="cerrar_odt" text="Cerrar ODT"/>{/if}
 				</SideNavMenu>
 			{/if}
 
 			{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de gastos">
-					{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_inventario" text="Gasto de inventario" />{/if}
-					{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_admin" text="Gasto administrativo" />{/if}
+					{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_inventario" text="Gastos de inventario" />{/if}
+					{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_admin" text="Gastos administrativos" />{/if}
 					{#if checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gastos_generales" text="Gastos generales"/>{/if}
 				</SideNavMenu>
 			{/if}
@@ -117,12 +119,13 @@
 				<SideNavMenu text="Gestión monetaria">
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="cambio_moneda" text="Cambios de moneda"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
-					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="accountant_review" text="Cierre"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="movements_review" text="Cierre"/>{/if}
 				</SideNavMenu>
 			{/if}
 
 			{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions) || checkPermissions([STOCKS_CREATE[1]], user_permissions) || checkPermissions([STORAGES_CREATE[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}
 				<SideNavMenu text="Gestión de inventario">
+					{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="inventory_review" text="Registro de iventario"/>{/if}
 					{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="control_inv" text="Control de inventario"/>{/if}
 					{#if checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions)}<SideNavMenuItem href="reposicion_inv" text="Reposicion de Inventario"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_spendable_inv" text="Ingreso de Inventario consumible"/>{/if}

@@ -12,7 +12,6 @@
     let DatePicker;
 	let date1;
 	let date2;
-	let currencys;
 
 	onMount(async ()=>{
 		const response = await fetch('/api/public/balance_movements');
@@ -127,9 +126,7 @@
 			currencies_auxiliar[balance.currency].balance_inicial_num += balance.balance_inicial_num;
 			currencies_auxiliar[balance.currency].balance_inicial = `${Number(currencies_auxiliar[balance.currency].balance_inicial_num).toFixed(2)} ${balance.symbol}`;
 		});
-
 		rows_currencies = Object.entries(currencies_auxiliar).map(([key, balance]) => balance)
-		console.log({rows_currencies});
 	}
 </script>
 
