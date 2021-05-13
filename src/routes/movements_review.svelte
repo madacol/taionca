@@ -86,7 +86,8 @@
 			movements_filtered_by_entity_and_account.forEach( movement => {
 					validate_balance_final += Number(movement.amount);
 			});
-			if (0.9999999999<=balance_final/validate_balance_final<=1.0000000001) {
+			const error_margin=balance_final/validate_balance_final;
+			if (0.9999999999<=error_margin && error_margin<=1.0000000001) {
 				console.error({validate_balance_final, balance_final});
 				alert(`ERROR: Balance final no concuerda. Esto no debe pasar, avisar inmediatamente a maurito. ${validate_balance_final} - ${balance_final}`);
 				return;
