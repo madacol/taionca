@@ -4,13 +4,14 @@
 	import Login32 from "carbon-icons-svelte/lib/Login32";
 	import { goto } from '@sapper/app'
 	import { session } from '../stores';
-	import { api, notify } from '../functions';
+	import { api } from '../functions';
 
 	let username;
 	let password;
 	let inicio_sesion=true;
 
-    async function login(){
+    async function login(e){
+		e.preventDefault();
 		// const response = await fetch("/api/public/login",{
 		// 	method: 'POST',
 		// 	body: JSON.stringify({
@@ -39,5 +40,5 @@
 	
 		<PasswordInput labelText="Contraseña" placeholder="Ingrese su contraseña..." bind:value={password}/>
 
-		<Button type=submit icon={Login32}>Iniciar sesión</Button>
+		<Button on:click={login} type=submit icon={Login32}>Iniciar sesión</Button>
 	</FluidForm>
