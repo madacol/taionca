@@ -9,14 +9,7 @@
 	let client = null;
 	let description;
 	let id_entity=1;
-	let id_user;
 	let currency;
-	
-	onMount(async ()=>{
-		const response = await fetch('/api/users');
-		const user = await response.json();
-		id_user=user.users[0].user_id
-	})
 	
 	async function create_odt(){
 		await fetch("/api/public/nueva_odt",{
@@ -25,7 +18,6 @@
 				id_client: client.value,
 				id_currency: currency.id_currency,
 				id_entity,
-				id_user,
 				amount,
 				description
 			}),
