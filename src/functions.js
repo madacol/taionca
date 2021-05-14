@@ -33,7 +33,7 @@ export async function getRate(odt_currency_code, expense_currency_code){
 /**
  * @param {string} msg message to notify
  */
-export function notify(title, subtitle, kind="error", caption=undefined) {
+export function notify(title, kind="error", subtitle="", caption=undefined) {
 
     const newNotification = {title, subtitle, kind, caption};
     let newIndex;
@@ -59,18 +59,18 @@ export async function apiFetch (url, options={}) {
         const response = await fetch(url, options);
         ({error, success, redirect, ...data} = await response.json());
     } catch (err) {
-        notify("Error", err.message, "error", "asdasd");
+        notify(err.message);
         throw err;
     }
     // if (redirect) {
     //     goto
     // }
     if (error) {
-        notify(error, "", "error");
+        notify(error);
         throw new Error(error);
     }
     if (success) {
-        notify(success, "", "success");
+        notify(success, "success",);
     }
     return data;
 }
