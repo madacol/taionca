@@ -1,3 +1,4 @@
+import {notifications} from "./stores"
 import fetch from "node-fetch";
 
 /**
@@ -32,17 +33,23 @@ export async function getRate(odt_currency_code, expense_currency_code){
 /**
  * @param {string} msg message to notify
  */
-export function notify(msg) {
-    alert(msg);
-    /**
-     * We probably should set a svelte's store that will show the notification
-     * something like `svelteStore.set(msg)`
-     * and that store is used somewhere in `_layout.svelte`
-     * 
-     * And notifications for success and error should be different styles.
-     * errors should probably block (require user interaction), like an alert()
-     * but successes should not block, they should be an ephemerous notification that don't require any user interaction
-     */
+export function notify(title, subtitle, kind="error", caption=undefined) {
+
+    const newNotification = {title, subtitle, kind, caption};
+    let newIndex;
+
+    notifications.update(notificationsQueue => {
+        newIndex = notificationsQueue.length;
+        return [...notificationsQueue, newNotification]
+    })
+    setTimeout(() => {
+        notifications.update(notificationsQueue => {
+            delete notificationsQueue[newIndex];
+            return (notificationsQueue.filter(x=>x).length > 0) // checking if there is any notification active
+                ? notificationsQueue
+                : []
+        })
+    }, 5000);
 }
 
 export async function apiFetch (url, options={}) {
@@ -52,18 +59,18 @@ export async function apiFetch (url, options={}) {
         const response = await fetch(url, options);
         ({error, success, redirect, ...data} = await response.json());
     } catch (err) {
-        notify(err.message);
+        notify("Error", err.message, "error", "asdasd");
         throw err;
     }
     // if (redirect) {
-    //     /** */
+    //     goto
     // }
     if (error) {
-        notify(error);
+        notify(error, "", "error");
         throw new Error(error);
     }
     if (success) {
-        notify(success);
+        notify(success, "", "success");
     }
     return data;
 }

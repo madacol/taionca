@@ -1,7 +1,7 @@
 <script>
 	import Logout32 from "carbon-icons-svelte/lib/Logout32";
 	import { onMount } from 'svelte';
-	import { session } from '../stores';
+	import { session, notifications } from '../stores';
 	import { checkPermissions } from '../functions';
 	import { goto } from '@sapper/app'
 	import {ADMIN_EXPENSES_CREATE,
@@ -33,7 +33,9 @@
 			SideNavMenuItem,
 			SideNavLink,
 			SkipToContent,
-			Content
+			Content,
+			InlineNotification,
+			ToastNotification
 		} from "carbon-components-svelte";
 
 	function logout(){
@@ -57,6 +59,17 @@
 	let isOpen = false;
 
 </script>
+
+<style>
+	.notifications{
+		position: fixed;
+		display: flex;
+		flex-direction: column-reverse;
+		bottom: 0;
+		right: 0;
+		
+	}
+</style>
   
   <Header company="Taionca" platformName="Página Web" bind:isSideNavOpen >
 
@@ -141,5 +154,18 @@
   </SideNav>
   
   <Content>
-	<slot></slot>
+	  <slot></slot>
   </Content>
+
+<div class="notifications">
+	{#each $notifications as notification, index (index)}
+		{#if notification}
+			{#if notification.caption}
+				<ToastNotification {...notification}/>
+			{:else}
+				<InlineNotification {...notification}/>
+			{/if}
+		{/if}
+	{/each}
+	<!-- {#if $notifications}<ToastNotification {...$notifications} /> {/if} -->
+</div>
