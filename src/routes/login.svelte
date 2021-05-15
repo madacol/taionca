@@ -8,29 +8,12 @@
 
 	let username;
 	let password;
-	let inicio_sesion=true;
 
-    async function login(e){
-		e.preventDefault();
-		// const response = await fetch("/api/public/login",{
-		// 	method: 'POST',
-		// 	body: JSON.stringify({
-        //         username,
-		// 		password
-		// 	}),
-		// 	headers: {'Content-Type': 'application/json'}
-        // })
-		// const result = await response.json();
+    async function login(event){
+		event.preventDefault();
 		const result = await api.post("/api/public/login", {username, password});
 		$session = result.session;
-		if (!$session){
-			inicio_sesion=false;
-			console.log($session);
-		}
-		else{
-			goto("/");
-		}
-        password=null
+        password=null;
     }
 
  

@@ -4,6 +4,7 @@
 	import { TextInput, TextArea, Button } from "carbon-components-svelte";
 	import Clients from "../components/Clients.svelte";
 	import Currency from "../components/Currency.svelte";
+	import { apiFetch } from '../functions';
 
 	let amount;
 	let client = null;
@@ -12,7 +13,7 @@
 	let currency;
 	
 	async function create_odt(){
-		await fetch("/api/public/nueva_odt",{
+		await apiFetch("/api/public/nueva_odt",{
 			method: 'POST',
 			body: JSON.stringify({
 				id_client: client.value,
@@ -24,7 +25,6 @@
 			headers: {'Content-Type': 'application/json'}
 		})
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

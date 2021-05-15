@@ -1,5 +1,6 @@
 import {notifications} from "./stores"
 import fetch from "node-fetch";
+import { goto } from '@sapper/app'
 
 /**
  * Validate if `userPermissions` contains all `permissionsRequired`
@@ -54,24 +55,31 @@ export function notify(title, kind="error", subtitle="", caption=undefined) {
 
 export async function apiFetch (url, options={}) {
 
-    let data, error, success, redirect;
+    let response, data, error, success, warning, redirect;
     try {
-        const response = await fetch(url, options);
-        ({error, success, redirect, ...data} = await response.json());
+        response = await fetch(url, options);
     } catch (err) {
-        notify(err.message);
+        notify("Error de red", "error", err.message);
         throw err;
     }
-    // if (redirect) {
-    //     goto
-    // }
+    if (response.status >= 500) {
+        notify(response.status, "error", response.statusText)
+    }
+    try {
+        ({error, success, warning, redirect, ...data} = await response.json());
+    } catch (err) {
+        notify(err.message, "error", (await response.text()), true);
+        throw err;
+    }
+
+    if (success) notify(success, "success");
+    if (warning) notify(warning, "warning");
+    if (redirect) goto(redirect);
     if (error) {
         notify(error);
         throw new Error(error);
     }
-    if (success) {
-        notify(success, "success",);
-    }
+
     return data;
 }
 

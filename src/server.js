@@ -1,7 +1,7 @@
 import sirv from 'sirv';
 import polka from 'polka';
 import * as sapper from '@sapper/server';
-import jsonHelper from './middlewares/jsonHelper';
+import responseHelpers from './middlewares/responseHelpers';
 import sessions from './middlewares/sessions';
 import morgan from 'morgan';
 import { json } from 'body-parser';
@@ -19,7 +19,7 @@ export default polka() // You can also use Express
 		sessions(dev),
 	)
 	.use('/api',
-		jsonHelper,
+		responseHelpers,
 		requireLogin,
 		json(),
 	)

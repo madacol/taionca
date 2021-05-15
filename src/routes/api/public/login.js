@@ -46,5 +46,6 @@ export async function post(req, res){
     res.json({
         success: "Inicio de sesión exitoso",
         session: req.session.user,
+        redirect: "/"
     });
 }

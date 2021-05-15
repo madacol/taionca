@@ -10,7 +10,7 @@ export default (req, res, next)=>{
      */
     res.statusCode=401;
     res.json({
-        error: "Usuario debe iniciar sesión",
+        warning: "Usuario debe iniciar sesión",
         redirect: "/login"
     })
 }

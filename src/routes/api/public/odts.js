@@ -5,7 +5,7 @@ export const get =
     async (req, res) => {
 
         const {rows: odts} = await query(
-            `select odts.*, currencys.*, clients.*, users.name as user_name
+            `select currencys.*, clients.*, users.name as user_name, odts.* , odts.created_at as created_at
             from odts
             join users on users.user_id = odts.id_user
             join currencys using(id_currency)
