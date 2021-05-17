@@ -6,6 +6,7 @@
 	import Measures from '../components/Measures.svelte';
 	import Storages from '../components/Storages.svelte';
 	import Suppliers from '../components/Suppliers.svelte';
+import { apiFetch } from '../functions';
     
 	let min;
 	let mid;
@@ -21,7 +22,7 @@
 	let measure;
 
 	async function add_item(){
-		await fetch("/api/public/new_no_spendable_item_product_brand",{
+		await apiFetch("/api/public/new_no_spendable_item_product_brand",{
 			method: 'POST',
 			body: JSON.stringify({
 				code: code.value,
@@ -40,7 +41,6 @@
 			headers: {'Content-Type': 'application/json'}
 		})
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

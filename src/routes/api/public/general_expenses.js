@@ -23,6 +23,10 @@ export const post =
             ;
             `, [id_account, id_odt, Math.abs(amount), description, rate ]
         );
-
-        res.json( general_expenses[0] );
+        
+        let data = general_expenses[0]
+        res.json({
+            success:"Gasto realizado",
+            data
+        });
     }

@@ -31,6 +31,9 @@ export const post =
                 id_entity
             ]
         );
-
-        res.json( currencyChange[0] );
+        let data = currencyChange[0]
+        res.json({
+            success:"Cambio de moneda realizado",
+            data
+        });
     }

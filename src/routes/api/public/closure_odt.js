@@ -42,9 +42,9 @@ export const post =
                 0.1 //president_profit_percent
             ]
         );
-        data=currencyChange[0]
+        let data=currencyChange[0];
         res.json({
-            success: "ODT cerrada exitosamente.",
+            success: "ODT cerrada exitosamente",
             data
         } );
     }

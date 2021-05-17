@@ -8,7 +8,8 @@ export const get =
             `select * from suppliers;`
         );
 
-        res.json(
+        res.json({
+            success:"Proveedor ingresado exitosamente",
             suppliers
-        );
+        });
     }

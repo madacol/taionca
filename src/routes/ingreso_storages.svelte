@@ -3,13 +3,14 @@
 	import { TextInput, Button, TextArea } from "carbon-components-svelte";
 	import No_spendable_products from '../components/No_spendable_products.svelte';
 	import Brands from '../components/Brands.svelte';
+	import { apiFetch } from '../functions';
     
 	let description;
 	let name;
 	let location;
 
 	async function add_item(){
-		await fetch("/api/public/new_storage",{
+		await apiFetch("/api/public/new_storage",{
 			method: 'POST',
 			body: JSON.stringify({
 				name,
@@ -19,7 +20,6 @@
 			headers: {'Content-Type': 'application/json'}
 		})
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

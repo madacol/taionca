@@ -50,6 +50,9 @@ export const post = async (req, res) => {
         [amount, id_no_spendable_stock, id_odt, description, usd_currency_rate]
     );
 
-    res.json(result);
+    res.json({
+        success:"Gasto realizado",
+        result
+    });
 }
 
