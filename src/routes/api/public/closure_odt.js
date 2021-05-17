@@ -18,6 +18,7 @@ export const post =
                 supervisor_users
         } = req.body;
         console.log(req.body);
+        
         const admin_users_json = JSON.stringify(admin_users);
         const operative_users_json = JSON.stringify(operative_users);
         const supervisor_users_json = JSON.stringify(supervisor_users);
@@ -41,6 +42,9 @@ export const post =
                 0.1 //president_profit_percent
             ]
         );
-
-        res.json( currencyChange[0] );
+        data=currencyChange[0]
+        res.json({
+            success: "ODT cerrada exitosamente.",
+            data
+        } );
     }
