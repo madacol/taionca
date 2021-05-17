@@ -65,11 +65,15 @@ export async function apiFetch (url, options={}) {
     if (response.status >= 500) {
         notify(response.status, "error", response.statusText)
     }
-    try {
-        ({error, success, warning, redirect, ...data} = await response.json());
-    } catch (err) {
-        notify(err.message, "error", (await response.text()), true);
-        throw err;
+    {
+        let body;
+        try {
+            body = await response.text();
+            ({error, success, warning, redirect, ...data} = JSON.parse(body));
+        } catch (err) {
+            notify(err.message, "error", body, true);
+            throw err;
+        }
     }
 
     if (success) notify(success, "success");
