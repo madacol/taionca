@@ -8,7 +8,8 @@ export const get =
             `select * from storages;`
         );
 
-        res.json(
+        res.json({
+            success:"Almacén ingresado",
             storages
-        );
+        });
     }

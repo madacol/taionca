@@ -30,7 +30,9 @@ export const get =
             `
         ;
 
-        res.json(
+        res.json({
+            success: "Datos de la ODT cargados exitosamente.",
             balance_movements
+        }
         );
     }

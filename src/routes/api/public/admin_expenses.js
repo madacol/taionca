@@ -25,5 +25,9 @@ export const post =
             ;
         `;
 
-        res.json( admin_expenses[0] );
+        let data = admin_expenses[0]
+        res.json({
+            success: "Gasto realizado",
+            data
+        });
     }

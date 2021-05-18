@@ -2,10 +2,11 @@
 	import 'carbon-components-svelte/css/white.css';
     import { DataTable, Grid, Row, Column } from "carbon-components-svelte";
 	import Odts from '../components/Odts.svelte';
+	import { apiFetch } from '../functions';
 
 	$: if (odt) {
 		(async () => {
-			const response = await fetch(`/api/public/odt_movements/${odt.id_odt}`);
+			const response = await apiFetch(`/api/public/odt_movements/${odt.id_odt}`);
 			movements = await response.json();
 		})();
 	}

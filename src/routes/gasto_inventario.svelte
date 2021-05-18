@@ -3,6 +3,7 @@
 	import { Button, TextInput, TextArea } from "carbon-components-svelte";
 	import All_inv_items from '../components/All_inv_items.svelte';
 	import Odts from "../components/Odts.svelte";
+	import { apiFetch } from '../functions';
 
 	let amount;
 	let item;
@@ -11,7 +12,7 @@
 	let api;
 	
 	async function create_expense(api){
-		const response = await fetch(`${api}`,{
+		const response = await apiFetch(`${api}`,{
 			method: 'POST',
 			body: JSON.stringify({
 				id_spendable_stock: item.id,
@@ -22,7 +23,6 @@
 			}),headers: {'Content-Type': 'application/json'}
 		});
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

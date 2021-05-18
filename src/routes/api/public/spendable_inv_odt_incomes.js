@@ -28,6 +28,9 @@ export const post = async (req, res) => {
         [ id_spendable_stock, id_account, amount, cost ]
     );
 
-    res.json(result);
+    res.json({
+        success:"Inventario repuesto exitosamente",
+        result
+    });
 }
 

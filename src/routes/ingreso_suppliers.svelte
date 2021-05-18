@@ -1,6 +1,7 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
 	import { TextInput, Button, TextArea } from "carbon-components-svelte";
+	import { apiFetch } from '../functions';
     
 	let name;
 	let phone_number1;
@@ -10,7 +11,7 @@
 	let description;
 
 	async function add_supplier(){
-		await fetch("/api/public/new_supplier",{
+		await apiFetch("/api/public/new_supplier",{
 			method: 'POST',
 			body: JSON.stringify({
 				name,
@@ -23,7 +24,6 @@
 			headers: {'Content-Type': 'application/json'}
 		})
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

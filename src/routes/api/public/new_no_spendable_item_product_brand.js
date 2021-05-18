@@ -52,6 +52,9 @@ export const post =
                 RETURNING id_no_spendable_stock;
             `, [ code, description, brand , cost, price, storage, measure, min_stock, mid_stock, max_stock, supplier, manufacture ]
         );
-
-        res.json( no_spendable_items[0] );
+        let data = no_spendable_items[0]
+        res.json({
+            success:"Artículo ingresado al inventario",
+            data
+        });
     }

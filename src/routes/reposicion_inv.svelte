@@ -3,6 +3,7 @@
 	import Accounts from "../components/Accounts.svelte";
 	import { TextInput, Button} from "carbon-components-svelte";
 	import AllInvItems from '../components/All_inv_items.svelte';
+	import { apiFetch } from '../functions';
 
 	let item;
     let account;
@@ -11,7 +12,7 @@
 	let api;
 
 	async function send_register(api){
-		const response = await fetch(`${api}`,{
+		const response = await apiFetch(`${api}`,{
 			method: 'POST',
 			body: JSON.stringify({
 				id_spendable_stock: item.id,
@@ -21,7 +22,6 @@
 			}),headers: {'Content-Type': 'application/json'}
 		});
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

@@ -3,6 +3,7 @@
 	import 'carbon-components-svelte/css/white.css';
 	import Accounts from "../components/Accounts.svelte";
 	import Entitys from "../components/Entitys.svelte";
+	import { apiFetch } from "../functions";
 
 	let account_expense;
 	let account_income;
@@ -23,7 +24,7 @@
 
 	function create_exchange_currency(){
 
-		fetch("/api/public/exchange_currency",{
+		apiFetch("/api/public/exchange_currency",{
 			method: 'POST',
 			body: JSON.stringify({
 				description,
@@ -45,7 +46,6 @@
 		})
 
 		cleanWindows()
-		alert("Los datos han sido registrados")
 	}
 
 	function cleanWindows(){

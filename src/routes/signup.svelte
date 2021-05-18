@@ -1,6 +1,7 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
 	import { FluidForm, TextInput, Button, PasswordInput } from "carbon-components-svelte";
+    import { apiFetch } from '../functions';
 
 	let user;
     let password1;
@@ -12,7 +13,7 @@
     
     
     async function signup(){
-		await fetch("/api/users",{
+		await apiFetch("/api/users",{
 			method: 'POST',
 			body: JSON.stringify({
                 username: user,
