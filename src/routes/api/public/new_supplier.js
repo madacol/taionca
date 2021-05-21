@@ -14,5 +14,9 @@ export const post =
             `, [ name, phone_number1, phone_number2, email, address, description ]
         );
 
-        res.json( suppliers[0] );
+        let data = suppliers[0];
+        res.json({
+            success:"Proveedor registrado",
+            data
+        });
     }

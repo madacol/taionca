@@ -14,5 +14,9 @@ export const post =
             `, [ name, description, location ]
         );
 
-        res.json( storages[0] );
+        let data = storages[0];
+        res.json({
+            success:"Almacén registrado",
+            data
+        });
     }

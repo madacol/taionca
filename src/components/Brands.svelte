@@ -4,6 +4,7 @@
 	export let brand;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get brands, If needed
@@ -12,7 +13,7 @@
     let brands = [];
     let brandsToList = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/brands');
+		const response = await apiFetch('/api/public/brands');
 		brands = await response.json();
 	})
 

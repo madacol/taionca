@@ -4,13 +4,14 @@
 	export let odt;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get odts, If needed
 	 */
     let odts = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/odts');
+		const response = await apiFetch('/api/public/odts');
 		odts = await response.json();
 	})
 	

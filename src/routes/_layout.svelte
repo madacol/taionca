@@ -108,7 +108,8 @@
 
 			{#if checkPermissions([USERS_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de usuarios">
-					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="signup" text="Crear usuarios" />{/if}
+					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="signup" text="Crear usuario" />{/if}
+					{#if checkPermissions([ODT_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_clients" text="Crear cliente" />{/if}
 				</SideNavMenu>
 			{/if}
 

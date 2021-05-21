@@ -4,6 +4,7 @@
 	export let storage;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get storages, If needed
@@ -12,7 +13,7 @@
     let storages = [];
     let storagesToList = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/storages');
+		const response = await apiFetch('/api/public/storages');
 		storages = await response.json();
 	})
 

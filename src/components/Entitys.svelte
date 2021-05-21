@@ -4,6 +4,7 @@
 	export let entity;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get entitiys, If needed
@@ -12,7 +13,7 @@
     let entitiysToList = [];
     let entitiys = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/entitys');
+		const response = await apiFetch('/api/public/entitys');
 		entitiys = await response.json();
 	})
 

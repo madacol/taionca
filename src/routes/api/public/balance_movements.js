@@ -27,7 +27,8 @@ export const get =
             `
         );
 
-        res.json(
+        res.json({
+            success:"Datos cargados",
             balance_movements
-        );
+        });
     }

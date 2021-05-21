@@ -4,6 +4,7 @@
 	export let item;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get items, If needed
@@ -11,7 +12,7 @@
 	let items;
 	const groupBy = (item) => item.category;
 	onMount(async ()=>{
-		const response = await fetch('/api/public/all_items');
+		const response = await apiFetch('/api/public/all_items');
 		items = await response.json();
 	})
 

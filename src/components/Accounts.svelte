@@ -4,13 +4,14 @@
 	export let account;
 	export let id_currency_filter = null;
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get accounts, If needed
 	 */
 	let accounts = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/accounts');
+		const response = await apiFetch('/api/public/accounts');
 		accounts = await response.json();
 	})
 

@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
     import { DataTable, DatePickerInput } from "carbon-components-svelte";
 	import Entitys from "../components/Entitys.svelte";
+	import { apiFetch, notify } from '../functions';
 	
 	// Movements
 	
@@ -14,7 +15,7 @@
 	let date2;
 
 	onMount(async ()=>{
-		const response = await fetch('/api/public/balance_movements');
+		const response = await apiFetch('/api/public/balance_movements');
 		movements = await response.json();
         if (!DatePicker) DatePicker = (await import('carbon-components-svelte/src/DatePicker/DatePicker.svelte')).default;
 	})
@@ -91,7 +92,7 @@
 									: balance_final/validate_balance_final;
 			if (!(0.9999999999<=error_margin && error_margin<=1.0000000001)) {
 				console.error({validate_balance_final, balance_final});
-				alert(`ERROR: Balance final no concuerda. Esto no debe pasar, avisar inmediatamente a maurito. ${validate_balance_final} - ${balance_final}`);
+				notify("Error", "error", `Balance final no concuerda. Esto no debe pasar, avisar inmediatamente a maurito. ${validate_balance_final} - ${balance_final}`);
 				return;
 			}
 

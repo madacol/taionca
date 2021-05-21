@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
     import { DataTable, Grid, Row, Column} from "carbon-components-svelte";
 	import Storages from '../components/Storages.svelte';
+	import { apiFetch } from '../functions';
 
 	let storage;
 
@@ -22,7 +23,7 @@
 	
     let items;
 	onMount(async ()=>{
-		const response = await fetch('/api/public/all_items');
+		const response = await apiFetch('/api/public/all_items');
 		items = await response.json();
 	})
 

@@ -5,7 +5,6 @@
 	import { apiFetch } from '../functions';
 	
 	let account;
-	let odt;
 	let description;
 	let amount;
 
@@ -23,7 +22,6 @@
 		})
 		cleanWindows()
 	}
-	// $: console.log(account.code);
 
 	function cleanWindows(){
 		amount=null

@@ -3,13 +3,14 @@
 
 	export let client;
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get clients, If needed
 	 */
 	let clients = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/clients');
+		const response = await apiFetch('/api/public/clients');
 		clients = await response.json();
 	})
 	

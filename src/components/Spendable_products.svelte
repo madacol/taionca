@@ -4,6 +4,7 @@
 	export let spendable_product;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get spendable_products, If needed
@@ -12,7 +13,7 @@
     let spendable_products = [];
     let spendable_productsToList = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/spendable_products');
+		const response = await apiFetch('/api/public/spendable_products');
 		spendable_products = await response.json();
 	})
 

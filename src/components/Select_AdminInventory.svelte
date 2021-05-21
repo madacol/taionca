@@ -5,13 +5,14 @@
     export let id_currency=null;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get recurrentExpenses, If needed
 	 */
     let recurrentExpenses = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/recurrentExpenses');
+		const response = await apiFetch('/api/public/recurrentExpenses');
 		recurrentExpenses = await response.json();
 	})
 	

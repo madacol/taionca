@@ -4,6 +4,7 @@
 	export let measure;
 	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
+	import { apiFetch } from '../functions';
 	
 	/**
 	 * Get measures, If needed
@@ -12,7 +13,7 @@
     let measures = [];
     let measuresToList = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/measures');
+		const response = await apiFetch('/api/public/measures');
 		measures = await response.json();
 	})
 

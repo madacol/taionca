@@ -11,6 +11,7 @@
 	export let orientation = "horizontal";
 
     import { onMount } from 'svelte';
+	import { apiFetch } from "../functions";
 	
 	/**
 	 * Get currencys, If needed
@@ -18,7 +19,7 @@
 	let currencys;
 	onMount(async ()=>{
 		if (!currencys) {
-			const response = await fetch('/api/public/currencys');
+			const response = await apiFetch('/api/public/currencys');
 			currencys = await response.json();
 		}
 		if( screen.width <= 480 ) {
