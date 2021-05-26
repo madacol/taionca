@@ -13,8 +13,7 @@
     let suppliers = [];
     let suppliersToList = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/suppliers');
-		suppliers = await response.json();
+		 ({suppliers} = await apiFetch('/api/public/suppliers'));
 	})
 
 	$: if (suppliers.length > 0) {

@@ -11,8 +11,7 @@
 	 */
     let odts = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/odts');
-		odts = await response.json();
+		 ({odts} = await apiFetch('/api/public/odts'));
 	})
 	
 	let odtsToList = [];

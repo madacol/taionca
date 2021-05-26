@@ -2,13 +2,14 @@
 	import 'carbon-components-svelte/css/white.css';
 	import { FluidForm, Button, PasswordInput } from "carbon-components-svelte";
 	import { session } from '../stores';
+	import { apiFetch } from '../functions';
 
 	let old_password;
 	let new_password;
 	let password;
 
     async function update_user_info(){
-		const response = await fetch("/api/user",{
+		await apiFetch("/api/user",{
 			method: 'PATCH',
 			body: JSON.stringify({
 				old_password,

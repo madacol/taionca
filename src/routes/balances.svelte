@@ -3,13 +3,13 @@
 	import { onMount } from 'svelte';
     import { DataTable} from "carbon-components-svelte";
 	import Entitys from "../components/Entitys.svelte";
+	import { apiFetch } from '../functions';
 
 	let entity;
 	let balances = [];
 	let rows = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/balances');
-		balances = await response.json();
+		 ({balances} = await apiFetch('/api/public/balances'));
 	})
 
     //HEADERS
@@ -18,7 +18,6 @@
     { key: "balance", value: "Saldo" }
 	];
 
-	
 	//ROWS
 	$: if (entity){
 		let balances_filtered = balances.filter(({id_entity}) => id_entity === entity.value);

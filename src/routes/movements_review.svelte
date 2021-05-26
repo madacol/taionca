@@ -7,7 +7,7 @@
 	
 	// Movements
 	
-	let movements = [];
+	let balance_movements = [];
 	let movements_filtered = [];
 	let rows_movements = [];
     let DatePicker;
@@ -15,8 +15,7 @@
 	let date2;
 
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/balance_movements');
-		movements = await response.json();
+		({balance_movements} = await apiFetch ('/api/public/balance_movements'));
         if (!DatePicker) DatePicker = (await import('carbon-components-svelte/src/DatePicker/DatePicker.svelte')).default;
 	})
 
@@ -31,11 +30,12 @@
 	
 	const _1D_in_ms = 1000*60*60*24;
 	//ROWS
-	$: if (movements.length>0){
+	$:console.log(balance_movements.length);
+	$: if (balance_movements != undefined && balance_movements.length>0){
 		let date_inicial=new Date(date1);
 		let date_final=new Date( Date.parse(date2) + _1D_in_ms);
 		console.log(date1, date2, date_inicial, date_final)
-		movements_filtered = movements.filter(({created_at}) => {
+		movements_filtered = balance_movements.filter(({created_at}) => {
 			return date_inicial<=(new Date(created_at)) && (new Date(created_at))<=date_final
 		});
 		rows_movements = movements_filtered.map(movement => ({
@@ -56,8 +56,7 @@
 	let balances = [];
 	let rows_balances = [];
 	onMount(async ()=>{
-		const response = await fetch('/api/public/balances');
-		balances = await response.json();
+		({balances} = await apiFetch('/api/public/balances'));
 	})
 
     //HEADERS

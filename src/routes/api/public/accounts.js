@@ -10,7 +10,7 @@ export const get =
             join currencys using(id_currency);`
         );
 
-        res.json(
+        res.json({
             accounts
-        );
+        });
     }

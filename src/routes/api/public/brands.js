@@ -8,7 +8,7 @@ export const get =
             `select * from brands;`
         );
 
-        res.json(
+        res.json({
             brands
-        );
+        });
     }

@@ -23,8 +23,7 @@
 	
     let items;
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/all_items');
-		items = await response.json();
+		 items = await apiFetch('/api/public/all_items');
 	})
 
 	function status(min, mid, max, stock){

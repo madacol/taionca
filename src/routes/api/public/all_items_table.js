@@ -44,7 +44,7 @@ export const get =
         }
         $: console.log(itemsToList);
         $: console.log(rows);
-        res.json(
+        res.json({
             itemsToList
-        );
+        });
     }

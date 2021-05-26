@@ -12,7 +12,7 @@
 	let api;
 
 	async function send_register(api){
-		const response = await apiFetch(`${api}`,{
+		await apiFetch(`${api}`,{
 			method: 'POST',
 			body: JSON.stringify({
 				id_spendable_stock: item.id,

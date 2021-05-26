@@ -2,32 +2,37 @@ import argon2 from "argon2";
 import { argon as config } from "../../config";
 import { compose } from "compose-middleware";
 import { USERS_READ } from "../../constants/PERMISSIONS";
-import { query } from "../../db";
 import checkPermissionsMW from "../../middlewares/checkPermissionsMW";
+import { query } from "../../db";
 
 // List users
 export const get = compose(
     checkPermissionsMW(USERS_READ),
     async (req, res) => {
 
-        const {rows: users} = await query(
-            `SELECT
+        const {rows: users} = await res.sql`
+            SELECT
                 user_id,
                 users.name,
                 users.created_at,
-                array_agg(jsonb_build_object(
-                    'role_id', role_id,
-                    'name', roles.name)
-                ) roles
+                CASE WHEN COUNT(role_id) > 0
+                    THEN
+                        array_agg(jsonb_build_object(
+                            'role_id', role_id,
+                            'name', roles.name)
+                        )
+                    ELSE 
+                        '{}'
+                END AS roles
             FROM users
-            JOIN join_users_roles USING (user_id)
-            JOIN roles USING (role_id)
+            LEFT JOIN join_users_roles USING (user_id)
+            LEFT JOIN roles USING (role_id)
             WHERE special_user = FALSE
-            GROUP BY user_id;`
-        );
+            GROUP BY user_id;
+        `;
 
         res.json({
-            users
+            users,
         });
     }
 )

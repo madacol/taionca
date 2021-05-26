@@ -11,8 +11,7 @@
 	 */
     let usersToList = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/users');
-		const {users} = await response.json();
+		const {users} = await apiFetch('/api/users');
         usersToList = users.map(({ name, user_id }) => {
             return ({value: user_id, label: name})
         })
@@ -20,4 +19,4 @@
 
 </script>
 
-<SelectSearch placeholder="Usuarios..." bind:selected={user} items={usersToList}/>
+<SelectSearch bind:selected={user} items={usersToList} isClearable={false} selectedValue="Usuarios..."/>

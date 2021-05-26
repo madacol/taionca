@@ -8,7 +8,7 @@ export const get =
             `select * from spendable_products;`
         );
 
-        res.json(
+        res.json({
             spendable_products
-        );
+        });
     }

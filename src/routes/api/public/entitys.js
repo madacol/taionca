@@ -8,7 +8,7 @@ export const get =
             `select * from entitys;`
         );
 
-        res.json(
+        res.json({
             entitys
-        );
+        });
     }

@@ -12,8 +12,7 @@
 	 */
     let recurrentExpenses = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/recurrentExpenses');
-		recurrentExpenses = await response.json();
+		 ({recurrentExpenses} = await apiFetch('/api/public/recurrentExpenses'));
 	})
 	
 	let recurrentExpensesToList = [];

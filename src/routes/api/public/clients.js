@@ -8,7 +8,7 @@ export const get =
             `select * from clients;`
         );
 
-        res.json(
+        res.json({
             clients
-        );
+        });
     }

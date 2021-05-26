@@ -13,8 +13,7 @@
     let measures = [];
     let measuresToList = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/measures');
-		measures = await response.json();
+		 ({measures} = await apiFetch('/api/public/measures'));
 	})
 
 	$: if (measures.length > 0) {

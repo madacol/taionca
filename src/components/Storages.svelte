@@ -13,8 +13,7 @@
     let storages = [];
     let storagesToList = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/storages');
-		storages = await response.json();
+		 ({storages} = await apiFetch('/api/public/storages'));
 	})
 
 	$: if (storages.length > 0) {

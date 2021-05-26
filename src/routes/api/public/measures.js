@@ -8,7 +8,7 @@ export const get =
             `select * from measures;`
         );
 
-        res.json(
+        res.json({
             measures
-        );
+        });
     }

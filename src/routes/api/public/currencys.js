@@ -8,7 +8,7 @@ export const get =
             'select * from currencys;'
         );
 
-        res.json(
+        res.json({
             currencys
-        );
+        });
     }

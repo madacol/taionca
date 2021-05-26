@@ -9,7 +9,6 @@ export const get =
         );
 
         res.json({
-            success:"Almacén ingresado",
             storages
         });
     }

@@ -13,8 +13,7 @@
     let spendable_products = [];
     let spendable_productsToList = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/spendable_products');
-		spendable_products = await response.json();
+		 ({spendable_products} = await apiFetch('/api/public/spendable_products'));
 	})
 
 	$: if (spendable_products.length > 0) {

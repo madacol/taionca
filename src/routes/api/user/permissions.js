@@ -18,5 +18,5 @@ export async function get (req, res) {
         [user_id]
     );
 
-    res.json(permissions);
+    res.json({permissions});
 }

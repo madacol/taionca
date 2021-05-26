@@ -2,7 +2,6 @@
 	import SelectSearch from '../components/Select.svelte';
 
 	export let brand;
-	/** @type {"vertical" | "horizontal"}*/
 	import { onMount } from 'svelte';
 	import { apiFetch } from '../functions';
 	
@@ -13,8 +12,7 @@
     let brands = [];
     let brandsToList = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/brands');
-		brands = await response.json();
+		({brands} = await apiFetch('/api/public/brands'));
 	})
 
 	$: if (brands.length > 0) {

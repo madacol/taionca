@@ -14,7 +14,7 @@ export const get =
             where id_closure_odt is null;
             `
         );
-        res.json(
+        res.json({
             odts
-        );
+        });
     }

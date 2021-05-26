@@ -26,7 +26,6 @@
 	function cleanWindows(){
 		amount=null
 		account=null
-		odt=null
 		description=""
 	}
 </script>	

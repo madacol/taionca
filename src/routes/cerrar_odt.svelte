@@ -32,8 +32,7 @@
             const _admin_users = admin_users.map(user=>({id_user: user.id_user, profit_percent: user.profit_percent}));
             const _operative_users = operative_users.map(user=>({id_user: user.id_user, profit_percent: user.profit_percent}));
             const _supervisor_users = supervisor_users.map(user=>({id_user: user.id_user, profit_percent: user.profit_percent}));
-            console.log(_admin_users);
-            const responde = await apiFetch ('/api/public/closure_odt', {
+            await apiFetch ('/api/public/closure_odt', {
                 method: 'POST',
                 body: JSON.stringify({
                     id_account: account.id_account,

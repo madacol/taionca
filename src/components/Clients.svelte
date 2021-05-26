@@ -10,8 +10,7 @@
 	 */
 	let clients = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/clients');
-		clients = await response.json();
+		 ({clients} = await apiFetch('/api/public/clients'));
 	})
 	
 	let clientsToList = [];

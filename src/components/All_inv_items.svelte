@@ -12,10 +12,9 @@
 	let items;
 	const groupBy = (item) => item.category;
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/all_items');
-		items = await response.json();
+		items = await apiFetch('/api/public/all_items');
 	})
-
+	
 	let itemsToList= [];
 	let spendable_itemsToList = [];
 	let no_spendable_itemsToList = [];

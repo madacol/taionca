@@ -12,7 +12,7 @@ export const get =
             `
         );
 
-        res.json(
+        res.json({
             balances
-        );
+        });
     }

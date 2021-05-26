@@ -11,8 +11,7 @@
 	 */
 	let accounts = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/accounts');
-		accounts = await response.json();
+		({accounts} = await apiFetch('/api/public/accounts'));
 	})
 
 	let accountsToList = [];

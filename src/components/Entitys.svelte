@@ -7,23 +7,22 @@
 	import { apiFetch } from '../functions';
 	
 	/**
-	 * Get entitiys, If needed
+	 * Get entitys, If needed
 	 */
 
-    let entitiysToList = [];
-    let entitiys = [];
+    let entitysToList = [];
+    let entitys = [];
 	onMount(async ()=>{
-		const response = await apiFetch('/api/public/entitys');
-		entitiys = await response.json();
+		 ({entitys} = await apiFetch ('/api/public/entitys'));
 	})
 
-	$: if (entitiys.length > 0) {
+	$: if (entitys.length > 0) {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-		entitiysToList = entitiys.map(({ id_entity, name }) => {
+		entitysToList = entitys.map(({ id_entity, name }) => {
 			return ({value: id_entity, label: name})
 		})
 	}
 
 </script>
 
-<SelectSearch placeholder="Entidades..." bind:selected={entity} items={entitiysToList}/>
+<SelectSearch placeholder="Entidades..." bind:selected={entity} items={entitysToList}/>

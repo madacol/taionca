@@ -13,6 +13,8 @@ export const post =
                 RETURNING id_income;
             `, [id_movement_category, id_account, amount, dollar_exchange_rate, description, movement_category]
         );
-
-        res.json( incomes[0] );
+        let data=incomes[0]
+        res.json({
+            data
+        });
     }

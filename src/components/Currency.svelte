@@ -19,8 +19,7 @@
 	let currencys;
 	onMount(async ()=>{
 		if (!currencys) {
-			const response = await apiFetch('/api/public/currencys');
-			currencys = await response.json();
+			({currencys} = await apiFetch('/api/public/currencys'));
 		}
 		if( screen.width <= 480 ) {
 			orientation="vertical"

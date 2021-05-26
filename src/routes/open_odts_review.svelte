@@ -6,8 +6,7 @@
 
 	$: if (odt) {
 		(async () => {
-			const response = await apiFetch(`/api/public/odt_movements/${odt.id_odt}`);
-			movements = await response.json();
+			({movements} = await apiFetch)(`/api/public/odt_movements/${odt.id_odt}`);
 		})();
 	}
 	
@@ -60,11 +59,9 @@
 			balance: Number(balance).toFixed(2),
 			id
 		}))
-		console.log(rows_currencies);
 	}
 
 	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-	$: console.log(odt);
 	
 </script>
 
