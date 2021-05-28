@@ -48,6 +48,6 @@
 
 <Accounts orientation="vertical" bind:account={account}/>
 
-<TextInput type="Number" labelText="Monto gastado" placeholder="Ingrese el monto gastado..." bind:value={cost}/>
+<TextInput type="Number" labelText="Monto total gastado" placeholder="Ingrese el monto total gastado..." bind:value={cost}/>
 
 <Button on:click={apiType}>Enviar</Button>

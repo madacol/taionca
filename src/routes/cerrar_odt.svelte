@@ -60,10 +60,10 @@
     <Accounts id_currency_filter={odt.id_currency} bind:account={account}/>
 {/if}
 
-<Users_profit label="Admin" bind:users_profit={admin_users} />
+<Users_profit label="Usuarios administrativos" bind:users_profit={admin_users} />
 
-<Users_profit label="Operative" bind:users_profit={operative_users} />
+<Users_profit label="Usuarios operativos" bind:users_profit={operative_users} />
 
-<Users_profit label="Supervisor" bind:users_profit={supervisor_users} />
+<Users_profit label="Usuarios supervisores" bind:users_profit={supervisor_users} />
 
 <Button on:click={send_closure_odts}>Cerrar ODT</Button>

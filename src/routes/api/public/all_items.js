@@ -66,7 +66,6 @@ export const get =
         const {rows: no_spendable_stocks} = await promise2
         res.json({
             spendable_stocks,
-            no_spendable_stocks,
-            success:"Datos cargados"
+            no_spendable_stocks
         });
     }
