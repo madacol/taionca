@@ -122,10 +122,10 @@
 				</SideNavMenu>
 			{/if}
 
-			{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions)}
+			{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de gastos">
 					{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_inventario" text="Gastos de inventario" />{/if}
-					{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_admin" text="Gastos administrativos" />{/if}
+					{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_admin" text="Gastos administrativos" />{/if}
 					{#if checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gastos_generales" text="Gastos generales"/>{/if}
 				</SideNavMenu>
 			{/if}
