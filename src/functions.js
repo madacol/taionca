@@ -1,4 +1,4 @@
-import {notifications} from "./stores"
+import {notifications, loadingIsActive} from "./stores"
 import fetch from "node-fetch";
 import { goto } from '@sapper/app'
 
@@ -20,15 +20,16 @@ export const checkPermissions = (permissions_ids, userPermissions) => {
  * currency_code should not be received from frontend, is a vulnerability
  * se debe hacer previamente un query para obtener la moneda de la ODT
  */
-export async function getRate(odt_currency_code, expense_currency_code){
-    if (odt_currency_code === expense_currency_code) {
+export async function getRate(counter_currency_code, base_currency_code){
+    if (counter_currency_code === base_currency_code) {
         return 1;
     }
-    const url = `https://bolivarparalelo.com/api/rate/${odt_currency_code}/${expense_currency_code}`;
-    console.log({url});
+    const url = `https://bolivarparalelo.com/api/rate/${counter_currency_code}/${base_currency_code}`;
     const response = await fetch(url);
     const rates = await response.json();
-    return (rates.buy + rates.sell) / 2;
+    const rate = (rates.buy + rates.sell) / 2;
+    console.log({url});
+    return rate;
 }
 
 /**
@@ -54,14 +55,17 @@ export function notify(title, kind="error", subtitle="", caption=undefined) {
 }
 
 export async function apiFetch (url, options={}) {
+    loadingIsActive.set(true);
 
     let response, data, error, success, warning, redirect;
     try {
         response = await fetch(url, options);
     } catch (err) {
         notify("Error de red", "error", err.message);
+        loadingIsActive.set(false);
         throw err;
     }
+    loadingIsActive.set(false);
     if (response.status >= 500) {
         notify(response.status, "error", response.statusText)
     }

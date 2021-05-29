@@ -26,10 +26,11 @@
 			// is mobile
 		}
 	})
+
 </script>
 
 <FormGroup legendText="Moneda">
-	<RadioButtonGroup id="currency" {orientation} bind:selected={currency}>
+	<RadioButtonGroup on:change id="currency" {orientation} bind:selected={currency}>
 		{#if currencys}
 			{#each currencys as currency}
 				<RadioButton labelText={`${currency.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase())} (${currency.symbol})`} value={currency} />	

@@ -1,7 +1,7 @@
 <script>
 	import Logout32 from "carbon-icons-svelte/lib/Logout32";
 	import { onMount } from 'svelte';
-	import { session, notifications } from '../stores';
+	import { session, notifications, loadingIsActive } from '../stores';
 	import { checkPermissions } from '../functions';
 	import { goto } from '@sapper/app'
 	import {ADMIN_EXPENSES_CREATE,
@@ -35,8 +35,9 @@
 			SkipToContent,
 			Content,
 			InlineNotification,
-			ToastNotification
+			ToastNotification,
 		} from "carbon-components-svelte";
+	import Loader from "../components/Loader.svelte";
 
 	function logout(){
 		fetch("/api/user", {
@@ -171,3 +172,5 @@
 	{/each}
 	<!-- {#if $notifications}<ToastNotification {...$notifications} /> {/if} -->
 </div>
+
+<Loader></Loader>

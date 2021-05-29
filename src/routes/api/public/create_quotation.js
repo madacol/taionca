@@ -8,79 +8,82 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
     async (req, res) => {
-        const { general_expenses, inv_expenses, currency, id_client } = req.body;
+        const { general_expenses, inv_expenses, currency, id_client, create_odt, description } = req.body;
+        if (!res.validateDescription(description)) return;
         const admin_percent = 0.2;
-        const rate_usd = await getRate(currency.code, 'usd');
-        const usd_currency = 1;
-        const ves_currency = 2;
-        const cop_currency = 3;
-        const eur_currency = 4;
-        const btc_currency = 5;
 
-        if (id_client){
-            const {rows: odts} = await sql`
-                
-            INSERT INTO public.odts
-                ( id_client,  id_user, id_currency, id_entity, amount, description)
-                VALUES (${id_client}::integer,
-                        ${id_user}::integer, 
-                        ${id_currency}::integer, 
-                        ${id_entity}::integer, 
-                        ${amount}::decimal(30,10), 
-                        ${description}:: character varying)
-                RETURNING id_admin_expense;
-            
-            `;
-            let data = odts[0];
-            let id_odt = "jajajaja";
-            res.json({
-                success: `ODT ingresada con el id: ${id_odt}`,
-                data
-            });
-        } else{
-            let total_general_expenses = 0; //Same currency of quotation
-            for (let i = 0; i < general_expenses.length; i++) {
-                if (general_expenses[i].currency.id_currency === currency.id_currency){ 
-                    total_general_expenses += Number(general_expenses[i].amount);
+        let ratesPromises = {};
+        async function getRatesCached (...args) {
+            const key = args.join("");
+            if (!ratesPromises[key]) ratesPromises[key] = getRate(...args);
+            return await ratesPromises[key];
+        }
 
-                }else if (general_expenses[i].currency.id_currency === usd_currency && general_expenses[i].currency.id_currency !== currency.id_currency){
-                    total_general_expenses += Number(general_expenses[i].amount) * rate_usd;
-
-                }else if (general_expenses[i].currency.id_currency === ves_currency && general_expenses[i].currency.id_currency !== currency.id_currency){
-                    const rate_ves = await getRate(currency.code, 'ves');
-                    total_general_expenses += Number(general_expenses[i].amount) * rate_ves;
-
-                }else if (general_expenses[i].currency.id_currency === cop_currency && general_expenses[i].currency.id_currency !== currency.id_currency){
-                    const rate_cop = await getRate(currency.code, 'cop');
-                    total_general_expenses += Number(general_expenses[i].amount) * rate_cop;
-
-                }else if (general_expenses[i].currency.id_currency === eur_currency && general_expenses[i].currency.id_currency !== currency.id_currency){
-                    const rate_eur = await getRate(currency.code, 'eur');
-                    total_general_expenses += Number(general_expenses[i].amount) * rate_eur;
-
-                }else if (general_expenses[i].currency.id_currency === btc_currency && general_expenses[i].currency.id_currency !== currency.id_currency){
-                    const rate_btc = await getRate(currency.code, 'btc');
-                    total_general_expenses += Number(general_expenses[i].amount) * rate_btc;
-
-                }
-            }
+    //
+    async function create_quoation(){
+        let total_general_expenses = 0; //Same currency of quotation
+            const expensePromise = Promise.all(general_expenses.map(async general_expense => {
+                const rate = await getRatesCached(currency.code, general_expense.currency.code);
+                const amount = Number(general_expense.amount) * rate
+                console.log({amount});
+                total_general_expenses += amount;
+            }));
 
             let total_inv_expenses = 0;
             for (let i = 0; i < inv_expenses.length; i++) {
                     
                 total_inv_expenses += Number(inv_expenses[i].amount) * Number(inv_expenses[i].quantity);
-
+                const rate_usd = await getRatesCached(currency.code, 'usd');
+                total_inv_expenses = total_inv_expenses * rate_usd;
             }
-            total_inv_expenses = total_inv_expenses * rate_usd;
+
+            await expensePromise;
 
             let contract_amount = (total_general_expenses + total_inv_expenses) / (1-admin_percent);
         
+            let quotation_data = [total_general_expenses, total_inv_expenses, contract_amount, admin_percent];
+
+            return quotation_data;
+    }
+
+    //
+        if (create_odt){
+            const { user_id } = req.session.user;
+            const quotation_data = await create_quoation();
+            const id_currency = currency.id_currency;
+            const id_entity = 1;
+            const amount = quotation_data[2];
+            const {rows: odts} = await sql`
+                
+                INSERT INTO public.odts
+                    ( id_client, id_user, id_currency, id_entity, amount, description )
+                    VALUES (
+                        ${id_client}::integer, 
+                        ${user_id}::integer, 
+                        ${id_currency}::integer, 
+                        ${id_entity}::integer, 
+                        ${amount}::numeric, 
+                        ${description}::character varying)
+                    RETURNING id_odt;
+            
+            `;
+            const odt = odts[0];
+            res.json({
+                success: `ODT creada con el id ${odt.id_odt}`,
+                total_general_expenses: quotation_data[0],
+                total_inv_expenses: quotation_data[1],
+                contract_amount: quotation_data[2],
+                admin_percent: quotation_data[3]
+            });
+        } else{
+            const quotation_data = await create_quoation();
+
             res.json({
                 success: `Cotización calculada`,
-                total_general_expenses,
-                total_inv_expenses,
-                contract_amount,
-                admin_percent
+                total_general_expenses: quotation_data[0],
+                total_inv_expenses: quotation_data[1],
+                contract_amount: quotation_data[2],
+                admin_percent: quotation_data[3]
             });
         }
     }
