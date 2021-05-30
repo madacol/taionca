@@ -45,7 +45,8 @@
 	}
 	$: if (items) {
 		itemsToList= spendable_itemsToList.concat(no_spendable_itemsToList)
+		// if (!item) item = itemsToList[0];
 	}
 </script>
 
-<SelectSearch placeholder="Artículos..." bind:selected={item} items={itemsToList} {groupBy}/>
+<SelectSearch placeholder="Artículos..." bind:selected={item} on:select items={itemsToList} {groupBy}/>

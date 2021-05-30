@@ -6,9 +6,9 @@ export default (req, res, next)=>{
         res.end(JSON.stringify(obj));
     }
     res.validateDescription = description => {
-        if (description.length>512){
+        if (description && description.length>512){
             return res.json({
-                error: "La descripcion supera los 512 carácteres"
+                error: "La descripción supera los 512 carácteres"
             });
             return false;
         }

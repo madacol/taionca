@@ -1,13 +1,10 @@
 <script>
     import { TextInput, Button, TextArea } from 'carbon-components-svelte';
 	import TrashCan16 from "carbon-icons-svelte/lib/TrashCan16";
+    import { tick } from 'svelte';
     import AllInvItems from './All_inv_items.svelte';
 
     export let inv_expense;
-
-    $: if(inv_expense.item){
-        inv_expense.amount = inv_expense.item.price;
-    }
 
 </script>
 
@@ -28,7 +25,10 @@
 
 <div class="OnSameLine">
     <div>
-        <AllInvItems bind:item={inv_expense.item}/>
+        <AllInvItems
+            bind:item={inv_expense.item}
+            on:select={async ()=> {await tick(); inv_expense.amount = inv_expense.item.price}}
+        />
         
         <TextInput type="Number" placeholder="Precio unitario..." bind:value={inv_expense.amount}/>
         
@@ -40,7 +40,6 @@
 
         <TextArea placeholder="Ingrese la descripción del gasto..." bind:value={inv_expense.description}/>
     </div>
-    
     
     <!-- Plantilla -->
 

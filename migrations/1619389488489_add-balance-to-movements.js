@@ -43,6 +43,9 @@ exports.up = pgm => {
 exports.down = pgm => {
     pgm.sql`
 
+    ALTER TABLE admin_expenses
+    DROP COLUMN rate;
+
     DROP FUNCTION alter_balance;
     CREATE FUNCTION alter_balance (
         v_id_balance integer,

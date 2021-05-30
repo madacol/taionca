@@ -51,6 +51,6 @@
 
 <TextInput type="address" labelText="Dirección" placeholder="Ingrese la dirección..." bind:value={address}/>
 
-<TextArea labelText="Descripción" placeholder="Ingrese la descripción del proveedor..." bind:value={description}/>
+<TextArea labelText="Descripción" placeholder="Ingrese la descripción del cliente..." bind:value={description}/>
 
 <Button on:click={add_client}>Enviar</Button>

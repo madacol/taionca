@@ -17,12 +17,6 @@
         inv_expenses = [ ...inv_expenses, {...NEW_INV_EXPENSE} ]
     }
 
-    $: inv_expenses = inv_expenses.map(inv_expense => {
-        return {
-            ...inv_expense
-        }
-    })
-
     function removeInvExpenseBuilder(index_to_remove) {
         return ()=>{
             inv_expenses = inv_expenses.filter((_u, index) => index !== index_to_remove)

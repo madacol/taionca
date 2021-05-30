@@ -21,7 +21,8 @@ export const get =
             min_stock,
             mid_stock,
             max_stock,
-            suppliers.name as supplier
+            suppliers.name as supplier,
+            id_spendable_item
 
             from spendable_items
             join brands using(id_brand)
@@ -50,7 +51,8 @@ export const get =
             min_stock,
             mid_stock,
             max_stock,
-            suppliers.name as supplier
+            suppliers.name as supplier,
+            id_no_spendable_item
 
             from no_spendable_items
             join brands using(id_brand)

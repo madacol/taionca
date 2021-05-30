@@ -23,12 +23,6 @@
         }
     }
 
-    $: general_expenses = general_expenses.map(general_expense => {
-        return {
-            ...general_expense
-        }
-    })
-
 </script>
 
 <style>
@@ -44,7 +38,7 @@
 <div>
     <h4>{label}</h4>
     {#each general_expenses as general_expense, index}
-    <div class="OnSameLine">
+        <div class="OnSameLine">
         
             <div>
                 <Currency bind:currency={general_expense.currency}/>

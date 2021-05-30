@@ -1,26 +1,45 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
-	import { onMount } from 'svelte';
-	import { TextInput, TextArea, Button } from "carbon-components-svelte";
+	import { TextInput, TextArea, Button, ContentSwitcher, Switch } from "carbon-components-svelte";
 	import Clients from "../components/Clients.svelte";
 	import Currency from "../components/Currency.svelte";
 	import { apiFetch } from '../functions';
+	import Quotations from '../components/Quotations.svelte';
+import { tick } from 'svelte';
+import Login from './login.svelte';
 
 	let amount;
 	let client = null;
 	let description;
 	let id_entity=1;
 	let currency;
+	let quotation;
+	let selectedIndex;
+	let id_client;
+	let id_quotation;
+	let id_currency;
+
+	$:if(quotation && selectedIndex === 0) {
+		id_client = quotation.id_client;
+		id_quotation = quotation.id_quotation;
+		id_currency = quotation.id_currency;
+	}else if (client && selectedIndex === 1){
+		id_client = client.value;
+		id_quotation = null;
+		id_currency = currency.id_currency;	
+	}
 	
 	async function create_odt(){
+		
 		await apiFetch("/api/public/nueva_odt",{
 			method: 'POST',
 			body: JSON.stringify({
-				id_client: client.value,
-				id_currency: currency.id_currency,
+				id_client,
+				id_currency,
 				id_entity,
 				amount,
-				description
+				description,
+				id_quotation
 			}),
 			headers: {'Content-Type': 'application/json'}
 		})
@@ -28,18 +47,38 @@
 	}
 
 	function cleanWindows(){
-		amount=null
-		client=null
-		description=""
+		amount=null;
+		client=null;
+		quotation=null;
+		description="";
 	}
 
+	$:console.log(quotation);
+	$:console.log(currency);
 </script>
 
 <TextInput type="number"labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." bind:value={amount}/>
 
-<Currency bind:currency={currency}/>
 
-<Clients bind:client={client}/>
+<ContentSwitcher bind:selectedIndex>
+	<Switch text="Utilizar una cotización" />
+	<Switch text="No utilizar una cotización" />
+</ContentSwitcher>
+
+
+{#if selectedIndex === 0}
+
+	<Quotations bind:quotation={quotation} on:select={async ()=> {await tick(); amount = quotation.amount}}/>
+	
+{/if}
+	
+{#if selectedIndex === 1}
+	
+	<Currency bind:currency={currency}/>
+	<Clients bind:client={client}/>
+
+{/if}
+
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del trabajo..." bind:value={description}/>
 
