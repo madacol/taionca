@@ -6,14 +6,14 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
     async (req, res) => {
-        const { id_account, id_odt, amount, description, odt_currency_code, expense_currency_code } = req.body;
+        const { id_account, id_odt, amount, description, odt_currency_code, expense_currency_code, id_measure, quantity } = req.body;
         const rate = await getRate(odt_currency_code, expense_currency_code)
         const {rows: general_expenses} = await query(
             `
             WITH new_general_expense as (
                 INSERT INTO public.general_expenses
-                    ( id_account, id_odt, amount, description, rate )
-                    VALUES ( $1::integer, $2::integer, $3::decimal, $4::character varying, $5 )
+                    ( id_account, id_odt, amount, description, rate, id_measure, quantity )
+                    VALUES ( $1::integer, $2::integer, $3::decimal, $4::character varying, $5::decimal, $6::integer, $7::decimal)
                     RETURNING id_general_expense
             )
             SELECT alter_balance(id_balance, -$3, id_general_expense, 'general_expenses')
@@ -21,7 +21,7 @@ export const post =
             WHERE id_account = $1
                 AND id_entity = 1
             ;
-            `, [id_account, id_odt, Math.abs(amount), description, rate ]
+            `, [ id_account, id_odt, Math.abs(amount), description, rate, id_measure, quantity ]
         );
         
         let data = general_expenses[0]

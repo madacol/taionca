@@ -3,18 +3,16 @@
     import { DataTable, Grid, Row, Column } from "carbon-components-svelte";
 	import Odts from '../components/Odts.svelte';
 	import { apiFetch } from '../functions';
+	let odt;
+	let balance_movements = [];
 
 	$: if (odt) {
 		(async () => {
-			({movements} = await apiFetch)(`/api/public/odt_movements/${odt.id_odt}`);
+			({balance_movements} = await apiFetch(`/api/public/odt_movements/${odt.id_odt}`));
 		})();
 	}
-	
-	let odt;
-	let movements = [];
-
 	//HEADERS
-		let headers_movements = [
+		let headers_balance_movements = [
 			{ key: "entity", value: "Entidad"  },
 			{ key: "id_balance_movement", value: "Id del movimiento"  },
 			{ key: "account", value: "Cuenta" },
@@ -29,9 +27,9 @@
 
 
 	//ROWS
-	let rows_movements=[];
-	$: if (movements.length>0 && odt){
-		rows_movements = movements.map(movement => ({
+	let rows_balance_movements=[];
+	$: if (balance_movements && odt){
+		rows_balance_movements = balance_movements.map(movement => ({
 			id_balance: movement.id_balance,
 			entity: movement.entity,
 			id_balance_movement: movement.id_balance_movement,
@@ -45,9 +43,9 @@
 		}));
 	}
 	let rows_currencies = [];
-	$: if (rows_movements.length>0){
+	$: if (rows_balance_movements.length>0){
 		const currencies_auxiliar = {};
-		rows_movements.forEach(movement => {
+		rows_balance_movements.forEach(movement => {
 			if (currencies_auxiliar[movement.currency] === undefined) {
 				currencies_auxiliar[movement.currency] = 0;
 			}
@@ -112,8 +110,8 @@
 		</Row>
 	</Grid>
 
-	{#if rows_movements.length!=0 || rows_currencies.length!=0}
-		<DataTable size="short" title="Gastos de la ODT" sortable headers={headers_movements} rows={rows_movements} />
+	{#if rows_balance_movements.length!=0 || rows_currencies.length!=0}
+		<DataTable size="short" title="Gastos de la ODT" sortable headers={headers_balance_movements} rows={rows_balance_movements} />
 
 		<DataTable size="short" title="Gastos por moneda" sortable headers={headers_currencies} rows={rows_currencies} />
 	{/if}

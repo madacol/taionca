@@ -2,12 +2,15 @@
 <script>
     import { TextInput, Button, TextArea } from 'carbon-components-svelte';
 	import TrashCan16 from "carbon-icons-svelte/lib/TrashCan16";
+	import Measures from '../components/Measures.svelte';
     import Currency from './Currency.svelte';
 
     const NEW_GENERAL_EXPENSE = {
         amount: null,
         currency: null,
-        description:""
+        description:"",
+        quantity: null,
+        measure: null
     };
 
     export let general_expenses = [ {...NEW_GENERAL_EXPENSE} ];
@@ -43,7 +46,11 @@
             <div>
                 <Currency bind:currency={general_expense.currency}/>
                 
-                <TextInput type="Number" placeholder="Monto del gasto..." bind:value={general_expense.amount}/>
+                <TextInput type="Number" placeholder="Monto total del gasto..." bind:value={general_expense.amount}/>
+
+                <TextInput type="Number" placeholder="Ingrese la cantidad..." bind:value={general_expense.quantity}/>
+
+                <Measures bind:measure={general_expense.measure} />
                 
                 <TextArea placeholder="Ingrese la descripción del gasto..." bind:value={general_expense.description}/>
             </div>

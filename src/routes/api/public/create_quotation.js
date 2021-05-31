@@ -66,7 +66,7 @@ export const post =
         const quotation_data = await create_quotation();
         const id_currency = currency.id_currency;
         const {rows: [{id_quotation}]} = await sql`
-            SELECT create_quotation(
+            SELECT new_create_quotation(
                 ${user_id},
                 ${JSON.stringify(general_expenses)},
                 ${JSON.stringify(spendable_expenses)},
