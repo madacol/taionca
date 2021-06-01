@@ -8,12 +8,13 @@
 	let quotation_spendable_inv_expenses = [];
 	let quotation_no_spendable_inv_expenses = [];
 	let id = 0;
-
-	$: if (quotation) {
-		(async () => {
-			({quotation_general_expenses, quotation_spendable_inv_expenses, quotation_no_spendable_inv_expenses} = await apiFetch(`/api/public/quotations_review/${quotation.id_quotation}`));
-		})(); // Esos maricos paréntesis son importantes imbécil!!!
+	
+	async function get_quotation(){
+		({quotation_general_expenses, quotation_spendable_inv_expenses, quotation_no_spendable_inv_expenses} = await apiFetch(`/api/public/quotations_review/${quotation.id_quotation}`));
+		
 	}
+		// $: if (quotation) {
+		// } // Esos maricos paréntesis son importantes imbécil!!!
 	//HEADERS
 	let headers_quotation_expenses = [
 		{ key: "kind", value: "Tipo de gasto" },
@@ -24,68 +25,67 @@
 
 	let headers_currencies = [
 		{ key: "currency", value: "Moneda"  },
-		{ key: "balance", value: "Saldo gastado"  }
+		{ key: "balance", value: "Monto"  }
 	];
 
-	$:if(quotation_general_expenses){
 
-		console.log(quotation_general_expenses);
-	}
 	//ROWS
 	let rows_quotation_general_expenses=[];
-	$: if (quotation_general_expenses && quotation){
-		rows_quotation_general_expenses = quotation_general_expenses.map(quotation => ({
+	$: if (quotation_general_expenses){
+		rows_quotation_general_expenses = quotation_general_expenses.map(_quotation => ({
 			id: id++,
-			kind: quotation.kind,
-			quantity: quotation.quantity,
-			amount: quotation.amount,
-			amount_label: `${Number(quotation.amount).toFixed(2)} ${quotation.currency_symbol}`,
-			description: quotation.description
+			kind: _quotation.kind,
+			quantity: `${Number(_quotation.quantity).toFixed(2)} ${_quotation.measure_unit}`,
+			amount: _quotation.amount,
+			amount_label: `${Number(_quotation.amount).toFixed(2)} ${_quotation.currency_symbol}`,
+			description: _quotation.description,
+			currency: _quotation.currency_name_plural
 		}));
 	}
 
 	let rows_quotation_spendable_inv_expenses=[];
-	$: if (quotation_spendable_inv_expenses && quotation){
+	$: if (quotation_spendable_inv_expenses){
 		rows_quotation_spendable_inv_expenses = quotation_spendable_inv_expenses.map(quotation_inv => ({
 			id: id++,
 			kind: quotation_inv.kind,
-			quantity: quotation_inv.quantity,
+			quantity: `${Number(quotation_inv.quantity).toFixed(2)} ${quotation_inv.measure_unit}`,
 			amount: quotation_inv.amount,
-			amount_label: `${Number(quotation_inv.amount).toFixed(2)} ${quotation_inv.currency_symbol}`,
+			amount_label: `${Number(quotation_inv.amount).toFixed(2)} $`,
+			currency: "dólares",
+			currency_symbol: "$",
 			description: quotation_inv.description
 		}));
 	}
 
 	let rows_quotation_no_spendable_inv_expenses=[];
-	$: if (quotation_no_spendable_inv_expenses && quotation){
-		rows_quotation_no_spendable_inv_expenses = quotation_no_spendable_inv_expenses.map(quotation => ({
+	$: if (quotation_no_spendable_inv_expenses){
+		rows_quotation_no_spendable_inv_expenses = quotation_no_spendable_inv_expenses.map(_quotation => ({
 			id: id++,
-			kind: quotation.kind,
-			quantity: quotation.quantity,
-			amount: quotation.amount,
-			amount_label: `${Number(quotation.amount).toFixed(2)} ${quotation.currency_symbol}`,
-			description: quotation.description
+			kind: _quotation.kind,
+			quantity: `${Number(_quotation.quantity).toFixed(2)} ${_quotation.measure_unit}`,
+			amount: _quotation.amount,
+			amount_label: `${Number(_quotation.amount).toFixed(2)} $`,
+			currency: "dólares",
+			currency_symbol: "$",
+			description: _quotation.description
 		}));
 	}
 
-	let rows_quotation_expenses1 = rows_quotation_general_expenses.concat(rows_quotation_spendable_inv_expenses);
-	let rows_quotation_expenses2 = rows_quotation_expenses1.concat(rows_quotation_no_spendable_inv_expenses);
-
-	$:console.log(quotation_spendable_inv_expenses);
+	$: rows_quotation_expenses = [...rows_quotation_general_expenses, ...rows_quotation_spendable_inv_expenses, ...rows_quotation_no_spendable_inv_expenses];
 
 	let rows_currencies = [];
-	$: if (rows_quotation_general_expenses.length>0){
+	$: if (rows_quotation_expenses.length>0){
 		const currencies_auxiliar = {};
-		rows_quotation_general_expenses.forEach(quotation => {
-			if (currencies_auxiliar[quotation.currency] === undefined) {
-				currencies_auxiliar[quotation.currency] = 0;
+		rows_quotation_expenses.forEach(_quotation => {
+			if (currencies_auxiliar[_quotation.currency] === undefined) {
+				currencies_auxiliar[_quotation.currency] = 0;
 			}
-			currencies_auxiliar[quotation.currency] += Number(quotation.amount)
+			currencies_auxiliar[_quotation.currency] += Number(_quotation.amount)
 		});
 		console.log(currencies_auxiliar);
 		rows_currencies = Object.entries(currencies_auxiliar).map(([currency, balance], id) => ({
-			currency,
-			balance: Number(balance).toFixed(2),
+			currency: currency.replace(/(^|\s)\S/g, l => l.toUpperCase()),
+			balance: `${Number(balance).toFixed(2)}`,
 			id
 		}))
 	}
@@ -94,7 +94,7 @@
 	
 </script>
 
-<Quotations bind:quotation={quotation}/>
+<Quotations on:select={get_quotation} bind:quotation={quotation}/>
 
 {#if quotation} 
 
@@ -141,9 +141,9 @@
 		</Row>
 	</Grid>
 
-	{#if rows_quotation_general_expenses.length!=0 || rows_currencies.length!=0}
-		<DataTable size="short" title="Gastos cotizados" sortable headers={headers_quotation_expenses} rows={rows_quotation_expenses2} />
+	{#if rows_quotation_expenses.length!=0 || rows_currencies.length!=0}
+		<DataTable size="short" title="Gastos cotizados" sortable headers={headers_quotation_expenses} rows={rows_quotation_expenses} />
 
-		<DataTable size="short" title="Gastos por moneda" sortable headers={headers_currencies} rows={rows_currencies} />
+		<DataTable size="short" title="Gastos cotizados por moneda" sortable headers={headers_currencies} rows={rows_currencies} />
 	{/if}
 {/if}

@@ -5,7 +5,7 @@ export const get =
     async (req, res) => {
         const {id_quotation} = req.params;
 
-        let {rows: quotation_general_expenses} = await sql`
+        const quotation_general_expensesPromise = sql`
 
             select 
 
@@ -22,7 +22,8 @@ export const get =
             currencys.symbol as currency_symbol,
             currencys.code as currency_code,
             measures.name as measure_name,
-            measures.unit as measure_unit
+            measures.unit as measure_unit,
+            'Gasto general' as kind
             
             from quotation_general_expenses
             join currencys using(id_currency)
@@ -34,7 +35,7 @@ export const get =
             `
         ;
 
-        let {rows: quotation_spendable_inv_expenses} = await sql`
+        const quotation_spendable_inv_expensesPromise = sql`
 
             select 
 
@@ -46,10 +47,15 @@ export const get =
             quotation_spendable_inv_expenses.description as description,
             rate,
             id_brand,
-            brands.name as brand_name
+            brands.name as brand_name,
+            measures.name as measure_name,
+            measures.unit as measure_unit,
+            'Gasto de inventario consumible' as kind
             
             from quotation_spendable_inv_expenses
             join spendable_items using(id_spendable_item)
+            join spendable_products using(id_spendable_product)
+            join measures using(id_measure)
             join brands using(id_brand)
 
             WHERE id_quotation = ${id_quotation}
@@ -58,7 +64,7 @@ export const get =
             `
         ;
 
-        let {rows: quotation_no_spendable_inv_expenses} = await sql`
+        const quotation_no_spendable_inv_expensesPromise = sql`
 
             select 
 
@@ -70,10 +76,15 @@ export const get =
             quotation_no_spendable_inv_expenses.description as description,
             rate,
             id_brand,
-            brands.name as brand_name
+            brands.name as brand_name,
+            measures.name as measure_name,
+            measures.unit as measure_unit,
+            'Gasto de inventario no consumible' as kind
             
             from quotation_no_spendable_inv_expenses
             join no_spendable_items using(id_no_spendable_item)
+            join no_spendable_products using(id_no_spendable_product)
+            join measures using(id_measure)
             join brands using(id_brand)
 
             WHERE id_quotation = ${id_quotation}
@@ -82,46 +93,9 @@ export const get =
             `
         ;
 
-        // const {rows: quotations} = await sql`
-
-        //     select 
-
-        //     id_quotation,
-        //     id_client,
-        //     id_currency,
-        //     admin_percent,
-        //     quotations.description as description,
-        //     amount,
-        //     id_user,
-        //     users.name as user_name,
-        //     clients.name as client_name,
-        //     currencys.name_singular as currency_name_singular,
-        //     currencys.name_plural as currency_name_plural,
-        //     currencys.symbol as currency_symbol,
-        //     currencys.code as currency_code
-            
-        //     from quotations
-        //     join clients using(id_client)
-        //     join users on users.user_id = quotations.id_user
-        //     join currencys using(id_currency)
-
-        //     WHERE id_quotation = ${id_quotation}
-
-        //     ORDER BY quotations.created_at;
-        //     `
-        // ;
-
-        quotation_general_expenses.forEach(expense => {
-            expense.kind = "Gasto general"
-        });
-
-        quotation_spendable_inv_expenses.forEach(expense => {
-            expense.kind = "Gasto de inventario consumible"
-        });
-
-        quotation_no_spendable_inv_expenses.forEach(expense => {
-            expense.kind = "Gasto de inventario no consumible"
-        });
+        const {rows: quotation_general_expenses} = await quotation_general_expensesPromise;
+        const {rows: quotation_spendable_inv_expenses} = await quotation_spendable_inv_expensesPromise;
+        const {rows: quotation_no_spendable_inv_expenses} = await quotation_no_spendable_inv_expensesPromise;
 
         res.json({
             success: "Datos de la cotización cargados exitosamente.",

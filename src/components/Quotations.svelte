@@ -14,15 +14,17 @@
 		 ({quotations} = await apiFetch('/api/public/quotations'));
 	})
 	
+	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
 	let quotationsToList = [];
 	$: if (quotations.length > 0) {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-		quotationsToList = quotations.map(quotation => {
-			const {id_quotation, name, created_at, amount, symbol} = quotation;
+		console.log('asd')
+		quotationsToList = quotations.map(_quotation => {
+			const {id_quotation, name, created_at, amount, symbol} = _quotation;
             const date=(new Date(created_at)).toLocaleString("es-ES",options);
             const quotation_amount=Number(amount).toFixed(2);
 			return ({
-				...quotation,
+				..._quotation,
 				value: id_quotation, 
 				label: `${id_quotation} | ${name} | ${symbol}.${quotation_amount} | ${date}`
 			})
