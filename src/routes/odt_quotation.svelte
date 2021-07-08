@@ -15,7 +15,6 @@
     let client;
     let description;
     
-    $: console.log(inv_expenses);
     async function create_quotation(){
         quotation = await apiFetch(`/api/public/create_quotation`,{
             method: 'POST',
@@ -39,7 +38,6 @@
     $: if(quotation){
 
         //ROWS
-        console.log({quotation, currency});
         rows = [
         { id: 1, category: "Gastos generales", amount: `${(quotation.total_general_expenses).toFixed(2)} ${currency.symbol}`},
         { id: 2, category: "Gastos de inventario", amount: `${(quotation.total_inv_expenses).toFixed(2)} ${currency.symbol}`},

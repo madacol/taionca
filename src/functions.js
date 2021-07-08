@@ -54,6 +54,108 @@ export function notify(title, kind="error", subtitle="", caption=undefined) {
     }, 5000);
 }
 
+export function next_date(start_date, term, days_to_repeat){
+    const terms_in_unix = {
+        day: 86400000,
+        week: 86400000 * 7,
+        every_x_days: 86400000 * days_to_repeat
+    };
+    let current_date = new Date(new Date().toLocaleDateString());
+    switch (term) {
+        case "daily": //This event will happen each day starting in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                return new Date(new Date (+new Date (start_date) + terms_in_unix.day).toLocaleDateString());
+            }
+        case "weekly": //This event will happen each week at the day selected in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                return new Date(new Date (+new Date (start_date) + terms_in_unix.week).toLocaleDateString());
+            }
+        case "biweekly": //This event will happen each 15th and last day of each month *DOES NOT start at start_date*
+            let new_start_date = new Date(new Date(start_date).toLocaleDateString());
+            let current_month = new_start_date.getMonth();
+            let current_year = new_start_date.getFullYear();
+            if(new_start_date <= new Date(current_year, current_month, 15)){
+                return new Date(current_year, current_month, 15);
+            }else if(new_start_date > new Date(current_year, current_month, 15) && new_start_date <= new Date(current_year, current_month+1, 0)){
+                return new Date(current_year, current_month+1, 0);
+            }
+        case "monthly": //This event will happen each month at the day selected in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                let day = new Date(start_date).getDate();
+                let month = new Date(start_date).getMonth();
+                let year = new Date(start_date).getFullYear();
+                return new Date(year, month+1, day);
+            }
+        case "bimonthly": //This event will happen each two months at the day selected in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                let day = new Date(start_date).getDate();
+                let month = new Date(start_date).getMonth();
+                let year = new Date(start_date).getFullYear();
+                return new Date(year, month+2, day);
+            }
+        case "quarterly": //This event will happen each three months at the day selected in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                let day = new Date(start_date).getDate();
+                let month = new Date(start_date).getMonth();
+                let year = new Date(start_date).getFullYear();
+                return new Date(year, month+3, day);
+            }
+        case "biannual": //This event will happen each six months at the day selected in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                let day = new Date(start_date).getDate();
+                let month = new Date(start_date).getMonth();
+                let year = new Date(start_date).getFullYear();
+                return new Date(year, month+6, day);
+            }
+        case "yearly": //This event will happen each year at the day selected in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                let day = new Date(start_date).getDate();
+                let month = new Date(start_date).getMonth();
+                let year = new Date(start_date).getFullYear();
+                return new Date(year+1, month, day);
+            }
+        case "every x days": //This event will happen each X days starting in start_date
+            if(new Date(start_date) > current_date){
+                return new Date(start_date);
+            }else{
+                return new Date(new Date (+new Date (start_date) + terms_in_unix.every_x_days).toLocaleDateString());
+            }
+    }
+}
+
+// async function update_responsibilities(){
+//     let active_responsibilitys = [];
+//     let current_date = +new Date(new Date().toLocaleDateString());
+//     ({active_responsibilitys} = await apiFetch('/api/public/active_responsibilitys'));
+//     console.log(active_responsibilitys);
+//     await Promise.all(active_responsibilitys.map(async (responsibility) => {
+//         if (current_date === +new Date(responsibility.end_date) && current_date !== +new Date(new Date(responsibility.created_at).toLocaleDateString())){ // Esta segunda condición en teoría es la forma en que el código no se va a equivocar y replicar eternamente una responsabilidad ANALIZAR
+//             await apiFetch("/api/public/update_responsibility",{
+//                 method: 'POST',
+//                 body: JSON.stringify({
+//                     responsibility,
+//                     current_date: new Date(current_date)
+//                 }),
+//                 headers: {'Content-Type': 'application/json'}
+//             })
+//         }
+//     }));
+// }
+
 export async function apiFetch (url, options={}) {
     loadingIsActive.set(true);
 

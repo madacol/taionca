@@ -16,7 +16,8 @@
 			STORAGES_CREATE,
 			USERS_CREATE,
 			PRESIDENT,
-			ODT_READ
+			ODT_READ,
+			USERS_READ
 		} from '../constants/PERMISSIONS';
 
 	import {
@@ -107,12 +108,13 @@
 			<SideNavLink href="login" text="Inicio de sesión" />
 		{:else}
 
-			{#if checkPermissions([USERS_CREATE[1]], user_permissions)}
-				<SideNavMenu text="Gestión de usuarios">
-					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="signup" text="Crear usuario" />{/if}
-					{#if checkPermissions([ODT_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_clients" text="Crear cliente" />{/if}
-				</SideNavMenu>
-			{/if}
+			<SideNavMenu text="Gestión de usuarios">
+				{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="signup" text="Crear usuario" />{/if}
+				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_clients" text="Crear cliente" />{/if}
+				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="asignar_responsabilities" text="Asignar responsabilidad" />{/if}
+				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="ingreso_responsabilities" text="Crear responsabilidad" />{/if}
+				<SideNavMenuItem href="responsabilities" text="Responsabilidades" />
+			</SideNavMenu>
 
 			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de ODTs">

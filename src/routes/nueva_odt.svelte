@@ -5,8 +5,8 @@
 	import Currency from "../components/Currency.svelte";
 	import { apiFetch } from '../functions';
 	import Quotations from '../components/Quotations.svelte';
-import { tick } from 'svelte';
-import Login from './login.svelte';
+	import { tick } from 'svelte';
+	import Login from './login.svelte';
 
 	let amount;
 	let client = null;
