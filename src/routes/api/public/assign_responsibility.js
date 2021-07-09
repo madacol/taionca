@@ -6,7 +6,7 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
     async (req, res) => {
-        const { responsibility, user, start_date, times_remaining } = req.body;
+        const { responsibility, user, deadline, times_remaining } = req.body;
         const {rows: active_responsibilitys} = await res.sql`
 
             WITH new_active_responsibilitys as (
@@ -17,8 +17,8 @@ export const post =
             )
 
                 INSERT INTO public.pending_responsibilitys
-                    ( id_active_responsibility, start_date )
-                    SELECT id_active_responsibility::integer,  ${next_date(start_date, responsibility.term, responsibility.days_to_repeat)}::timestamp
+                    ( id_active_responsibility, deadline )
+                    SELECT id_active_responsibility::integer,  ${next_date(deadline, responsibility.term, responsibility.days_to_repeat)}::timestamp
                     FROM new_active_responsibilitys
             ;
         `;

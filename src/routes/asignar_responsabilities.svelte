@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 
 	let DatePicker;
-	let start_date;
+	let deadline;
     let user;
     let responsibility;
 	let times_remaining = 2147483647;
@@ -22,7 +22,7 @@
 			body: JSON.stringify({
 				responsibility,
 				user,
-				start_date,
+				deadline,
 				times_remaining
 			}),
 			headers: {'Content-Type': 'application/json'}
@@ -31,7 +31,7 @@
 	}
 
 	function cleanWindows(){
-		start_date = null;
+		deadline = null;
 		user = null;
 		responsibility = null;
 		times_remaining = 2147483647;
@@ -44,13 +44,13 @@
 <Users bind:user={user}/>
 
 {#if DatePicker}
-	<svelte:component this={DatePicker} bind:value={start_date} datePickerType="single" locale={navigator.language} dateFormat="Y/m/d">
-		<DatePickerInput placeholder="Fecha de inicio" invalid={new Date(start_date) <= new Date(new Date().toLocaleDateString())} invalidText="Debe ser una fecha futura"/>
+	<svelte:component this={DatePicker} bind:value={deadline} datePickerType="single" locale={navigator.language} dateFormat="Y/m/d">
+		<DatePickerInput placeholder="Fecha de inicio" invalid={new Date(deadline) <= new Date(new Date().toLocaleDateString())} invalidText="Debe ser una fecha futura"/>
 	</svelte:component>
 {/if}
 	
 {#if responsibility}
-	<Tile>Próxima entrega de la responsabilidad: {next_date(start_date, responsibility.term, responsibility.days_to_repeat).toLocaleDateString()}</Tile>	
+	<Tile>Próxima entrega de la responsabilidad: {next_date(deadline, responsibility.term, responsibility.days_to_repeat).toLocaleDateString()}</Tile>	
 {/if}
 
 <NumberInput label="Ingrese la cantidad de veces que esta responsabilidad se ejecutará, default = infinite" bind:value={times_remaining}/>

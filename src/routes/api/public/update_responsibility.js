@@ -11,8 +11,8 @@ export const post =
         
             WITH new_id_pending_responsibility as (
                 INSERT INTO public.pending_responsibilitys
-                    ( id_active_responsibility, start_date )
-                    VALUES ( ${responsibility.id_active_responsibility}::integer, ${next_date(responsibility.start_date, responsibility.term, responsibility.days_to_repeat)}::timestamp )
+                    ( id_active_responsibility, deadline )
+                    VALUES ( ${responsibility.id_active_responsibility}::integer, ${next_date(responsibility.deadline, responsibility.term, responsibility.days_to_repeat)}::timestamp )
                     RETURNING id_pending_responsibility
             )
                 UPDATE active_responsibilitys

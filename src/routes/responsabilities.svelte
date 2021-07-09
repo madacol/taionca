@@ -37,8 +37,8 @@
 			description: responsibility.description,
 			importance: responsibility.importance,
 			frequency: frequency_label(responsibility.term_label, responsibility.days_to_repeat),
-			overdue: (+new Date(next_date(responsibility.start_date, responsibility.term)) - +new Date(new Date ().toLocaleDateString())) / 86400000, //Unix time between the start_date and actual date expressed in days
-			date: next_date(responsibility.start_date, responsibility.term).toLocaleDateString()
+			overdue: (+new Date(next_date(responsibility.deadline, responsibility.term)) - +new Date(new Date ().toLocaleDateString())) / 86400000, //Unix time between the deadline and actual date expressed in days
+			date: next_date(responsibility.deadline, responsibility.term).toLocaleDateString()
 		}));
 	}
 

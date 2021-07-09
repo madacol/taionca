@@ -43,7 +43,7 @@ exports.up = pgm => {
         create table pending_responsibilitys (
             id_pending_responsibility serial primary key,
             id_active_responsibility int REFERENCES active_responsibilitys (id_active_responsibility) ON UPDATE CASCADE ON DELETE CASCADE not null,
-            start_date timestamp with time zone not null,
+            deadline timestamp with time zone not null,
             created_at timestamp with time zone default current_timestamp
         );
 

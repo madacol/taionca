@@ -5,9 +5,9 @@
         ({pending_responsibilitys} = await (await this.fetch('/api/public/last_pending_responsibilitys')).json());
 
         await Promise.all(pending_responsibilitys.map(async (responsibility) => {
-			let start_date = new Date(responsibility.start_date);
+			let deadline = new Date(responsibility.deadline);
 
-            if ( start_date <= current_date ){
+            if ( deadline <= current_date ){
 
                 console.log("Entró");
 				await (await this.fetch("/api/public/update_responsibility",{

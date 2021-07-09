@@ -6,7 +6,7 @@
 	import { next_date } from '../functions';
 	
 	let DatePicker;
-	let start_date;
+	let deadline;
 	let time_frequency;
 	let days_to_repeat;
 	
@@ -16,15 +16,15 @@
 
 	let a;
 
-	$: if(start_date && time_frequency){
-		console.log(start_date, time_frequency.term, days_to_repeat);
-		a = next_date(start_date, time_frequency.term, days_to_repeat).toLocaleDateString();
+	$: if(deadline && time_frequency){
+		console.log(deadline, time_frequency.term, days_to_repeat);
+		a = next_date(deadline, time_frequency.term, days_to_repeat).toLocaleDateString();
 	}
 </script>
 
 {#if DatePicker}
-	<svelte:component this={DatePicker} bind:value={start_date} datePickerType="single" locale={navigator.language} dateFormat="Y/m/d">
-		<DatePickerInput placeholder="Fecha de inicio" invalid={new Date(start_date) <= new Date(new Date().toLocaleDateString())} invalidText="Debe ser una fecha futura"/>
+	<svelte:component this={DatePicker} bind:value={deadline} datePickerType="single" locale={navigator.language} dateFormat="Y/m/d">
+		<DatePickerInput placeholder="Fecha de inicio" invalid={new Date(deadline) <= new Date(new Date().toLocaleDateString())} invalidText="Debe ser una fecha futura"/>
 	</svelte:component>
 {/if}
 
