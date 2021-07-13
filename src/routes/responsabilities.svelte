@@ -7,7 +7,9 @@
 	async function get_responsibility(){
 		({awaiting_approval_responsibilitys} = await apiFetch('/api/public/not_approving_pending_responsibilitys'));
 	}
-	get_responsibility();
+	onMount(async ()=>{
+		get_responsibilitys();
+	})
     
     const headers=[
         { key: 'name', value: 'Nombre' },

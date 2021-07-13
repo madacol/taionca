@@ -2,13 +2,17 @@
     import 'carbon-components-svelte/css/white.css';
     import { DataTable, Button, ButtonSet } from "carbon-components-svelte";
 	import { apiFetch } from '../functions';
+	import { onMount } from 'svelte';
 
 	let awaiting_approval_responsibilitys = [];
 	let id = 0;
 	async function get_responsibilitys(){
 		({awaiting_approval_responsibilitys} = await apiFetch('/api/public/all_awaiting_approval_responsibilitys'));
 	}
-    get_responsibilitys();
+
+	onMount(async ()=>{
+		get_responsibilitys();
+	})
     const headers=[
         { key: 'responsable', value: 'Responsable' },
         { key: 'name', value: 'Nombre' },
