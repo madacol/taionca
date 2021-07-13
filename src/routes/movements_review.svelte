@@ -30,11 +30,9 @@
 	
 	const _1D_in_ms = 1000*60*60*24;
 	//ROWS
-	$:console.log(balance_movements.length);
 	$: if (balance_movements != undefined && balance_movements.length>0){
 		let date_inicial=new Date(date1);
 		let date_final=new Date( Date.parse(date2) + _1D_in_ms);
-		console.log(date1, date2, date_inicial, date_final)
 		movements_filtered = balance_movements.filter(({created_at}) => {
 			return date_inicial<=(new Date(created_at)) && (new Date(created_at))<=date_final
 		});
@@ -120,7 +118,6 @@
 	let rows_currencies = [];
 	$: if (entity && rows_balances.length>0){
 		const currencies_auxiliar = {};
-		console.log({rows_balances});
 		rows_balances.forEach(balance => {
 			if (currencies_auxiliar[balance.currency] === undefined) {
 				return currencies_auxiliar[balance.currency] = {...balance};

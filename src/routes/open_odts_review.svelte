@@ -51,7 +51,6 @@
 			}
 			currencies_auxiliar[movement.currency] += Number(movement.amount)
 		});
-		console.log(currencies_auxiliar);
 		rows_currencies = Object.entries(currencies_auxiliar).map(([currency, balance], id) => ({
 			currency,
 			balance: Number(balance).toFixed(2),

@@ -36,7 +36,6 @@
 		responsibility = null;
 		times_remaining = 2147483647;
 	}
-	$:console.log(responsibility);
 </script>
 
 <Responsibilitys bind:responsibility={responsibility}/>

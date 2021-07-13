@@ -35,7 +35,6 @@
 		days = null;
 	}
 
-    $: console.log(time_frequency, importance, days);
 </script>
 
 <TextInput type="Text" labelText="Nombre" placeholder="Ingrese el nombre de la responsabilidad..." bind:value={name}/>

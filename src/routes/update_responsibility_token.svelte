@@ -9,7 +9,6 @@
 
             if ( deadline <= current_date ){
 
-                console.log("Entró");
 				await (await this.fetch("/api/public/update_responsibility",{
                     method: 'POST',
                     body: JSON.stringify({
@@ -17,9 +16,7 @@
                     }),
                     headers: {'Content-Type': 'application/json'}
                 })).json()
-            }else {
-				console.log("No hay responsabilidades por actualizar");
-			}
+            }
         }));
     }
 </script>

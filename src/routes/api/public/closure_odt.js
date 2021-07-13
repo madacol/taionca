@@ -17,12 +17,10 @@ export const post =
                 operative_users,
                 supervisor_users
         } = req.body;
-        console.log(req.body);
         
         const admin_users_json = JSON.stringify(admin_users);
         const operative_users_json = JSON.stringify(operative_users);
         const supervisor_users_json = JSON.stringify(supervisor_users);
-        console.log(admin_users);
         const {rows: currencyChange} = await query(
             `
                 SELECT closure_odt($1,$2,$3,$4,$5,$6,$7,$8,$9);

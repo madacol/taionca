@@ -18,7 +18,6 @@
 
 	let quotationsToList = [];
 	$: if (quotations.length > 0) {
-		console.log('asd')
 		quotationsToList = quotations.map(_quotation => {
 			const {id_quotation, name, created_at, amount, symbol} = _quotation;
             const date=(new Date(created_at)).toLocaleString("es-ES",options);

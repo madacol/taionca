@@ -20,7 +20,6 @@
     let detail;
     
     let selectedRowIds = [rows[0].id];
-    $: console.log("selectedRowIds", selectedRowIds);
 </script>
         
 <DataTable title="Solicitudes pendientes" description="Seleccione una solicitud, ingrese un comentario y apruebe o niegue la solicitud." sortable radio bind:selectedRowIds {headers} {rows} />

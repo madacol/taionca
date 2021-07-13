@@ -53,8 +53,6 @@
 		description="";
 	}
 
-	$:console.log(quotation);
-	$:console.log(currency);
 </script>
 
 <TextInput type="number"labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." bind:value={amount}/>

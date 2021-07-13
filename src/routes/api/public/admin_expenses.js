@@ -10,7 +10,6 @@ export const post =
     async (req, res) => {
         const { id_account, amount, description, expense_currency_code } = req.body;
         const rate = await getRate('usd', expense_currency_code);
-        console.log({rate});
         const {rows: admin_expenses} = await sql`
             WITH new_admin_expense as (
                 INSERT INTO public.admin_expenses

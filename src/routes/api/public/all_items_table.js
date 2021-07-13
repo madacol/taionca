@@ -42,8 +42,6 @@ export const get =
         $: if (items) {
             itemsToList= spendable_itemsToList.concat(no_spendable_itemsToList)
         }
-        $: console.log(itemsToList);
-        $: console.log(rows);
         res.json({
             itemsToList
         });

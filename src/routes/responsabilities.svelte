@@ -1,13 +1,13 @@
 <script>
     import 'carbon-components-svelte/css/white.css';
     import { DataTable, Button, TextArea } from "carbon-components-svelte";
-	import { onMount } from 'svelte';
-	import { apiFetch, next_date } from '../functions';
+	import { apiFetch } from '../functions';
 
-	let active_responsibilitys = [];
-	onMount(async ()=>{
-		({active_responsibilitys} = await apiFetch('/api/public/active_responsibilitys'));
-	})
+	let awaiting_approval_responsibilitys = [];
+	async function get_responsibility(){
+		({awaiting_approval_responsibilitys} = await apiFetch('/api/public/not_approving_pending_responsibilitys'));
+	}
+	get_responsibility();
     
     const headers=[
         { key: 'name', value: 'Nombre' },
@@ -26,25 +26,43 @@
 			return term_label;
 		}
 	}
-
+	let id = 0;
 	let rows=[];
-	$: if (active_responsibilitys.length > 0){
-		console.log(active_responsibilitys);
-		rows = active_responsibilitys.map(responsibility => ({
+	$: if (awaiting_approval_responsibilitys && awaiting_approval_responsibilitys.length > 0){
+		id = 0;
+		rows = awaiting_approval_responsibilitys.map(responsibility => ({
 			
-			id: responsibility.id_active_responsibility,
+			id: id++,
 			name: responsibility.name,
 			description: responsibility.description,
 			importance: responsibility.importance,
 			frequency: frequency_label(responsibility.term_label, responsibility.days_to_repeat),
-			overdue: (+new Date(next_date(responsibility.deadline, responsibility.term)) - +new Date(new Date ().toLocaleDateString())) / 86400000, //Unix time between the deadline and actual date expressed in days
-			date: next_date(responsibility.deadline, responsibility.term).toLocaleDateString()
+			overdue: ( Date.parse(responsibility.deadline) - Date.parse(new Date().toLocaleDateString()) ) / ( 86400000 ), //Unix time between the deadline and actual date expressed in days
+			date: new Date(responsibility.deadline).toLocaleDateString()
 		}));
 	}
 
     let description;
 	let selectedRowIds;
-	$: if(selectedRowIds){console.log(selectedRowIds[0])}
+
+	async function send_responsibility(){
+		
+		await apiFetch("/api/public/new_awaiting_approval_responsibility",{
+			method: 'POST',
+			body: JSON.stringify({
+				id_pending_responsibility: awaiting_approval_responsibilitys[selectedRowIds[0]].id_pending_responsibility,
+				description_evidence: description
+			}),
+			headers: {'Content-Type': 'application/json'}
+		})
+
+		get_responsibility();
+		cleanWindows();
+	}
+
+	function cleanWindows(){
+		description = "";
+	}
     
 </script>
         
@@ -52,4 +70,4 @@
 
 <TextArea placeholder="Anexe link de soporte y en caso de ser necesario anexe algún comentario" bind:value={description}/>
 
-<Button>Enviar</Button>
+<Button on:click={send_responsibility}>Enviar</Button>

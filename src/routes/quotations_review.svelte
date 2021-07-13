@@ -82,7 +82,6 @@
 			}
 			currencies_auxiliar[_quotation.currency] += Number(_quotation.amount)
 		});
-		console.log(currencies_auxiliar);
 		rows_currencies = Object.entries(currencies_auxiliar).map(([currency, balance], id) => ({
 			currency: currency.replace(/(^|\s)\S/g, l => l.toUpperCase()),
 			balance: `${Number(balance).toFixed(2)}`,
