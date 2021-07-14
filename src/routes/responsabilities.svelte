@@ -2,9 +2,10 @@
     import 'carbon-components-svelte/css/white.css';
     import { DataTable, Button, TextArea } from "carbon-components-svelte";
 	import { apiFetch } from '../functions';
+	import { onMount } from 'svelte';
 
 	let awaiting_approval_responsibilitys = [];
-	async function get_responsibility(){
+	async function get_responsibilitys(){
 		({awaiting_approval_responsibilitys} = await apiFetch('/api/public/not_approving_pending_responsibilitys'));
 	}
 	onMount(async ()=>{
@@ -58,7 +59,7 @@
 			headers: {'Content-Type': 'application/json'}
 		})
 
-		get_responsibility();
+		get_responsibilitys();
 		cleanWindows();
 	}
 
