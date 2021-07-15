@@ -115,6 +115,7 @@
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="ingreso_responsabilities" text="Crear responsabilidad" />{/if}
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="approve_responsabilities" text="Aprobar responsabilidad" />{/if}
 				<SideNavMenuItem href="responsabilities" text="Responsabilidades" />
+				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="attendance" text="Asistencia" />{/if}
 			</SideNavMenu>
 
 			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}
