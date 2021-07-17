@@ -16,23 +16,23 @@
 		if(time){
 			let hours = Number(time[0] + time[1]);
 			let minutes = Number(time[3] + time[4]);
-			return new Date(year, month, day, hours, minutes).toLocaleString();
+			return new Date(year, month, day, hours, minutes)//.toLocaleString();
 		}else{
 			return null;
 		}
 
 	}
+	$:console.log(set_date(entry_time)); //Hoy a las 8AM
+	$:console.log(set_date(departure_time)); //Hoy a las 6PM
 	
 	async function send_attendance(){
-		console.log(set_date(entry_time)); //Hoy a las 8AM
-		console.log(set_date(departure_time)); //Hoy a las 6PM
 		
 		await apiFetch("/api/public/send_attendance",{
 			method: 'POST',
 			body: JSON.stringify({ 
 				id_user_employee: user.value, 
-				entry_date: set_date(entry_time), //No sé
-				departure_date: set_date(departure_time) //No sé
+				entry_date: set_date(entry_time), //Hora de llegada
+				departure_date: set_date(departure_time) //Hora de salida
 			}),
 			headers: {'Content-Type': 'application/json'}
 		})

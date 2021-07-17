@@ -8,8 +8,8 @@ export const post =
     async (req, res) => {
         const { user_id } = req.session.user;
         const { id_user_employee, entry_date, departure_date } = req.body;
-        console.log(entry_date); // Hoy a la 1PM
-        console.log(departure_date); // Hoy a las 11PM
+        console.log(entry_date); // Hora de llegada
+        console.log(departure_date); // Hora de salida
         if( entry_date && departure_date ){
             const {rows: supervisor_attendances} = await sql`
             
