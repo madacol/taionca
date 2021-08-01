@@ -14,7 +14,7 @@ export const post =
                         VALUES ($1::character varying)
                         RETURNING id_exchange_currency
                 )
-                SELECT alter_balance(
+                SELECT alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                     id_balance,
                     CASE WHEN id_account=$2 THEN -$3::numeric ELSE $5::numeric END,
                     id_exchange_currency,

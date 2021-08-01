@@ -36,7 +36,7 @@ export const post = async (req, res) => {
                 SELECT * FROM balances, amount_de_verdad
                 WHERE id_balance = auto_select_balance(1, amount, 1)
             )
-            SELECT alter_balance(
+            SELECT alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                 balances.id_balance,
                 CASE WHEN balances.id_entity=1 THEN -amount ELSE amount END,
                 id_spendable_inv_odt_expense,

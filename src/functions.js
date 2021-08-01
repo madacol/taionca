@@ -137,25 +137,6 @@ export function next_date(deadline, term, days_to_repeat){
     }
 }
 
-// async function update_responsibilities(){
-//     let active_responsibilitys = [];
-//     let current_date = +new Date(new Date().toLocaleDateString());
-//     ({active_responsibilitys} = await apiFetch('/api/public/active_responsibilitys'));
-//     console.log(active_responsibilitys);
-//     await Promise.all(active_responsibilitys.map(async (responsibility) => {
-//         if (current_date === +new Date(responsibility.end_date) && current_date !== +new Date(new Date(responsibility.created_at).toLocaleDateString())){ // Esta segunda condición en teoría es la forma en que el código no se va a equivocar y replicar eternamente una responsabilidad ANALIZAR
-//             await apiFetch("/api/public/update_responsibility",{
-//                 method: 'POST',
-//                 body: JSON.stringify({
-//                     responsibility,
-//                     current_date: new Date(current_date)
-//                 }),
-//                 headers: {'Content-Type': 'application/json'}
-//             })
-//         }
-//     }));
-// }
-
 export async function apiFetch (url, options={}) {
     loadingIsActive.set(true);
 

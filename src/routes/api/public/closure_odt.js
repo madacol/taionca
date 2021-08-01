@@ -21,28 +21,42 @@ export const post =
         const admin_users_json = JSON.stringify(admin_users);
         const operative_users_json = JSON.stringify(operative_users);
         const supervisor_users_json = JSON.stringify(supervisor_users);
-        const {rows: currencyChange} = await query(
+        const {rows: payroll} = await query(
             `
-                SELECT closure_odt($1,$2,$3,$4,$5,$6,$7,$8,$9);
+                SELECT id_odt FROM payroll_odt_hours
+                WHERE id_odt = $1 AND is_paid = FALSE;
                 
-            `, [
-                id_account,
-                id_odt,
-                user_id,
-                amount,
-                // admin_profit_percent,
-                // operative_profit_percent,
-                // supervisor_profit_percent,
-                admin_users_json,
-                operative_users_json,
-                supervisor_users_json,
-                0.2, // admin_expense_percent,
-                0.15 //president_profit_percent
-            ]
+            `, [id_odt]
         );
-        let data=currencyChange[0];
-        res.json({
-            success: "ODT cerrada exitosamente",
-            data
-        } );
+
+        if(payroll.length > 0){
+            res.json({
+                error: "No se puede cerrar la ODT, hay nómina pendiente"
+            });
+        }else{
+            const {rows: currencyChange} = await query(
+                `
+                    SELECT closure_odt($1,$2,$3,$4,$5,$6,$7,$8,$9);
+                    
+                `, [
+                    id_account,
+                    id_odt,
+                    user_id,
+                    amount,
+                    // admin_profit_percent,
+                    // operative_profit_percent,
+                    // supervisor_profit_percent,
+                    admin_users_json,
+                    operative_users_json,
+                    supervisor_users_json,
+                    0.2, // admin_expense_percent,
+                    0.15 //president_profit_percent
+                ]
+            );
+            let data=currencyChange[0];
+            res.json({
+                success: "ODT cerrada exitosamente",
+                data
+            });
+        }
     }

@@ -165,7 +165,7 @@ exports.up = pgm => {
             taionca_amount := ganancia_taionca + general_expenses + inv_expenses;
 
             PERFORM
-                alter_balance(
+                alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                     id_balance,
                     taionca_amount,
                     new_closure_odt.id_closure_odt,
@@ -176,7 +176,7 @@ exports.up = pgm => {
 
             -- Administración
             PERFORM
-                alter_balance(
+                alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                     id_balance,
                     admin_entity_profit,
                     new_closure_odt.id_closure_odt,
@@ -188,7 +188,7 @@ exports.up = pgm => {
             -- Comisiones
                 -- admin_closure_odts
                 PERFORM
-                    alter_balance(
+                    alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                         id_balance,
                         ganancia * admin_closure_odts.profit_percent,
                         new_closure_odt.id_closure_odt,
@@ -200,7 +200,7 @@ exports.up = pgm => {
                 
                 -- operative_closure_odts
                 PERFORM
-                    alter_balance(
+                    alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                         id_balance,
                         ganancia * operative_closure_odts.profit_percent,
                         new_closure_odt.id_closure_odt,
@@ -212,7 +212,7 @@ exports.up = pgm => {
 
                 -- supervisor_closure_odts
                 PERFORM
-                    alter_balance(
+                    alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                         id_balance,
                         ganancia * supervisor_closure_odts.profit_percent,
                         new_closure_odt.id_closure_odt,
@@ -224,7 +224,7 @@ exports.up = pgm => {
 
                 -- Presidente
                 PERFORM
-                    alter_balance(
+                    alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                         id_balance,
                         ganancia_presidente,
                         new_closure_odt.id_closure_odt,
@@ -270,7 +270,7 @@ exports.up = pgm => {
     --     SELECT * INTO STRICT selected_balance FROM balances
     --     WHERE id_balance = auto_select_balance(1, v_amount, 1);
 
-    --     SELECT alter_balance(
+    --     SELECT alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
     --         balances.id_balance,
     --         CASE WHEN balances.id_entity=1 THEN -v_amount ELSE v_amount END,
     --         id_no_spendable_inv_odt_expense,
@@ -317,7 +317,7 @@ exports.up = pgm => {
     --     SELECT * INTO STRICT selected_balance FROM balances
     --     WHERE id_balance = auto_select_balance(1, v_amount, 1);
 
-    --     SELECT alter_balance(
+    --     SELECT alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
     --         balances.id_balance,
     --         CASE WHEN balances.id_entity=1 THEN -v_amount ELSE v_amount END,
     --         id_spendable_inv_odt_expense,

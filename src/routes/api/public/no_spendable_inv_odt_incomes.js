@@ -16,7 +16,7 @@ export const post = async (req, res) => {
                 RETURNING id_no_spendable_inv_odt_income
         )
 
-        SELECT alter_balance(
+        SELECT alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
             id_balance,
             -$4,
             id_no_spendable_inv_odt_income,
