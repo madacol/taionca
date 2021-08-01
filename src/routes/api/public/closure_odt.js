@@ -37,7 +37,7 @@ export const post =
                 operative_users_json,
                 supervisor_users_json,
                 0.2, // admin_expense_percent,
-                0.1 //president_profit_percent
+                0.15 //president_profit_percent
             ]
         );
         let data=currencyChange[0];
