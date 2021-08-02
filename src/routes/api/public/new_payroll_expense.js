@@ -29,6 +29,7 @@ export const post =
                     payroll_odt_hours.is_paid
                 FROM json_to_recordset(${JSON.stringify(v_hours_by_odt)}::json) as x("id_payroll_odt_hour" int, "id_account" int, "rate" decimal(30,10))
                 JOIN payroll_odt_hours using(id_payroll_odt_hour)
+                ORDER BY id_payroll_odt_hour
 
             ), total_user_account_data AS (
                 SELECT
@@ -52,6 +53,7 @@ export const post =
 
                 FROM total_user_account_data
                 JOIN payroll_data using(id_user, id_account)
+                ORDER BY payroll_data.id_payroll_odt_hour
                 RETURNING id_general_expense, amount, id_account
 
             ), _t as (
@@ -62,16 +64,20 @@ export const post =
                 WHERE payroll_odt_hours.id_payroll_odt_hour = payroll_data.id_payroll_odt_hour
                 
             ), __t as (
+
                 INSERT INTO payroll_records
                     (id_payroll_odt_hour, id_general_expense)
                 SELECT 
                     id_payroll_odt_hour,
                     id_general_expense
-                FROM payroll_data, new_general_expense
-                -- WHERE payroll_data.id_payroll_odt_hour IN new_general_expense
+                FROM (SELECT *, row_number() OVER() AS i FROM payroll_data) AS _payroll_data
+                JOIN (SELECT *, row_number() OVER() AS i FROM new_general_expense) AS _new_general_expense  USING(i)
+                -- this is an horizontal JOIN, first row with first row, second with second, third with third ... and so on
+                -- to make it work I ordered by id_payroll_odt_hour both tables, payroll_data and new_general_expense
+                -- https://stackoverflow.com/questions/65869402/how-to-join-two-different-tables-horizontally-without-cross-join
 
             )
-                SELECT 
+                SELECT
                     alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
                         id_balance,
                         (-new_general_expense.amount),
@@ -84,10 +90,9 @@ export const post =
         
         `;
 
-        const hour_paid = payroll[0];
         res.json({
             success: `Nómina pagada`,
-            hour_paid
+            payroll
         });
 
     }
