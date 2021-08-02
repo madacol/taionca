@@ -55,7 +55,6 @@ exports.up = pgm => {
             v_id_user int,
             v_id_account int,
             v_total_hours payroll_odt_hours.hours_spent%TYPE,
-            -- payroll_odt_hours int[],
             v_amount decimal(30,10)
         )
         LANGUAGE plpgsql
@@ -66,8 +65,6 @@ exports.up = pgm => {
             weeks_remaining integer;
         BEGIN
             
-            RAISE NOTICE 'OLAAAAAAA';
-
             SET LOCAL TIMEZONE='America/Caracas';
 
             -- Get payroll settings (salary, taxes, food vouchers)
@@ -114,7 +111,6 @@ exports.up = pgm => {
                 id_user,
                 id_account,
                 total_hours,
-                -- payroll_odt_hours,
                 (
                     CASE WHEN hours_worked.total_hours <= (32 * weeks_remaining) THEN
 
@@ -134,7 +130,6 @@ exports.up = pgm => {
                 SELECT
                     payroll_data.id_user,
                     payroll_data.id_account,
-                    -- array_agg(id_payroll_odt_hour) AS payroll_odt_hours,
                     SUM(hours_spent) as total_hours
                 FROM payroll_data
                 GROUP BY id_user, id_account
@@ -148,9 +143,11 @@ exports.up = pgm => {
         CREATE OR REPLACE FUNCTION payroll(
             v_hours_by_odt json
         )
-        RETURNS text
+        RETURNS void
         LANGUAGE PLPGSQL
         AS $body$
+        DECLARE
+            v_balance balance_movements;
         BEGIN
 
             WITH payroll_data as (
@@ -165,14 +162,17 @@ exports.up = pgm => {
                     payroll_odt_hours.is_paid
                 FROM json_to_recordset(v_hours_by_odt) as x("id_payroll_odt_hour" int, "id_account" int, "rate" decimal(30,10))
                 JOIN payroll_odt_hours using(id_payroll_odt_hour)
+                ORDER BY id_payroll_odt_hour
 
             ), total_user_account_data AS (
+
                 SELECT
                     v_id_user AS id_user,
                     v_id_account AS id_account,
                     v_total_hours AS total_hours,
                     v_amount AS amount
                 FROM payroll_preview(v_hours_by_odt)
+
             ), new_general_expense as (
 
                 INSERT INTO public.general_expenses
@@ -188,34 +188,41 @@ exports.up = pgm => {
 
                 FROM total_user_account_data
                 JOIN payroll_data using(id_user, id_account)
+                ORDER BY payroll_data.id_payroll_odt_hour
                 RETURNING id_general_expense, amount, id_account
-            )--, _t as (
+
+            ), _t as (
+
+                UPDATE payroll_odt_hours
+                SET is_paid = TRUE
+                FROM payroll_data 
+                WHERE payroll_odt_hours.id_payroll_odt_hour = payroll_data.id_payroll_odt_hour
+
+            ), __t as (
+
+                INSERT INTO payroll_records
+                    (id_payroll_odt_hour, id_general_expense)
                 SELECT 
-                    alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
-                        id_balance,
-                        (-new_general_expense.amount),
-                        new_general_expense.id_general_expense,
-                        'general_expenses'
-                    )
-                FROM new_general_expense, balances
-                WHERE balances.id_account = new_general_expense.id_account AND balances.id_entity = 1
-            
-            -- ), __t as (
-            --     INSERT INTO payroll_records
-            --         (id_payroll_odt_hour, id_general_expense)
-            --     SELECT 
-            --         payroll_data.id_payroll_odt_hour,
-            --         new_general_expense.id_general_expense
-            --     FROM payroll_data, new_general_expense
-            --     -- WHERE payroll_data.id_payroll_odt_hour IN new_general_expense
+                    id_payroll_odt_hour,
+                    id_general_expense
+                FROM (SELECT *, row_number() OVER() AS i FROM payroll_data) AS _payroll_data
+                JOIN (SELECT *, row_number() OVER() AS i FROM new_general_expense) AS _new_general_expense  USING(i)
+                -- this is an horizontal JOIN, first row with first row, second with second, third with third ... and so on
+                -- to make it work I ordered by id_payroll_odt_hour both tables, payroll_data and new_general_expense
+                -- https://stackoverflow.com/questions/65869402/how-to-join-two-different-tables-horizontally-without-cross-join
 
-            -- )
-            --     UPDATE payroll_odt_hours
-            --     SET payroll_odt_hours.is_paid = TRUE
-            --     FROM payroll_data USING(id_payroll_odt_hour)
+            )
+            SELECT
+                alter_balance( --Maldita sea, puto alter_balance siempre de ultimo en los WITHS!!!!!! 
+                    id_balance,
+                    (-new_general_expense.amount),
+                    new_general_expense.id_general_expense,
+                    'general_expenses'
+                )
+            INTO v_balance
+            FROM new_general_expense, balances
+            WHERE balances.id_account = new_general_expense.id_account AND balances.id_entity = 1
             ;
-
-            RETURN 'success';
             
         END;
         $body$;
