@@ -3,7 +3,7 @@ import { database as config } from './config';
 
 export const pool = new Pool(config.pool);
 pool.on('connect', client => {
-    client.on('notice', msg => console.warn('notice:', msg))
+    client.on('notice', msg => console.warn('notice:', msg.message))
 })
 
 /**
@@ -20,7 +20,7 @@ export async function query(...args) {
     }
     // Otherwise create a disposable client
     const client = new Client(config.client);
-    client.on('notice', msg => console.warn('notice:', msg))
+    client.on('notice', msg => console.warn('notice:', msg.message))
     await client.connect();
     const result = await client.query(...args);
     client.end();
