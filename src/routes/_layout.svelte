@@ -140,6 +140,7 @@
 			{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions) || checkPermissions([STOCKS_READ[1]], user_permissions)}
 				<SideNavMenu text="Gestión monetaria">
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="cambio_moneda" text="Cambios de moneda"/>{/if}
+					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="money_transfer" text="Transferencias"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
 					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="movements_review" text="Cierre"/>{/if}
 					{#if checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="payroll" text="Nómina"/>{/if}

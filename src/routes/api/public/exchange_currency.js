@@ -6,6 +6,9 @@ import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 export const post =
     async (req, res) => {
         const {description, income, expense, id_entity} = req.body;
+        if(expense.id_account === income.id_account){
+            return res.json({error: "Selecciona cuentas diferentes."});
+        }
         const {rows: currencyChange} = await query(
             `
                 WITH new_exchange_currencys as (
