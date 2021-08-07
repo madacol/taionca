@@ -8,7 +8,7 @@ exports.up = pgm => {
         ( role_id, permission_id )
         VALUES ( '4'::integer, '6'::integer);
 
-        alter type movement_category add value 'transfer_entities' after 'closure_odts';
+        -- alter type movement_category add value 'transfer_entities' after 'closure_odts';
 
         CREATE TABLE transfer_entitys (
             id_transfer_entity serial primary key,
