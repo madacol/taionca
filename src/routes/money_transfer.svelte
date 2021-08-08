@@ -45,7 +45,6 @@
 		entity_expense=null;
 	}
 
-	$:console.log({account_expense, account_income});
 </script>
 
 <style>
@@ -74,8 +73,10 @@
 	</div>
 		<h3 class="icons">➤</h3>
 	<div>
-		<Accounts orientation="vertical" bind:account={account_income}/>
-		<Entitys bind:entity={entity_income}/>
+		{#if account_expense}
+			<Accounts orientation="vertical" id_currency_filter={account_expense.id_currency} bind:account={account_income}/>
+			<Entitys bind:entity={entity_income}/>
+		{/if}
 	</div>
 </div>
 
