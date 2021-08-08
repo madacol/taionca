@@ -12,10 +12,11 @@
 	let accounts = [];
 	onMount(async ()=>{
 		({accounts} = await apiFetch('/api/public/accounts'));
+		get_accounts ();
 	})
 
 	let accountsToList = [];
-	$: if (accounts.length > 0) {
+	function get_accounts (){
 		accountsToList = accounts
 							.filter(({id_currency})=> id_currency_filter
 														? id_currency === id_currency_filter
@@ -29,4 +30,4 @@
 
 </script>
 
-<SelectSearch placeholder="Cuentas..." bind:selected={account} items={accountsToList}/>
+<SelectSearch placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList}/>
