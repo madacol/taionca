@@ -34,6 +34,13 @@ export const post =
                 error: "No se puede cerrar la ODT, hay nómina pendiente"
             });
         }else{
+            console.log({id_account,
+                id_odt,
+                user_id,
+                amount,
+                admin_users_json,
+                operative_users_json,
+                supervisor_users_json});
             const {rows: currencyChange} = await query(
                 `
                     SELECT closure_odt($1,$2,$3,$4,$5,$6,$7,$8,$9);
@@ -50,7 +57,7 @@ export const post =
                     operative_users_json,
                     supervisor_users_json,
                     0.2, // admin_expense_percent,
-                    0.15 //president_profit_percent
+                    0.10 //president_profit_percent
                 ]
             );
             let data=currencyChange[0];

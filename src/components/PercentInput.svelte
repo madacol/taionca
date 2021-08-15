@@ -1,16 +1,16 @@
 <script>
     import { TextInput } from 'carbon-components-svelte';
 
-	export let ratio
+	export let value
 
-	let percent = `${Number(ratio) * 100}%`
+	let percent = `${Number(value) * 100}%`
 
 	$: {
 		const percent_stripped = percent.replace(/[^\d\.,]*/g,'')
 		percent = percent_stripped+'%'
 		const percent_number = Number(percent_stripped)
 		if (!percent_number) percent = '0%'
-		ratio = Number(percent_number / 100)
+		value = Number(percent_number / 100)
 	}
 
 </script>

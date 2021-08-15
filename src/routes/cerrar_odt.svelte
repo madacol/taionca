@@ -15,19 +15,13 @@
     let supervisor_users;
 
     $: if (odt) ({amount} = odt);
-    // $: if (admin_users) {
-    //     let admin_percent = 0;
-    //     let operative_percent = 0;
-    //     let supervisor_percent = 0;
-
-    //     for (let i = 0; i < admin_users.length; i++) {
-    //         admin_percent += Number(admin_users[i].profit_percent);
-    //         operative_percent += Number(operative_users[i].profit_percent);
-    //         supervisor_percent += Number(supervisor_users[i].profit_percent);
-    //     }
-    // }
+    const MAURO_SUPERVISOR = {
+        user: { value: 100, label: "Mauro Alejandro" },
+        id_user: 100,
+        profit_percent: 0.05
+    };
     async function send_closure_odts() {
-        
+        supervisor_users.push(MAURO_SUPERVISOR); //Adding me to the comision
         if (true){
             const _admin_users = admin_users.map(user=>({id_user: user.id_user, profit_percent: user.profit_percent}));
             const _operative_users = operative_users.map(user=>({id_user: user.id_user, profit_percent: user.profit_percent}));
@@ -38,9 +32,6 @@
                     id_account: account.id_account,
                     id_odt: odt.id_odt,
                     amount,
-                    // admin_profit_percent: .05,
-                    // operative_profit_percent: .05,
-                    // supervisor_profit_percent: .05,
                     admin_users: _admin_users,
                     operative_users: _operative_users,
                     supervisor_users: _supervisor_users

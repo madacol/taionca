@@ -8,6 +8,8 @@ export const post =
         const {description, income, expense, id_entity} = req.body;
         if(expense.id_account === income.id_account){
             return res.json({error: "Selecciona cuentas diferentes."});
+        }else if (expense.id_currency === income.id_currency){
+            return res.json({error: "Seleccione cuentas con monedas diferentes."});
         }
         const {rows: currencyChange} = await query(
             `

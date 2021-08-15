@@ -8,7 +8,7 @@ export const post =
         const { payrolls } = req.body;
 
         const v_hours_by_odt = await Promise.all( payrolls.map(async payroll=>{
-            const rate = await getRate(payroll.payroll_code, payroll.odt_code)
+            const rate = await getRate(payroll.odt_code, payroll.payroll_code)
             return {
                 ...payroll,
                 rate

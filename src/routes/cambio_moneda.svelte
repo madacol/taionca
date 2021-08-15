@@ -30,15 +30,15 @@
 				description,
 				expense: {
 					id_account: account_expense.id_account,
+					id_currency: account_expense.id_currency,
 					amount: amount_expense,
-					description,
-					movement_category: 'currencyChanges'
+					description
 				},
 				income: {
 					id_account: account_income.id_account,
+					id_currency: account_income.id_currency,
 					amount: amount_income,
-					description,
-					movement_category: 'currencyChanges'
+					description
 				},
 				id_entity: id_entity.value
 			}),
