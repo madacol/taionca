@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "vercel-sapper"
+
+  "functions": {
+    "package.json": {
+      "runtime": "vercel-sapper@0.44.0"
     }
-  ],
+  },
+
   "github": {"silent": true}
+
 }
