@@ -6,6 +6,7 @@ import sessions from './middlewares/sessions';
 import morgan from 'morgan';
 import { json } from 'body-parser';
 import requireLogin from './middlewares/requireLogin';
+import logs from './middlewares/logs';
 
 
 const { PORT, NODE_ENV } = process.env;
@@ -22,6 +23,7 @@ export default polka() // You can also use Express
 		responseHelpers,
 		requireLogin,
 		json(),
+		logs,
 	)
 	.use(
 		sapper.middleware({
