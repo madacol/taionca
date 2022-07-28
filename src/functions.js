@@ -176,7 +176,7 @@ export async function apiFetch (url, options={}) {
 
 export const api = {
     get: apiFetch,
-     post: async (url, bodyObject, headers={}, options={}) =>
+    post: async (url, bodyObject, headers={}, options={}) =>
         await apiFetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json', ...headers},
