@@ -1,7 +1,6 @@
 export default (req, res, next)=>{
-    console.log(req);
-    
-    const body = req.body;
+    const body = {...req.body};
+        delete body.password
     const path = req.originalUrl;
     const method = req.method;
     const params = req.params;
