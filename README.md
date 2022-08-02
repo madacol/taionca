@@ -12,6 +12,11 @@
 6. Run `npm run build:db` to migrate db, and build `PERMISSIONS.js`
 7. Run development server `npm run dev`
 
+### To deploy to fly.io
+
+    fly deploy --build-secret db_url="postgres://user:password@domain:5432/db_name"
+"
+
 ### To deploy to vercel
 
 1. Fork this repo and configure it in vercel as a Sapper app
