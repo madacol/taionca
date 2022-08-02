@@ -49,14 +49,12 @@
 	}
 
 	onMount(async ()=>{
-		const response = await apiFetch("/api/user");
-		const result = await response.json();
+		const result = await apiFetch("/api/user");
 		$session = result.session;
 	})
 
 	$: user_permissions = ($session && $session.permissions) || [];
 
-  
 	let isSideNavOpen = false;
 	let isOpen = false;
 
