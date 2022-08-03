@@ -20,10 +20,10 @@ export const session_options = {
   resave: false,
   name: 'sessionId',
   cookie: {
+    domain: "taionca.com",
     maxAge: 43200000, // 12 Hours
     httpOnly: true,
     sameSite: true // Strict
-    //domain: "example.com",
   },
   proxy: true,
   rolling: true,  // Cookie's expiration time will be refreshed on each request
