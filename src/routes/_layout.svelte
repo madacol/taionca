@@ -2,7 +2,7 @@
 	import Logout32 from "carbon-icons-svelte/lib/Logout32";
 	import { onMount } from 'svelte';
 	import { session, notifications, loadingIsActive } from '../stores';
-	import { checkPermissions } from '../functions';
+	import { apiFetch, checkPermissions } from '../functions';
 	import { goto } from '@sapper/app'
 	import {ADMIN_EXPENSES_CREATE,
 			EXCHANGE_CURRENCY_CREATE,
@@ -49,14 +49,12 @@
 	}
 
 	onMount(async ()=>{
-		const response = await fetch("/api/user");
-		const result = await response.json();
+		const result = await apiFetch("/api/user");
 		$session = result.session;
 	})
 
 	$: user_permissions = ($session && $session.permissions) || [];
 
-  
 	let isSideNavOpen = false;
 	let isOpen = false;
 

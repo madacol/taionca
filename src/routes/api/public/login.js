@@ -3,6 +3,7 @@ import { query } from "../../../db";
 
 export async function post(req, res){
     const {username, password} = req.body;
+    const usernameNormalized = username.toLowerCase();
 
     let user;
     {
@@ -27,11 +28,11 @@ export async function post(req, res){
                 ) roles USING (role_id)
                 WHERE username=$1
                 GROUP BY "user_id"`,
-            [username]
+            [usernameNormalized]
         )
         user = result.rows[0];
     }
-    if (!user) return res.json({error: `Usuario "${username}" no existe`})
+    if (!user) return res.json({error: `Usuario "${usernameNormalized}" no existe`})
 
     {
         const isPasswordValid = await argon2.verify(user.password_hash, password);
