@@ -2,9 +2,9 @@
     import 'carbon-components-svelte/css/white.css';
     import { Button, ContentSwitcher, Switch } from "carbon-components-svelte";
 	import { apiFetch } from '../functions';
-	import Users from '../components/Users.svelte';
+	// import Users from '../components/Users.svelte';
     
-	let user;
+	// let user;
 	let entry_time;
 	let departure_time;
 	let selectedIndex;
@@ -22,15 +22,15 @@
 		}
 
 	}
-	$:console.log(set_date(entry_time)); //Hoy a las 8AM
-	$:console.log(set_date(departure_time)); //Hoy a las 6PM
+	// $:console.log(set_date(entry_time)); //Hoy a las 8AM
+	// $:console.log(set_date(departure_time)); //Hoy a las 6PM
 	
 	async function send_attendance(){
 		
-		await apiFetch("/api/public/send_attendance",{
+		await apiFetch("/api/public/attendance",{
 			method: 'POST',
 			body: JSON.stringify({ 
-				id_user_employee: user.value, 
+				// id_user_employee: user.value, 
 				entry_date: set_date(entry_time), //Hora de llegada
 				departure_date: set_date(departure_time) //Hora de salida
 			}),
@@ -43,7 +43,7 @@
 	function cleanWindows(){
 		entry_time = null;
 		departure_time = null;
-		user = null;
+		// user = null;
 	}
     
 </script>
@@ -54,7 +54,7 @@
 	<Switch text="Ambos"/>
 </ContentSwitcher>
 
-<Users bind:user={user}/>
+<!-- <Users bind:user={user}/> -->
 
 {#if selectedIndex===0 || selectedIndex===2}
 <form>
