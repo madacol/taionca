@@ -21,8 +21,8 @@ export const post =
                 )
                     INSERT INTO public.payroll_not_assign_hours
                         ( id_user, hours )
-                        SELECT id_user, extract(epoch FROM age(departure_date, entry_date))/3600 as hours_diff FROM new_attendances
-                        ON CONFLICT (id_user) DO UPDATE SET hours = payroll_not_assign_hours.hours + (SELECT extract(epoch FROM age(departure_date, entry_date))/3600 as hours_diff FROM new_attendances);
+                        SELECT id_user, (extract(epoch FROM age(departure_date, entry_date))/3600 -1) as hours_diff FROM new_attendances
+                        ON CONFLICT (id_user) DO UPDATE SET hours = (payroll_not_assign_hours.hours -1) + (SELECT extract(epoch FROM age(departure_date, entry_date))/3600 as hours_diff FROM new_attendances);
                 `
             ;
             let data=attendances[0]
@@ -56,8 +56,8 @@ export const post =
             )
                 INSERT INTO public.payroll_not_assign_hours
                     ( id_user, hours )
-                    SELECT id_user, extract(epoch FROM age(departure_date, entry_date))/3600 as hours_diff FROM new_attendances
-                    ON CONFLICT (id_user) DO UPDATE SET hours = payroll_not_assign_hours.hours + (SELECT extract(epoch FROM age(departure_date, entry_date))/3600 as hours_diff FROM new_attendances);
+                    SELECT id_user, (extract(epoch FROM age(departure_date, entry_date))/3600 -1) as hours_diff FROM new_attendances
+                    ON CONFLICT (id_user) DO UPDATE SET hours = (payroll_not_assign_hours.hours -1) + (SELECT extract(epoch FROM age(departure_date, entry_date))/3600 as hours_diff FROM new_attendances); -- -1h Due to lunch time
 
                 `
             ;
