@@ -5,7 +5,7 @@ exports.up = pgm => {
        ALTER TABLE attendances DROP COLUMN id_user_supervisor;
        ALTER TABLE attendances RENAME COLUMN id_supervisor_attendance TO id_attendance;
        ALTER TABLE attendances RENAME COLUMN id_user_employee TO id_user;
-
+       ALTER TABLE attendances ADD CHECK (entry_date < departure_date);
             
         `
 };

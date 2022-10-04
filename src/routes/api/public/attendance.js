@@ -1,15 +1,10 @@
-import { compose } from "compose-middleware";
-import { USERS_READ } from "../../../constants/PERMISSIONS";
 import { sql } from "../../../db";
-import checkPermissionsMW from "../../../middlewares/checkPermissionsMW";
 
 export const post =
 
     async (req, res) => {
         const { user_id } = req.session.user;
         const { entry_date, departure_date } = req.body;
-        console.log(entry_date); // Hora de llegada
-        console.log(departure_date); // Hora de salida
         if( entry_date && departure_date ){
             const {rows: attendances} = await sql`
             
@@ -30,7 +25,7 @@ export const post =
                 success: "Asistencia registrada.",
                 data
             });
-        }else if(entry_date){
+        }else if( entry_date){
             const {rows: attendances} = await sql`
             
                 INSERT INTO public.attendances
@@ -45,7 +40,7 @@ export const post =
                 success: "Hora de llegada registrada.",
                 data
             });
-        }else if(departure_date){
+        }else if( departure_date){
             const {rows: attendances} = await sql`
             
             WITH new_attendances as (
@@ -66,5 +61,4 @@ export const post =
                 success: "Hora de salida registrada.",
                 data
             });
-        }
-    }
+        }}
