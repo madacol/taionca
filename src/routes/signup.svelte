@@ -16,7 +16,7 @@
 		await apiFetch("/api/users",{
 			method: 'POST',
 			body: JSON.stringify({
-                username: user,
+                username: user.trim(),
                 password: password1,
                 name,
                 email,

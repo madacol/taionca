@@ -3,7 +3,7 @@ import { sql } from "../../../db";
 // List attendances
 export const get =
     async (req, res) => {
-
+        const {user_id} = req.session.user;
         const {rows: attendances} = await sql`
         
             SELECT 
@@ -23,6 +23,7 @@ export const get =
             `;
 
         res.json({
-            attendances
+            attendances,
+            user_id
         });
     }

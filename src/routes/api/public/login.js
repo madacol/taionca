@@ -3,7 +3,7 @@ import { query } from "../../../db";
 
 export async function post(req, res){
     const {username, password} = req.body;
-    const usernameNormalized = username.toLowerCase();
+    const usernameNormalized = username.toLowerCase().trim();
 
     let user;
     {

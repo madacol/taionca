@@ -8,14 +8,13 @@
 	let departure_time;
 	let selectedIndex;
     let attendances;
-	let session;
+    let user_id;
 	let value = "";
 	let filteredRows;
 	let options = {  year: 'numeric', month: 'numeric', day: 'numeric',hour: '2-digit', minute:'2-digit'}
 
 	onMount(async ()=>{
-		({attendances} = await apiFetch('/api/public/get_attendance'));
-		({session} = await apiFetch("/api/user"));
+		({attendances, user_id} = await apiFetch('/api/public/get_attendance'));
 		await tick();
 		set_chart_data();
 		filter_rows();
@@ -65,7 +64,7 @@
 
 	let rows= [];
 	function set_chart_data(){
-		const attendance_filtered = attendances.filter(({id_user}) => id_user === session.user_id);
+		const attendance_filtered = attendances.filter(({id_user}) => id_user === user_id);
 		rows = Array.from(attendance_filtered).map(( attendance ) => ({
 					id: attendance.id_attendance,
 					user: attendance.name,
