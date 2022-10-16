@@ -30,4 +30,4 @@
 
 </script>
 
-<SelectSearch placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList}/>
+<SelectSearch on:select placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList}/>

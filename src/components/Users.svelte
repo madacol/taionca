@@ -19,4 +19,4 @@
 
 </script>
 
-<SelectSearch bind:selected={user} items={usersToList} isClearable={false} selectedValue="Usuarios..."/>
+<SelectSearch on:select bind:selected={user} items={usersToList} isClearable={false} selectedValue="Usuarios..."/>
