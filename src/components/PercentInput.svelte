@@ -3,16 +3,15 @@
 
 	export let value
 
-	let percent = `${Number(value) * 100}%`
+	$: percent = `${(Number(value) * 100).toFixed(2)}%`
 
-	$: {
-		const percent_stripped = percent.replace(/[^\d\.,]*/g,'')
-		percent = percent_stripped+'%'
+	function set_style(event){
+		const percent_stripped = event.target.value.replace(/[^\d\.,]*/g,'')
 		const percent_number = Number(percent_stripped)
-		if (!percent_number) percent = '0%'
-		value = Number(percent_number / 100)
+		if (!percent_number) value = 0
+		else value = Number(percent_number / 100)
 	}
 
 </script>
 
-<TextInput type="text" inline size="xl" placeholder="Porcentaje de comisión" bind:value={percent}/>
+<TextInput on:input={set_style} type="text" inline size="xl" placeholder="Porcentaje de comisión" value={percent}/>

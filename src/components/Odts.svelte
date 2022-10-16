@@ -31,4 +31,4 @@
 
 </script>
 
-<SelectSearch placeholder="Odts..." bind:selected={odt} items={odtsToList}/>
+<SelectSearch placeholder="Odts..." bind:selected={odt} items={odtsToList} on:select/>
