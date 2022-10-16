@@ -1,11 +1,25 @@
 <script>
     import 'carbon-components-svelte/css/white.css';
-    import { Button, ContentSwitcher, Switch } from "carbon-components-svelte";
+    import { Button, ContentSwitcher, DataTable, Switch, Toolbar, ToolbarContent, ToolbarSearch } from "carbon-components-svelte";
 	import { apiFetch } from '../functions';
+    import { onMount, tick } from 'svelte';
     
 	let entry_time;
 	let departure_time;
 	let selectedIndex;
+    let attendances;
+	let session;
+	let value = "";
+	let filteredRows;
+	let options = {  year: 'numeric', month: 'numeric', day: 'numeric',hour: '2-digit', minute:'2-digit'}
+
+	onMount(async ()=>{
+		({attendances} = await apiFetch('/api/public/get_attendance'));
+		({session} = await apiFetch("/api/user"));
+		await tick();
+		set_chart_data();
+		filter_rows();
+	})
 	
 	function set_date(time){
 		const year = new Date().getFullYear();
@@ -14,7 +28,7 @@
 		if(time){
 			let hours = Number(time[0] + time[1]);
 			let minutes = Number(time[3] + time[4]);
-			return new Date(year, month, day, hours, minutes)//.toLocaleString();
+			return new Date(year, month, day, hours, minutes)
 		}else{
 			return null;
 		}
@@ -39,7 +53,54 @@
 		entry_time = null;
 		departure_time = null;
 	}
-    
+
+	//Asistance viewer
+
+	const headers = [
+			{ key: 'user', value: 'Usuario' }, 
+			{ key: 'entry_date', value: 'Hora de llegada' },
+			{ key: 'departure_date', value: 'Hora de salida' },
+			{ key: 'created_at', value: 'Hora de registro' }
+    ]
+
+	let rows= [];
+	function set_chart_data(){
+		const attendance_filtered = attendances.filter(({id_user}) => id_user === session.user_id);
+		rows = Array.from(attendance_filtered).map(( attendance ) => ({
+					id: attendance.id_attendance,
+					user: attendance.name,
+					entry_date: new Date(attendance.entry_date).toLocaleString([], options),
+					departure_date: new Date(attendance.departure_date).toLocaleString([], options),
+					created_at: new Date(attendance.created_at).toLocaleString([], options),
+			}));
+	}
+	
+	function filter_rows(event){
+		if(event){
+			filteredRows = rows.filter((row) => {
+				value = event.target.value.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, "");
+				if (value.trim().length === 0) return row;
+				return (
+					row.id.toString().includes(value) || 
+					row.user.toLowerCase().toString().normalize('NFD').replace(/\p{Diacritic}/gu, "").includes(value) || 
+					row.entry_date.toLowerCase().toString().includes(value) || 
+					row.departure_date.toLowerCase().toString().includes(value) || 
+					row.created_at.toLowerCase().toString().includes(value));
+			});
+		}else{
+			filteredRows = rows.filter((row) => {
+				value = value.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, "");
+				if (value.trim().length === 0) return row;
+				return (
+					row.id.toString().includes(value) || 
+					row.user.toLowerCase().toString().normalize('NFD').replace(/\p{Diacritic}/gu, "").includes(value) || 
+					row.entry_date.toLowerCase().toString().includes(value) || 
+					row.departure_date.toLowerCase().toString().includes(value) || 
+					row.created_at.toLowerCase().toString().includes(value));
+			});
+		}
+	}
+
 </script>
 
 <ContentSwitcher on:click={cleanWindows} bind:selectedIndex>
@@ -63,3 +124,15 @@
 {/if}
 
 <Button on:click={send_attendance}>Enviar</Button>
+
+<DataTable useStaticWidth stickyHeader size="compact" title="Registro de asistencia" sortable {headers} rows={filteredRows}>
+	<Toolbar>
+		<ToolbarContent>
+			<ToolbarSearch
+				persistent
+				value
+				on:input={filter_rows}
+			/>
+		</ToolbarContent>
+	</Toolbar>
+</DataTable>

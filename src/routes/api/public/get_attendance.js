@@ -1,15 +1,28 @@
-import { query } from "../../../db";
+import { sql } from "../../../db";
 
-// List supervisor_attendances
+// List attendances
 export const get =
     async (req, res) => {
 
-        const {rows: supervisor_attendances} = await query(
-            `select *
-            from supervisor_attendances;`
-        );
+        const {rows: attendances} = await sql`
+        
+            SELECT 
+                id_attendance, 
+                attendances.id_user, 
+                entry_date, 
+                departure_date, 
+                users.name, 
+                users.lastname,
+                users.user_id as id_user,
+                attendances.created_at
+
+            FROM attendances
+            JOIN users ON users.user_id = attendances.id_user
+            ORDER BY id_attendance DESC;
+                
+            `;
 
         res.json({
-            supervisor_attendances
+            attendances
         });
     }

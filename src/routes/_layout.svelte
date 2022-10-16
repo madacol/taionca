@@ -1,7 +1,7 @@
 <script>
 	import Logout32 from "carbon-icons-svelte/lib/Logout32";
 	import { onMount } from 'svelte';
-	import { session, notifications, loadingIsActive } from '../stores';
+	import { session, notifications } from '../stores';
 	import { apiFetch, checkPermissions } from '../functions';
 	import { goto } from '@sapper/app'
 	import {ADMIN_EXPENSES_CREATE,
