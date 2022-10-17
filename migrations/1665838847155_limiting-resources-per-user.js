@@ -5,7 +5,7 @@ exports.up = pgm => {
         id_limit_resource serial primary key,
         id_user integer not null REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
         id_account int REFERENCES accounts (id_account) ON UPDATE CASCADE  ON DELETE CASCADE,
-        amount decimal(30,10) default 0,
+        amount decimal(30,10) default 0 CONSTRAINT positive_limit CHECK (amount >= 0),
         created_at timestamp with time zone default current_timestamp,
         UNIQUE (id_user, id_account)
        );

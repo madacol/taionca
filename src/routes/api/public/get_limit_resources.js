@@ -5,7 +5,20 @@ export const get =
     async (req, res) => {
         const {rows: limit_resources} = await sql`
         
-            SELECT * FROM limit_resources;
+            SELECT 
+                amount,
+                id_account,
+                id_limit_resource,
+                id_user,
+                id_currency,
+                name_singular,
+                name_plural,
+                name,
+                symbol,
+                code
+            FROM limit_resources
+            JOIN accounts USING(id_account)
+            JOIN currencys USING(id_currency);
                 
             `;
 

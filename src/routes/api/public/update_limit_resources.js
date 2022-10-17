@@ -8,7 +8,7 @@ export const post =
             INSERT INTO limit_resources
                 ( id_user, id_account, amount )
                 VALUES (${id_user}::integer, ${id_account}::integer, ${amount}::numeric)
-                ON CONFLICT (id_user) DO 
+                ON CONFLICT (id_user, id_account) DO 
                 UPDATE SET amount = ${amount}::numeric
                 WHERE limit_resources.id_account = ${id_account}::integer AND limit_resources.id_user = ${id_user}::integer
                 RETURNING *; 

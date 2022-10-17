@@ -143,7 +143,7 @@
 
 <Button on:click={send_attendance}>Enviar</Button>
 
-<DataTable useStaticWidth stickyHeader size="compact" title="Registro de asistencia" sortable {headers} rows={filteredRows}>
+<DataTable stickyHeader size="compact" title="Registro de asistencia" sortable {headers} rows={filteredRows}>
 	<Toolbar>
 		<ToolbarContent>
 			<ToolbarSearch
