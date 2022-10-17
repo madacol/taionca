@@ -1,6 +1,7 @@
 import argon2 from "argon2";
 import { sql } from "../../../db";
 
+//Recuerda que esta consulta es un duplicado de la de user/index.js y debería ser reemplazada por una función de PostgreSQL y ser llamada en ambos lados
 export async function post(req, res){
     const {username, password} = req.body;
     const usernameNormalized = username.toLowerCase().trim();

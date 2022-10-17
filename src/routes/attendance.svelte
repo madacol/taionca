@@ -76,7 +76,6 @@
 			];
 			attendance_filtered = attendances;
 		}else{
-			console.log($session);
 			headers = [
 				{ key: 'entry_date', value: 'Llegada' },
 				{ key: 'departure_date', value: 'Salida' },

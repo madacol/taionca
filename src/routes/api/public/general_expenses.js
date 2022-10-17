@@ -14,11 +14,11 @@ export const post =
             WITH _t as (
                 UPDATE limit_resources
                 SET amount = amount - ${Math.abs(amount)}
-                WHERE id_account = ${id_account} AND id_user = ${user_id}
+                WHERE id_account = ${id_account} AND id_odt = ${id_odt}
             ), new_general_expense as (
                 INSERT INTO public.general_expenses
-                    ( id_account, id_odt, amount, description, rate, id_measure, quantity )
-                    VALUES ( ${id_account}::integer, ${id_odt}::integer, ${Math.abs(amount)}::decimal, ${description}::character varying, ${rate}::decimal, ${id_measure}::integer, ${quantity}::decimal)
+                    ( id_account, id_odt, amount, description, rate, id_measure, quantity, id_user )
+                    VALUES ( ${id_account}::integer, ${id_odt}::integer, ${Math.abs(amount)}::decimal, ${description}::character varying, ${rate}::decimal, ${id_measure}::integer, ${quantity}::decimal, ${user_id}::integer)
                     RETURNING id_general_expense
             )
             SELECT alter_balance(id_balance, ${-Math.abs(amount)}, id_general_expense, 'general_expenses')

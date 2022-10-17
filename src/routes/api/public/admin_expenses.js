@@ -13,14 +13,10 @@ export const post =
         const rate = await getRate('usd', expense_currency_code);
         const {rows: admin_expenses} = await sql`
 
-            WITH _t as (
-                UPDATE limit_resources
-                SET amount = amount - ${Math.abs(amount)}
-                WHERE id_account = ${id_account} AND id_user = ${user_id}
-            ), new_admin_expense as (
+            WITH new_admin_expense as (
                 INSERT INTO public.admin_expenses
-                    ( id_account,  amount, description, rate)
-                    VALUES ( ${id_account}::integer,  ${Math.abs(amount)}::decimal(30,10), ${description}::character varying, ${rate}::decimal(30,10) )
+                    ( id_account,  amount, description, rate, id_user)
+                    VALUES ( ${id_account}::integer,  ${Math.abs(amount)}::decimal(30,10), ${description}::character varying, ${rate}::decimal(30,10), ${user_id}::integer)
                     RETURNING id_admin_expense
             )
             SELECT alter_balance(id_balance, ${-Math.abs(amount)}::decimal(30,10), id_admin_expense, 'admin_expenses')

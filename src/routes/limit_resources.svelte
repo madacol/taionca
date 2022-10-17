@@ -3,11 +3,11 @@
 	import { tick } from 'svelte';
     import { Column, DataTable, Grid, Row, TextInput} from "carbon-components-svelte";
 	import { apiFetch } from '../functions';
-    import Users from '../components/Users.svelte';
     import Button from 'carbon-components-svelte/src/Button/Button.svelte';
     import Accounts from '../components/Accounts.svelte';
+    import Odts from '../components/Odts.svelte';
 
-	let user;
+	let odt;
 	let label = '';
 	let account;
 	let amount;
@@ -19,7 +19,7 @@
 		await apiFetch("/api/public/update_limit_resources",{
 			method: 'POST',
 			body: JSON.stringify({
-				id_user: user.value,
+				id_odt: odt.id_odt,
 				id_account,
 				amount
 			}),
@@ -30,12 +30,12 @@
 	async function get_limit_resources(){
 		({limit_resources} = await apiFetch('/api/public/get_limit_resources'));
 		await tick();
-		limit_resources_filtered = limit_resources.filter(({id_user}) => id_user === user.value);
+		limit_resources_filtered = limit_resources.filter(({id_odt}) => id_odt === odt.id_odt);
 		set_chart_data();
 	}
 
 	function on_select_account(){
-		if(user && user.value != "Usuarios..."){
+		if(odt){
 			set_chart_data();
 		}
 		label = account.name_plural;
@@ -61,7 +61,7 @@
 <Grid narrow>
 	<Row>
 		<Column padding style="outline: 1px solid var(--cds-interactive-04)">
-			<Users bind:user={user} on:select={get_limit_resources}/>
+			<Odts bind:odt={odt} on:select={get_limit_resources}/>
 		</Column>
 		<Column padding style="outline: 1px solid var(--cds-interactive-04)">
 			<Accounts on:select={on_select_account} orientation="vertical" bind:account={account}/>
@@ -77,6 +77,6 @@
 	</Row>
 </Grid>
 
-{#if user && user.value != "Usuarios..."}
+{#if odt}
 	<DataTable size="short" title="Recursos disponibles" sortable {headers} {rows}/>
 {/if}

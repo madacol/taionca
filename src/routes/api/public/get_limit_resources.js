@@ -9,7 +9,7 @@ export const get =
                 amount,
                 id_account,
                 id_limit_resource,
-                id_user,
+                id_odt,
                 id_currency,
                 name_singular,
                 name_plural,

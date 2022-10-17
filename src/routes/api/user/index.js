@@ -2,7 +2,8 @@ import argon2 from "argon2";
 import { argon as config } from "../../../config";
 import { query, sql } from "../../../db";
 
-// Get profile
+// Get profile 
+//Recuerda que esta consulta es un duplicado de la de login.js y debería ser reemplazada por una función de PostgreSQL y ser llamada en ambos lados
 export async function get (req, res) {
     const {user_id} = req.session.user;
     const {rows: [session]} = await sql`
