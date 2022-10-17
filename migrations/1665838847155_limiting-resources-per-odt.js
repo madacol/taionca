@@ -46,14 +46,41 @@ exports.up = pgm => {
         ALTER COLUMN id_account SET NOT NULL,
         ALTER COLUMN id_measure SET NOT NULL,
         ALTER COLUMN id_odt SET NOT NULL;
+
+    CREATE OR REPLACE FUNCTION set_odt_limit_resources()
+        RETURNS trigger 
+        AS $$
+        BEGIN
+
+        INSERT INTO limit_resources
+            (id_odt, id_account, amount)
+            SELECT
+                NEW.id_odt,
+                accounts.id_account,
+                NEW.amount * 0.3
+            FROM accounts
+            WHERE id_currency = NEW.id_currency;
+
+        RETURN NEW;
+        END;
+        $$
+        LANGUAGE 'plpgsql';
+
+    CREATE TRIGGER new_odt_insert_trigger
+        AFTER INSERT ON odts
+        FOR EACH ROW
+        EXECUTE PROCEDURE set_odt_limit_resources();
         `
 };
 exports.down = pgm => {
     pgm.sql`
          
-        
         ALTER TABLE odts DROP COLUMN admin_percent;
+        ALTER TABLE admin_expenses DROP COLUMN id_user;
+        ALTER TABLE general_expenses DROP COLUMN id_user;
         DROP TABLE IF EXISTS limit_resources;
+        DROP TRIGGER IF EXISTS new_odt_insert_trigger ON balances;
+        DROP FUNCTION IF EXISTS set_odt_limit_resources;
 
         `
 };  

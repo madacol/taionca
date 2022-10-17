@@ -112,7 +112,6 @@
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="asignar_responsabilities" text="Asignar responsabilidad" />{/if}
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="ingreso_responsabilities" text="Crear responsabilidad" />{/if}
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="approve_responsabilities" text="Aprobar responsabilidad" />{/if}
-				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="limit_resources" text="Limitación de recursos" />{/if}
 				<!-- <SideNavMenuItem href="responsabilities" text="Responsabilidades" /> -->
 				<SideNavMenuItem href="attendance" text="Asistencia" />
 				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="asign_hours_odt" text="Horas por ODT" />{/if}
@@ -120,19 +119,20 @@
 
 			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de ODTs">
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="open_odts_review" text="Registro ODTs abiertas"/>{/if}
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="quotations_review" text="Registro cotizaciones"/>{/if}
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="odt_quotation" text="Cotización de ODTs"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="limit_resources" text="Limitación de recursos" />{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="odt_quotation" text="Nueva cotización"/>{/if}
 					{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="nueva_odt" text="Nueva ODT"/>{/if}
 					{#if checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="cerrar_odt" text="Cerrar ODT"/>{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="open_odts_review" text="Registro ODTs abiertas"/>{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="quotations_review" text="Registro cotizaciones"/>{/if}
 				</SideNavMenu>
 			{/if}
 
 			{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de gastos">
-					{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_inventario" text="Gastos de inventario" />{/if}
-					{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_admin" text="Gastos administrativos" />{/if}
 					{#if checkPermissions([GENERAL_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gastos_generales" text="Gastos generales"/>{/if}
+					{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions) || checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_admin" text="Gastos administrativos" />{/if}
+					{#if checkPermissions([INV_ODT_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="gasto_inventario" text="Gastos de inventario" />{/if}
 				</SideNavMenu>
 			{/if}
 
