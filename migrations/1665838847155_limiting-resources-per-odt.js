@@ -70,6 +70,25 @@ exports.up = pgm => {
         AFTER INSERT ON odts
         FOR EACH ROW
         EXECUTE PROCEDURE set_odt_limit_resources();
+
+    CREATE OR REPLACE FUNCTION update_odt_limit_resources()
+        RETURNS trigger 
+        AS $$
+        BEGIN
+
+        UPDATE limit_resources
+        SET amount = (NEW.amount * 0.3) - ((OLD.amount * 0.3) - limit_resources.amount)
+        WHERE id_odt = NEW.id_odt;
+
+        RETURN NEW;
+        END;
+        $$
+        LANGUAGE 'plpgsql';
+
+    CREATE TRIGGER change_amount_odt_update_trigger
+        AFTER UPDATE ON odts
+        FOR EACH ROW
+        EXECUTE PROCEDURE update_odt_limit_resources();
         `
 };
 exports.down = pgm => {
@@ -81,6 +100,8 @@ exports.down = pgm => {
         DROP TABLE IF EXISTS limit_resources;
         DROP TRIGGER IF EXISTS new_odt_insert_trigger ON odts;
         DROP FUNCTION IF EXISTS set_odt_limit_resources;
+        DROP TRIGGER IF EXISTS change_amount_odt_update_trigger ON odts;
+        DROP FUNCTION IF EXISTS update_odt_limit_resources;
 
         `
 };  
