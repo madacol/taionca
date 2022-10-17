@@ -79,7 +79,7 @@ exports.down = pgm => {
         ALTER TABLE admin_expenses DROP COLUMN id_user;
         ALTER TABLE general_expenses DROP COLUMN id_user;
         DROP TABLE IF EXISTS limit_resources;
-        DROP TRIGGER IF EXISTS new_odt_insert_trigger ON balances;
+        DROP TRIGGER IF EXISTS new_odt_insert_trigger ON odts;
         DROP FUNCTION IF EXISTS set_odt_limit_resources;
 
         `

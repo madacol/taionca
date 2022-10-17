@@ -14,7 +14,7 @@
 	let id_entity=1;
 	let currency;
 	let quotation;
-	let selectedIndex;
+	let selectedIndex = 1;
 	let id_client;
 	let id_quotation;
 	let id_currency;
