@@ -9,17 +9,22 @@ export async function get (req, res) {
         SELECT
             user_id,
             users.name,
-            users.created_at,
-            array_agg(jsonb_build_object(
-                'role_id', role_id,
-                'name', roles.name)
-            ) roles,
-            ARRAY_AGG(permission_id) permissions
+            password_hash,
+            ARRAY_REMOVE(ARRAY_AGG(role_id), NULL) roles,
+            array_merge_agg(permissions) permissions,
+            special_user
         FROM users
-        JOIN join_users_roles USING (user_id)
-        JOIN roles USING (role_id)
-        JOIN join_roles_permissions USING (role_id)
-        JOIN permissions USING (permission_id)
+        LEFT JOIN join_users_roles USING (user_id)
+        LEFT JOIN (
+            SELECT
+                role_id,
+                roles.name,
+                ARRAY_AGG(permission_id) permissions
+            FROM roles
+            JOIN join_roles_permissions USING (role_id)
+            JOIN permissions USING (permission_id)
+            GROUP BY role_id
+        ) roles USING (role_id)
         WHERE user_id = ${user_id}
         GROUP BY user_id;
     `;

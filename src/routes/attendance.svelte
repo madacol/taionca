@@ -3,6 +3,7 @@
     import { Button, ContentSwitcher, DataTable, Switch, Toolbar, ToolbarContent, ToolbarSearch } from "carbon-components-svelte";
 	import { apiFetch } from '../functions';
     import { onMount, tick } from 'svelte';
+    import { session } from '../stores';
     
 	let entry_time;
 	let departure_time;
@@ -16,7 +17,8 @@
 	onMount(async ()=>{
 		({attendances, user_id} = await apiFetch('/api/public/get_attendance'));
 		await tick();
-		set_chart_data();
+		await set_chart_data();
+		await tick();
 		filter_rows();
 	})
 	
@@ -55,23 +57,40 @@
 
 	//Asistance viewer
 
-	const headers = [
+	let headers = [
 			{ key: 'user', value: 'Usuario' }, 
-			{ key: 'entry_date', value: 'Hora de llegada' },
-			{ key: 'departure_date', value: 'Hora de salida' },
+			{ key: 'entry_date', value: 'Llegada' },
+			{ key: 'departure_date', value: 'Salida' },
 			{ key: 'created_at', value: 'Hora de registro' }
     ]
 
 	let rows= [];
-	function set_chart_data(){
-		const attendance_filtered = attendances.filter(({id_user}) => id_user === user_id);
+	async function set_chart_data(){
+		let attendance_filtered;
+		if((await $session)?.special_user){
+			headers = [
+				{ key: 'user', value: 'Usuario' }, 
+				{ key: 'entry_date', value: 'Llegada' },
+				{ key: 'departure_date', value: 'Salida' },
+				{ key: 'created_at', value: 'Hora de registro' }
+			];
+			attendance_filtered = attendances;
+		}else{
+			console.log($session);
+			headers = [
+				{ key: 'entry_date', value: 'Llegada' },
+				{ key: 'departure_date', value: 'Salida' },
+				{ key: 'created_at', value: 'Hora de registro' }
+			];
+			attendance_filtered = attendances.filter(({id_user}) => id_user === user_id);
+		}
 		rows = Array.from(attendance_filtered).map(( attendance ) => ({
 					id: attendance.id_attendance,
 					user: attendance.name,
 					entry_date: new Date(attendance.entry_date).toLocaleString([], options),
 					departure_date: new Date(attendance.departure_date).toLocaleString([], options),
 					created_at: new Date(attendance.created_at).toLocaleString([], options),
-			}));
+		}));
 	}
 	
 	function filter_rows(event){

@@ -1,5 +1,5 @@
 import argon2 from "argon2";
-import { query } from "../../../db";
+import { sql } from "../../../db";
 
 export async function post(req, res){
     const {username, password} = req.body;
@@ -7,29 +7,29 @@ export async function post(req, res){
 
     let user;
     {
-        const result = await query(
-            `SELECT
-                    user_id,
-                    users.name,
-                    password_hash,
-                    ARRAY_REMOVE(ARRAY_AGG(role_id), NULL) roles,
-                    array_merge_agg(permissions) permissions
-                FROM users
-                LEFT JOIN join_users_roles USING (user_id)
-                LEFT JOIN (
-                    SELECT
-                        role_id,
-                        roles.name,
-                        ARRAY_AGG(permission_id) permissions
-                    FROM roles
-                    JOIN join_roles_permissions USING (role_id)
-                    JOIN permissions USING (permission_id)
-                    GROUP BY role_id
-                ) roles USING (role_id)
-                WHERE username=$1
-                GROUP BY "user_id"`,
-            [usernameNormalized]
-        )
+        const result = await sql`
+            SELECT
+                user_id,
+                users.name,
+                password_hash,
+                ARRAY_REMOVE(ARRAY_AGG(role_id), NULL) roles,
+                array_merge_agg(permissions) permissions,
+                special_user
+            FROM users
+            LEFT JOIN join_users_roles USING (user_id)
+            LEFT JOIN (
+                SELECT
+                    role_id,
+                    roles.name,
+                    ARRAY_AGG(permission_id) permissions
+                FROM roles
+                JOIN join_roles_permissions USING (role_id)
+                JOIN permissions USING (permission_id)
+                GROUP BY role_id
+            ) roles USING (role_id)
+            WHERE username=${usernameNormalized}
+            GROUP BY "user_id"
+        `
         user = result.rows[0];
     }
     if (!user) return res.json({error: `Usuario "${usernameNormalized}" no existe`})

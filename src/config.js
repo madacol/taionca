@@ -20,7 +20,6 @@ export const session_options = {
   resave: false,
   name: 'sessionId',
   cookie: {
-    domain: "taionca.com",
     maxAge: 43200000, // 12 Hours
     httpOnly: true,
     sameSite: true // Strict
