@@ -112,7 +112,7 @@
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="asignar_responsabilities" text="Asignar responsabilidad" />{/if}
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="ingreso_responsabilities" text="Crear responsabilidad" />{/if}
 				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="approve_responsabilities" text="Aprobar responsabilidad" />{/if}
-				<!-- <SideNavMenuItem href="responsabilities" text="Responsabilidades" /> -->
+				<SideNavMenuItem href="responsabilities" text="Responsabilidades" />
 				<SideNavMenuItem href="attendance" text="Asistencia" />
 				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="asign_hours_odt" text="Horas por ODT" />{/if}
 			</SideNavMenu>

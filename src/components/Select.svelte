@@ -6,4 +6,4 @@
 	export let selected = undefined;
 </script>
 
-<SvelteSelect {...$$restProps} {items} bind:selectedValue={selected} on:select></SvelteSelect>
+<SvelteSelect {...$$restProps} {items} bind:selectedValue={selected} on:select on:change></SvelteSelect>

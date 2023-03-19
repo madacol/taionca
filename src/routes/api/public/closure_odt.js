@@ -29,11 +29,11 @@ export const post =
             `, [id_odt]
         );
 
-        if(payroll.length > 0){
-            res.json({
-                error: "No se puede cerrar la ODT, hay nómina pendiente"
-            });
-        }else{
+        // if(payroll.length > 0){
+        //     res.json({
+        //         error: "No se puede cerrar la ODT, hay nómina pendiente"
+        //     });
+        // }else{
             console.log({id_account,
                 id_odt,
                 user_id,
@@ -66,4 +66,4 @@ export const post =
                 data
             });
         }
-    }
+    // }

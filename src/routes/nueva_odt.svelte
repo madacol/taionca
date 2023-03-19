@@ -19,18 +19,18 @@
 	let id_quotation;
 	let id_currency;
 
-	$:if(quotation && selectedIndex === 0) {
-		id_client = quotation.id_client;
-		id_quotation = quotation.id_quotation;
-		id_currency = quotation.id_currency;
-	}else if (client && selectedIndex === 1){
-		id_client = client.value;
-		id_quotation = null;
-		id_currency = currency.id_currency;	
-	}
 	
 	async function create_odt(){
 		
+		if(quotation && selectedIndex === 0) {
+			id_client = quotation.id_client;
+			id_quotation = quotation.id_quotation;
+			id_currency = quotation.id_currency;
+		}else if (client && selectedIndex === 1){
+			id_client = client.value;
+			id_quotation = null;
+			id_currency = currency.id_currency;	
+		}
 		await apiFetch("/api/public/nueva_odt",{
 			method: 'POST',
 			body: JSON.stringify({

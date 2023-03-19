@@ -14,7 +14,10 @@
     let operative_users;
     let supervisor_users;
 
-    $: if (odt) ({amount} = odt);
+    function set_amount_odt(){
+        if (odt) ({amount} = odt);
+    }
+
     const MAURO_SUPERVISOR = {
         user: { value: 100, label: "Mauro Alejandro" },
         id_user: 100,
@@ -39,13 +42,13 @@
                 headers: {'Content-Type': 'application/json'}
             })
         }
+        supervisor_users.pop();
     }
-
 </script>
 
 <TextInput type="Number" labelText="Monto pagado" placeholder="Ingrese el monto..." bind:value={amount}/>
 
-<Odts bind:odt={odt}/>
+<Odts bind:odt={odt} on:select={set_amount_odt}/>
 
 {#if odt}
     <Accounts id_currency_filter={odt.id_currency} bind:account={account}/>

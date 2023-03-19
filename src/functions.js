@@ -24,12 +24,16 @@ export async function getRate(counter_currency_code, base_currency_code){
     if (counter_currency_code === base_currency_code) {
         return 1;
     }
-    const url = `https://bolivarparalelo.com/api/rate/${counter_currency_code}/${base_currency_code}`;
+    const url = `https://openexchangerates.org/api/latest.json?app_id=5b9fa9d2985e417086b2ebfe191d4e78`;
     const response = await fetch(url);
     const rates = await response.json();
-    const rate = (rates.buy + rates.sell) / 2;
-    console.log({url});
-    return rate;
+    if(base_currency_code !== "USD" ){
+        const rate = Number(rates.rates[counter_currency_code])/Number(rates.rates[base_currency_code]);
+        return rate;
+    }else{
+        const rate = rates.rates[counter_currency_code];
+        return rate;
+    }
 }
 
 /**

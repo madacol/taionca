@@ -4,13 +4,15 @@
 	import { apiFetch } from '../functions';
 	import { onMount } from 'svelte';
 
-	let awaiting_approval_responsibilitys = [];
+	let pending_responsibilitys = [];
 	async function get_responsibilitys(){
-		({awaiting_approval_responsibilitys} = await apiFetch('/api/public/not_approving_pending_responsibilitys'));
+		({pending_responsibilitys} = await apiFetch('/api/public/pending_responsibilitys'));
 	}
 	onMount(async ()=>{
 		get_responsibilitys();
 	})
+
+	$:console.log(pending_responsibilitys)
     
     const headers=[
         { key: 'name', value: 'Nombre' },
@@ -31,9 +33,9 @@
 	}
 	let id = 0;
 	let rows=[];
-	$: if (awaiting_approval_responsibilitys && awaiting_approval_responsibilitys.length > 0){
+	$: if (pending_responsibilitys && pending_responsibilitys.length > 0){
 		id = 0;
-		rows = awaiting_approval_responsibilitys.map(responsibility => ({
+		rows = pending_responsibilitys.map(responsibility => ({
 			
 			id: id++,
 			name: responsibility.name,
@@ -53,7 +55,7 @@
 		await apiFetch("/api/public/new_awaiting_approval_responsibility",{
 			method: 'POST',
 			body: JSON.stringify({
-				id_pending_responsibility: awaiting_approval_responsibilitys[selectedRowIds[0]].id_pending_responsibility,
+				id_pending_responsibility: pending_responsibilitys[selectedRowIds[0]].id_pending_responsibility,
 				description_evidence: description
 			}),
 			headers: {'Content-Type': 'application/json'}

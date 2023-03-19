@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
 import { query } from "../../../db";
+import { getRate } from "../../../functions";
+
 
 export const post = async (req, res) => {
     const {id_spendable_stock, amount, id_odt, description, currency_code} = req.body;
@@ -7,14 +9,15 @@ export const post = async (req, res) => {
      * currency_code should not be received from frontend, is a vulnerability
      * se debe hacer previamente un query para obtener la moneda de la ODT
      */
-    let usd_currency_rate;
-    if (currency_code !== 'usd') {
-        const response = await fetch(`https://bolivarparalelo.com/api/rate/${currency_code}/usd`);
-        const rate = await response.json();
-        usd_currency_rate = (rate.buy + rate.sell) / 2;
-    } else {
-        usd_currency_rate = 1;
-    }
+    const usd_currency_rate = await getRate(currency_code, "USD")
+
+    // if (currency_code !== 'usd') {
+    //     const response = await fetch(`https://bolivarparalelo.com/api/rate/${currency_code}/usd`);
+    //     const rate = await response.json();
+    //     usd_currency_rate = (rate.buy + rate.sell) / 2;
+    // } else {
+    //     usd_currency_rate = 1;
+    // }
     const {rows: result} = await query(
         `
             WITH updated_spendable_stocks as (
