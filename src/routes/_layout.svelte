@@ -115,6 +115,9 @@
 				<SideNavMenuItem href="responsabilities" text="Responsabilidades" />
 				<SideNavMenuItem href="attendance" text="Asistencia" />
 				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="asign_hours_odt" text="Horas por ODT" />{/if}
+				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="loans" text="Gestión de deudas" />{/if}
+				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="give_loans" text="Dar préstamos" />{/if}
+				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="pay_loans" text="Pagar préstamos" />{/if}
 			</SideNavMenu>
 
 			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}
