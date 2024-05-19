@@ -71,7 +71,7 @@
 	}
 </style>
   
-  <Header company="Taionca" platformName="Página Web" bind:isSideNavOpen >
+  <Header href="/" company="Taionca" platformName="Página Web" bind:isSideNavOpen >
 
 	<div slot="skip-to-content">
 	  <SkipToContent/>
