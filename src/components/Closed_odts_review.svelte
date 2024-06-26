@@ -1,12 +1,15 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
     import { DataTable, Grid, Row, Column, Button } from "carbon-components-svelte";
-	import Odts from './Odts.svelte';
+	import Closed_odts from './Closed_odts.svelte';
 	import { apiFetch, checkPermissions } from '../functions';
-    import PercentInput from './PercentInput.svelte';
     import { onMount, tick } from 'svelte';
 	import { session } from '../stores';
 	import { PRESIDENT } from '../constants/PERMISSIONS';
+
+	export let start_date;
+	export let end_date;
+	export let is_filtered;
 
 	let admin_percent;
 	let odt;
@@ -25,16 +28,6 @@
 		if (checkPermissions([PRESIDENT[1]], user_permissions)){
 			isDisabled = false;
 		}
-	}
-
-	async function update_admin_percent(){
-		await apiFetch("/api/public/update_admin_percent",{
-			method: 'POST',
-			body: JSON.stringify({
-				admin_percent,
-				id_odt: odt.id_odt}),
-			headers: {'Content-Type': 'application/json'}
-		});
 	}
 	
 	async function get_odt_movements(){
@@ -95,7 +88,7 @@
 	
 </script>
 
-<Odts bind:odt={odt} on:select={get_odt_movements}/>
+<Closed_odts bind:odt={odt} on:select={get_odt_movements} {is_filtered} {start_date} {end_date}/>
 
 {#if odt} 
 
@@ -126,14 +119,13 @@
 			</Column>
 		</Row>
 		<Row>
-			<Column style="outline: 1px solid var(--cds-interactive-04)">
-				<h5>Porcentaje administrativo:</h5>
+			<Column padding style="outline: 1px solid var(--cds-interactive-04)">
+				<h5>Fecha de cierre: {(new Date(odt.closed_at)).toLocaleString("es-ES",options)}</h5>
 			</Column>
+		</Row>
+		<Row>
 			<Column style="outline: 1px solid var(--cds-interactive-04)">
-				<PercentInput bind:value={admin_percent}/>
-			</Column>
-			<Column style="outline: 1px solid var(--cds-interactive-04)">
-				<Button disabled={isDisabled} on:click={update_admin_percent} >Actualizar porcentaje</Button>
+				<h5>Porcentaje administrativo: {admin_percent*100}%</h5>
 			</Column>
 		</Row>
 		<Row>
@@ -146,7 +138,7 @@
 		</Row>		
 	</Grid>
 
-	{#if rows_balance_movements.length!=0 || rows_currencies.length!=0}
+		{#if rows_balance_movements.length!=0 || rows_currencies.length!=0}
 		<DataTable size="short" title="Gastos por moneda" sortable headers={headers_currencies} rows={rows_currencies} />
 		
 		<DataTable size="short" title="Gastos de la ODT" sortable headers={headers_balance_movements} rows={rows_balance_movements} />

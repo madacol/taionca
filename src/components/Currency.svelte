@@ -7,6 +7,7 @@
 	from "carbon-components-svelte";
 
 	export let currency = null;
+	export let default_selection;
 	/** @type {"vertical" | "horizontal"}*/
 	export let orientation = "horizontal";
 
@@ -25,12 +26,15 @@
 			orientation="vertical"
 			// is mobile
 		}
+		if(default_selection){
+			currency = currencys.find(currency => currency.id_currency == default_selection)
+		}
 	})
 
 </script>
 
 <FormGroup legendText="Moneda">
-	<RadioButtonGroup on:change id="currency" {orientation} bind:selected={currency}>
+	<RadioButtonGroup on:change id="currency" {orientation} bind:selected={currency} {default_selection}>
 		{#if currencys}
 			{#each currencys as currency}
 				<RadioButton labelText={`${currency.name_plural.replace(/(^|\s)\S/g, l => l.toUpperCase())} (${currency.symbol})`} value={currency} />	

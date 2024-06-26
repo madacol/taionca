@@ -56,7 +56,7 @@ export const post =
                     admin_users_json,
                     operative_users_json,
                     supervisor_users_json,
-                    0.2, // admin_expense_percent,
+                    0.1, // admin_expense_percent,
                     0.10 //president_profit_percent
                 ]
             );
