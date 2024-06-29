@@ -45,7 +45,7 @@
 			method: "DELETE"
 		});
 		$session = null;
-		goto("/");
+		goto("/login");
 	}
 
 	onMount(async ()=>{
@@ -71,7 +71,7 @@
 	}
 </style>
   
-  <Header href="/" company="Taionca" platformName="Página Web" bind:isSideNavOpen >
+  <Header href="{checkPermissions([PRESIDENT[1]], user_permissions)?'/':'attendance'}" company="Taionca" platformName="Página Web" bind:isSideNavOpen >
 
 	<div slot="skip-to-content">
 	  <SkipToContent/>
@@ -141,6 +141,8 @@
 
 			{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions) || checkPermissions([STOCKS_READ[1]], user_permissions)}
 				<SideNavMenu text="Gestión monetaria">
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="investments" text="Inversiones"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="money_incomes" text="Ingreso de dinero"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="cambio_moneda" text="Cambios de moneda"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="money_transfer" text="Transferencias"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
