@@ -30,6 +30,7 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",
     "express-session": "^1.17.1",
+    "fly": "^4.6.3",
     "luxon": "^3.4.4",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
