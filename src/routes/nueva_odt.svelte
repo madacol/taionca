@@ -1,11 +1,12 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
-	import { TextInput, TextArea, Button, ContentSwitcher, Switch } from "carbon-components-svelte";
+	import { TextInput, TextArea, Button, ContentSwitcher, Switch, Column, Row } from "carbon-components-svelte";
 	import Clients from "../components/Clients.svelte";
 	import Currency from "../components/Currency.svelte";
 	import { apiFetch } from '../functions';
 	import Quotations from '../components/Quotations.svelte';
 	import { tick } from 'svelte';
+    import PercentInput from '../components/PercentInput.svelte';
 	// import Login from './login.svelte';
 
 	let amount;
@@ -18,6 +19,7 @@
 	let id_client;
 	let id_quotation;
 	let id_currency;
+	let admin_percent = 0.1;
 
 	
 	async function create_odt(){
@@ -39,7 +41,8 @@
 				id_entity,
 				amount,
 				description,
-				id_quotation
+				id_quotation,
+				admin_percent
 			}),
 			headers: {'Content-Type': 'application/json'}
 		})
@@ -57,12 +60,10 @@
 
 <TextInput type="number"labelText="Monto de contrato" placeholder="Ingrese el monto del contrato..." bind:value={amount}/>
 
-
 <ContentSwitcher bind:selectedIndex>
 	<Switch text="Utilizar una cotización" />
 	<Switch text="No utilizar una cotización" />
 </ContentSwitcher>
-
 
 {#if selectedIndex === 0}
 
@@ -73,10 +74,17 @@
 {#if selectedIndex === 1}
 	
 	<Currency bind:currency={currency}/>
+	<Row>
+		<Column style="outline: 1px solid var(--cds-interactive-04)">
+			<h5>Porcentaje administrativo:</h5>
+		</Column>
+		<Column style="outline: 1px solid var(--cds-interactive-04)">
+			<PercentInput bind:value={admin_percent}/>
+		</Column>
+	</Row>
 	<Clients bind:client={client}/>
 
 {/if}
-
 
 <TextArea labelText="Descripción" placeholder="Ingrese la descripción del trabajo..." bind:value={description}/>
 

@@ -15,8 +15,12 @@ export const post =
                 // supervisor_profit_percent,
                 admin_users,
                 operative_users,
-                supervisor_users
+                supervisor_users,
+                ceo_percent,
+                admin_percent,
         } = req.body;
+
+        console.log({ceo_percent}, {admin_percent});
         
         const admin_users_json = JSON.stringify(admin_users);
         const operative_users_json = JSON.stringify(operative_users);
@@ -56,8 +60,8 @@ export const post =
                     admin_users_json,
                     operative_users_json,
                     supervisor_users_json,
-                    0.1, // admin_expense_percent,
-                    0.10 //president_profit_percent
+                    admin_percent, // admin_expense_percent,
+                    ceo_percent //president_profit_percent
                 ]
             );
             let data=currencyChange[0];
