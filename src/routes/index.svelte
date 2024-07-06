@@ -170,7 +170,11 @@
 									enabled: true,
 								},
 								mode: 'xy',
-							}
+							},
+							pan: {
+									enabled: true,
+									modifierKey: 'ctrl',
+								},
 						}
 					}
 				},
@@ -217,7 +221,7 @@
 		<div style="min-width: 500px; max-width: 1500px; max-height: 1500px; min-height: 300px;">
 			<Chart chart_settings = {line_chart_settings} bind:reset_zoom = {reset_zoom}/>
 		</div>
-		<Button on:click={() => reset_zoom = true} kind="ghost">Restablecer zoom</Button>
+		<Button on:click={() => reset_zoom = true} kind="ghost">Restablecer gráfico</Button>
 		<div class="OnSameLine" style="font-weight: bold;">
 			{#if total.length > 0}
 				<h5>Saldo Inicial: {currency.symbol} {total[0].y.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h5>

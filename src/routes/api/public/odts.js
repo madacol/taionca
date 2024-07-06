@@ -4,6 +4,8 @@ import { query } from "../../../db";
 export const get =
     async (req, res) => {
 
+        const { user_id } = req.session.user;
+
         const {rows: odts} = await query(
             `select currencys.*, clients.*, users.name as user_name, odts.* , odts.created_at as created_at
             from odts
@@ -11,7 +13,7 @@ export const get =
             join currencys using(id_currency)
             join clients using(id_client)
             left join closure_odts using(id_odt)
-            where id_closure_odt is null;
+            where id_closure_odt is null AND (odts.id_user = ${user_id} OR odts.id_user = 1 OR ${user_id} = 1);
             `
         );
         res.json({
