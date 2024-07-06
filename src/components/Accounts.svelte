@@ -5,6 +5,10 @@
 	export let id_currency_filter = null;
 	import { onMount } from 'svelte';
 	import { apiFetch } from '../functions';
+
+	export let isMulti = false;
+	export let default_account;
+
 	
 	/**
 	 * Get accounts, If needed
@@ -16,18 +20,25 @@
 	})
 
 	let accountsToList = [];
+	function setAccount(x) { account = x}
 	function get_accounts (){
-		accountsToList = accounts
-							.filter(({id_currency})=> id_currency_filter
+		accountsToList = accounts.filter(({id_currency})=> id_currency_filter
 														? id_currency === id_currency_filter
 														: true
-							).map((account) => {
-								account.value=account.id_account
-								account.label= `${account.name} (${account.symbol})`
-								return account
+							).map(({ id_account, name, symbol }) => {
+								const accountToReturn = {value: id_account, label: `${name} (${symbol})`}
+								if(default_account === id_account){
+									setAccount([accountToReturn])
+								}
+								
+								return accountToReturn
+
+								// account.value=account.id_account
+								// account.label= `${account.name} (${account.symbol})`
+								// return account
 							})
 	}
 
 </script>
 
-<SelectSearch on:select placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList}/>
+<SelectSearch on:select placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList} isMulti={isMulti} {default_account}/>

@@ -126,7 +126,7 @@
 					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="odt_quotation" text="Nueva cotización"/>{/if}
 					{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="nueva_odt" text="Nueva ODT"/>{/if}
 					{#if checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="cerrar_odt" text="Cerrar ODT"/>{/if}
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="open_odts_review" text="Registro ODTs abiertas"/>{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="odts_review" text="Registro ODTs"/>{/if}
 					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="quotations_review" text="Registro cotizaciones"/>{/if}
 				</SideNavMenu>
 			{/if}
