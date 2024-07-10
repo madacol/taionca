@@ -7,7 +7,6 @@
     import { apiFetch } from '../functions';
     import PercentInput from '../components/PercentInput.svelte';
 
-
     let odt;
     let account;
     let amount;
@@ -54,7 +53,7 @@
             await apiFetch ('/api/public/closure_odt', {
                 method: 'POST',
                 body: JSON.stringify({
-                    id_account: account.id_account,
+                    id_account: account.value,
                     id_odt: odt.id_odt,
                     amount,
                     admin_users: _admin_users,

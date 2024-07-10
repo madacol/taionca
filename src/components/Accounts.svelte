@@ -25,9 +25,9 @@
 		accountsToList = accounts.filter(({id_currency})=> id_currency_filter
 														? id_currency === id_currency_filter
 														: true
-							).map(({ id_account, name, symbol }) => {
-								const accountToReturn = {value: id_account, label: `${name} (${symbol})`}
-								if(default_account === id_account){
+							).map((account) => {
+								const accountToReturn = {...account, value: account.id_account, label: `${account.name} (${account.symbol})`}
+								if(default_account === account.id_account){
 									setAccount([accountToReturn])
 								}
 								
@@ -38,7 +38,6 @@
 								// return account
 							})
 	}
-
 </script>
 
 <SelectSearch on:select placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList} isMulti={isMulti} {default_account}/>

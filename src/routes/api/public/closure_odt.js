@@ -19,8 +19,6 @@ export const post =
                 ceo_percent,
                 admin_percent,
         } = req.body;
-
-        console.log({ceo_percent}, {admin_percent});
         
         const admin_users_json = JSON.stringify(admin_users);
         const operative_users_json = JSON.stringify(operative_users);
@@ -44,19 +42,23 @@ export const post =
                 amount,
                 admin_users_json,
                 operative_users_json,
-                supervisor_users_json});
+                supervisor_users_json,
+                admin_percent,
+                ceo_percent
+            });
             const {rows: currencyChange} = await query(
                 `
-                    SELECT closure_odt($1,$2,$3,$4,$5,$6,$7,$8,$9);
+                    SELECT closure_odt($1,$2,$3,$4,$5,$6,$7,$8,$9,$10);
                     
                 `, [
                     id_account,
                     id_odt,
                     user_id,
                     amount,
-                    // admin_profit_percent,
-                    // operative_profit_percent,
-                    // supervisor_profit_percent,
+                    2,  // id_user_ceo (Could be changebale in the future)
+                        // admin_profit_percent,
+                        // operative_profit_percent,
+                        // supervisor_profit_percent,
                     admin_users_json,
                     operative_users_json,
                     supervisor_users_json,

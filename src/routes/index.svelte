@@ -218,7 +218,7 @@
 			<Accounts orientation="vertical" isMulti={true} bind:account={account} default_account={1}/>  <!--  Default value for Caja Chica-->
 		{/if}
 
-		<div style="min-width: 500px; max-width: 1500px; max-height: 1500px; min-height: 300px;">
+		<div style="min-width: 500px; max-width: 1500px; min-height: 350px;">
 			<Chart chart_settings = {line_chart_settings} bind:reset_zoom = {reset_zoom}/>
 		</div>
 		<Button on:click={() => reset_zoom = true} kind="ghost">Restablecer gráfico</Button>
