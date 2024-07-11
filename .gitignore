@@ -4,5 +4,7 @@
 yarn-error.log
 /__sapper__/
 /src/constants/PERMISSIONS.js
+tests/.auth
+test-results
 .env*
 !.env.template

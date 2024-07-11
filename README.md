@@ -102,3 +102,50 @@ To migrate them and build `PERMISSIONS.js`
 ```
 npm run build:db
 ```
+
+### Testing
+
+To run tests, you need to have a test database, and set the environment variable `DATABASE_URL` in your shell. Example:
+
+    postgres://user:password@domain:5432/test_db_name
+
+Install playright browser
+
+```bash
+npx playwright install
+```
+
+Run tests
+
+```bash
+npx playwright test
+```
+
+#### Run tests directly in VSCode
+
+Install the extension [Playwright Test for VScode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) and a new icon will appear in the left sidebar.
+
+#### Debug tests
+
+When a test fails, besides the errors in the console, you also receive 2 more hints in the folder `test-results`:
+- a screenshot of the web page when it failed.
+- A trace zip file that lets you replay what happened step-by-step.\
+    In the console, you will get the exact command to execute to replay it.
+
+#### Create new tests
+
+To create a new test, create a new file in the folder `tests` with the extension `.test.js`.\
+Basic test example:
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('basic test', async ({ page }) => {
+    await page.goto('http://localhost:3000');
+    const title = page.locator('title');
+    await expect(title).toHaveText('Taionca');
+});
+```
+
+You can also use playwright's codegen to generate the test code for you.\
+Run `npx playwright codegen` and the browser will open, and any interaction you do will be recorded as code.
