@@ -39,11 +39,3 @@ function checkPermissionsMW (...permissionsRequired) {
 }
 
 export default checkPermissionsMW;
-
-
-/**
- * Los menús y permisos ahora se declaran en el archivo `/contatrib-erp/utils/checkPermissions.js`
- *
- * **utils** es un módulo donde se pondrán todas las funciones y clases que se usen en el **back** y en el **front**,
- * ya que es accesible desde ambos.
- */
