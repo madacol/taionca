@@ -8,14 +8,13 @@
 2. Clone this repository
 3. Open terminal in repo's folder
 4. Run `npm install`
-5. Set the environment variable `DATABASE_URL` in your shell. Example: `export DATABASE_URL=postgres://user:password@domain:5432/db_name`
+5. Copy the file `.env.template` to `.env` and set the variable `DATABASE_URL` accordingly. Example: `DATABASE_URL=postgres://user:password@domain:5432/db_name`
 6. Run `npm run build:db` to migrate db, and build `PERMISSIONS.js`
 7. Run development server `npm run dev`
 
 ### To deploy to fly.io
 
     fly deploy --build-secret db_url="postgres://user:password@domain:5432/db_name"
-"
 
 ### To deploy to vercel
 
@@ -30,19 +29,15 @@
 
 ### Config connection
 
-Set the environment variable `DATABASE_URL` in your shell. Example:
+Set the environment variable `DATABASE_URL` in your `.env` file. Example:
 
-    postgres://user:password@domain:5432/db_name
+```
+DATABASE_URL=postgres://user:password@domain:5432/db_name
+```
 
-- In Linux, run `export DATABASE_URL=postgres://user:password@domain:5432/db_name`
-- In Windows, powershell run `$env:DATABASE_URL="postgres://user:password@domain:5432/db_name"`
-
-Now you can run the server, or any migration-command, in this same shell / terminal session
-
-Any DB-related-command you run in another terminal window, will not work, you'll have to re-declare `DATABASE_URL` there
+Now you can run the server, or any migration-command
 
 ### Migrations
-
 
 - To migrate all pending migrations: `npm run migrate up`
 - To undo **one** migration `npm run migrate down`

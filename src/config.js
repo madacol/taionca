@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const database = {
   common: {
     connectionString: process.env.DATABASE_URL,
