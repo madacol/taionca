@@ -141,6 +141,19 @@ export function next_date(deadline, term, days_to_repeat){
     }
 }
 
+export function format_number(amount, option){
+    if(option === "currency"){
+        return Number(amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        
+    }else if(option === "percentage"){
+        if(0 <= Number(amount) && Number(amount) <= 1){
+            return `${(Number(amount)*100).toFixed(2)}%`
+        }else{
+            return `${Number(amount).toFixed(2)}%`
+        }
+    }
+}
+
 export async function apiFetch (url, options={}) {
     loadingIsActive.set(true);
 

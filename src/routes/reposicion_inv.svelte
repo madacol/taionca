@@ -7,7 +7,7 @@
 
 	let item;
     let account;
-    let amount;
+    let quantity;
     let cost;
 	let api;
 
@@ -17,8 +17,9 @@
 			body: JSON.stringify({
 				id_spendable_stock: item.id,
 				id_account: account.id_account,
-				amount,
-				cost
+				quantity,
+				cost,
+				id_item: item.id_item
 			}),headers: {'Content-Type': 'application/json'}
 		});
 		cleanWindows()
@@ -27,7 +28,7 @@
 	function cleanWindows(){
 		item=null
 		account=null
-		amount=null
+		quantity=null
 		cost=null
 	}
 
@@ -40,11 +41,12 @@
 			send_register(api)
 		}
 	}
+	$:console.log(item)
 </script>
 
 <AllInvItems bind:item={item}/>
 
-<TextInput type="Number" labelText="Cantidad repuesta" placeholder="Ingrese la cantidad repuesta..." bind:value={amount}/>
+<TextInput type="Number" labelText="Cantidad repuesta" placeholder="Ingrese la cantidad repuesta..." bind:value={quantity}/>
 
 <Accounts orientation="vertical" bind:account={account}/>
 

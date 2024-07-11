@@ -1,13 +1,26 @@
 import { query } from "../../../db";
 
 export const post = async (req, res) => {
-    const { id_spendable_stock, id_account, amount, cost } = req.body;
+    const { id_spendable_stock, id_account, quantity, cost, id_item } = req.body;
     const {rows: result} = await query(
         `
             WITH _t as (
                 UPDATE spendable_stocks
                 SET amount = amount + $3
                 WHERE id_spendable_stock = $1
+            ), __t as (
+                UPDATE spendable_items
+                SET cost = CASE
+                                WHEN cost < ($4/$3) THEN ($4/$3)
+                                ELSE cost
+                            END,
+
+                    price = CASE
+                                WHEN price < ($4/$3)*1.25 THEN ($4/$3)*1.25
+                                ELSE price
+                            END
+
+                WHERE id_spendable_item = $5
 
             ), new_spendable_inv_odt_income as(
                 INSERT INTO public.spendable_inv_odt_incomes
@@ -25,7 +38,7 @@ export const post = async (req, res) => {
             WHERE id_account = $2 AND id_entity = 3
             ;
         `,
-        [ id_spendable_stock, id_account, amount, cost ]
+        [ id_spendable_stock, id_account, quantity, cost, id_item ]
     );
 
     res.json({

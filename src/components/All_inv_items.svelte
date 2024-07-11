@@ -27,7 +27,8 @@
 					label: `Código: ${spendable_item.spendable_products_code} | Disponible: ${Number(spendable_item.spendable_stocks_amount).toFixed(2)}${spendable_item.unit} | Almacén: ${spendable_item.storages_name}`,
 					category: 'consumibles',
 					quantity: spendable_item.spendable_stocks_amount,
-					id: spendable_item.id_spendable_stock })
+					id: spendable_item.id_spendable_stock,
+					id_item: spendable_item.id_spendable_item })
 		})
 	}
 
@@ -40,7 +41,8 @@
 					label: `Código: ${no_spendable_item.no_spendable_products_code} | Disponible: ${Number(no_spendable_item.no_spendable_stocks_amount).toFixed(2)}${no_spendable_item.unit} | Almacén: ${no_spendable_item.storages_name}`,
 					category: 'equipos y herramientas',
 					quantity: no_spendable_item.no_spendable_stocks_amount,
-					id: no_spendable_item.id_no_spendable_stock })
+					id: no_spendable_item.id_no_spendable_stock,
+					id_item: no_spendable_item.id_no_spendable_item})
 		})
 	}
 	$: if (items) {

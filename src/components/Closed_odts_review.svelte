@@ -1,8 +1,8 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
-    import { DataTable, Grid, Row, Column, Button } from "carbon-components-svelte";
+    import { DataTable, Grid, Row, Column } from "carbon-components-svelte";
 	import Closed_odts from './Closed_odts.svelte';
-	import { apiFetch, checkPermissions } from '../functions';
+	import { apiFetch, checkPermissions, format_number } from '../functions';
     import { onMount, tick } from 'svelte';
 	import { session } from '../stores';
 	import { PRESIDENT } from '../constants/PERMISSIONS';
@@ -40,7 +40,6 @@
 		({balance_movements} = await apiFetch(`/api/public/odt_movements/${odt.id_odt}`));
 		({odt_closure_resume} = await apiFetch(`/api/public/odt_closure_resume/${odt.id_odt}`));
 		await tick();
-		console.log(odt_closure_resume)
 		set_data_balance_movements();
 		set_data_currency_movements();
 		set_data_closure_resume();
@@ -77,7 +76,7 @@
 			created_at: (new Date(movement.created_at)).toLocaleDateString(),
 			id: movement.id_balance_movement,
 			amount: movement.amount,
-			amount_label: `${Number(movement.amount).toFixed(2)} ${movement.symbol}`,
+			amount_label: `${movement.symbol} ${format_number(movement.amount, "currency")}`,
 			currency: movement.currency.replace(/(^|\s)\S/g, l => l.toUpperCase())
 		}));
 	}
@@ -93,7 +92,7 @@
 			});
 			rows_currencies = Object.entries(currencies_auxiliar).map(([currency, balance], id) => ({
 				currency,
-				balance: Number(balance).toFixed(2),
+				balance: format_number(balance, "currency"),
 				id
 			}))
 		}
@@ -101,10 +100,10 @@
 
 	let rows_commissions = [];
 	function set_data_closure_resume(){
-		admin_profit = Number(odt_closure_resume.admin_profit).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-		taionca_profit = Number(odt_closure_resume.taionca_profit).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-		general_expenses = Number(odt_closure_resume.general_expenses).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-		inv_expenses = Number(odt_closure_resume.inv_expenses).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		admin_profit = format_number(odt_closure_resume.admin_profit, "currency")
+		taionca_profit = format_number(odt_closure_resume.taionca_profit, "currency")
+		general_expenses = format_number(odt_closure_resume.general_expenses, "currency")
+		inv_expenses = format_number(odt_closure_resume.inv_expenses, "currency")
 
 		if (odt_closure_resume.ceo_commissions.length > 0 || odt_closure_resume.admin_commissions.length > 0 || odt_closure_resume.operative_commissions.length > 0 || odt_closure_resume.supervisor_commissions.length > 0){
 
@@ -117,21 +116,16 @@
 			rows_commissions = all_commissions.map((user) => ({
 				user: `${user.user_name} ${user.user_lastname}`,
 				position: user.user_position,
-				percentage: `${(Number(user.percent)*100).toFixed(2)}%`,
-				profit: `${odt.symbol}${Number(user.profit).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+				percentage: format_number(user.percent, "percentage"),
+				profit: `${odt.symbol}${format_number(user.profit, "currency")}`,
 				id: id++
 			}))
 		}
 	}
 
 	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-	$:console.log(odt_closure_resume)
-	$:console.log(rows_commissions)
-	
 </script>
 <style>
-	/* write simple css for some margin*/
 	.margin{
 		margin: 10px;
 	}
@@ -149,7 +143,7 @@
 		</Row>
 		<Row>
 			<Column padding style="outline: 1px solid var(--cds-interactive-04)">
-				<h5>Monto de contrato: {odt.symbol}{Number(odt.amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h5>
+				<h5>Monto de contrato: {odt.symbol}{format_number(odt.amount, "currency")}</h5>
 			</Column>
 		</Row>
 		<Row>
@@ -187,7 +181,7 @@
 		</Row>
 		<Row>
 			<Column style="outline: 1px solid var(--cds-interactive-04)">
-				<h5>Dinero para Administración: {odt.symbol}{admin_profit} | {(admin_percent*100).toFixed(2)}% </h5>
+				<h5>Dinero para Administración: {odt.symbol}{admin_profit} | {format_number(admin_percent, "percentage")}</h5>
 			</Column>
 		</Row>
 		<Row>
