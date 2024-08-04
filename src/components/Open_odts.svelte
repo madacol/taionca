@@ -8,6 +8,10 @@
 	import { session } from '../stores';
 	import { PRESIDENT } from '../constants/PERMISSIONS';
 
+	export let start_date;
+	export let end_date;
+	export let is_filtered;
+
 	let admin_percent;
 	let odt;
 	let balance_movements = [];
@@ -95,7 +99,7 @@
 	
 </script>
 
-<Odts bind:odt={odt} on:select={get_odt_movements}/>
+<Odts bind:odt={odt} on:select={get_odt_movements} {is_filtered} {start_date} {end_date}/>
 
 {#if odt} 
 

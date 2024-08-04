@@ -256,8 +256,8 @@
 	</div>
 
 	<div>
-		<OpenOdts/>
-		<div style="max-width: 600px;">
+		<OpenOdts is_filtered={true} start_date={start_date} end_date={end_date}/>
+		<div style="min-width: 500px; max-width: 1500px; min-height: 350px;">
 			<!-- <Chart {doughnut_chart_settings}/> -->
 		</div>
 	</div>
