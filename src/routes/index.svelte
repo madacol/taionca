@@ -15,38 +15,56 @@
 	let end_date = new Date(); // Today (Until this exact moment)
 	let id_entity;
 	let line_chart_settings;
-	let range_date;
 	let currency;
 	let total = [];
 	let reset_zoom = false;
 	let selectedIndex;
 	let account;
-	// let iterator = 1;
+	let balance_registers1
+	let balance_registers
 
 	onMount(async ()=>{
         if (!DatePicker) DatePicker = (await import('carbon-components-svelte/src/DatePicker/DatePicker.svelte')).default;
+		get_balances()
 	})
+
+	async function get_balances() {
+		({balance_registers1, balance_registers} = await apiFetch(`/api/public/balance_registers_charts/${Number(new Date(start_date))}/${Number(new Date(end_date))}`));
+		concat_balances()
+	}
 	
 	function filter_by_currency(balance_registers, currency){
 		if(currency && currency.id_currency){
 			return balance_registers.filter(x => x.id_currency === currency.id_currency)
 		}
 	}
-	$: if(start_date && end_date && (id_entity || account)){
-		(async ()=>{
-			range_date ={
-				start_date: new Date(start_date),
-				end_date: new Date(new Date(end_date) + (1000*60*60*24))
-			}
-			let {balance_registers1, balance_registers} = await apiFetch(`/api/public/balance_registers_charts/${JSON.stringify(range_date)}`);
+	// $: if((id_entity || account)){
+	// 	(async ()=>{
 			
+	// 		let id_balances = balance_registers.map(data => data.id_balance)
+	// 		id_balances.push(...balance_registers1.map(data => data.id_balance))
+	// 		console.log('id_balances', id_balances)
+	// 		id_balances = [...new Set(id_balances)]
+			
+	// 		console.log('balance_registers1', balance_registers1)
+	// 		balance_registers.unshift(...balance_registers1.filter(x => id_balances.includes(x.id_balance)))
+	// 		console.log('balance_registers', balance_registers)
+	// 		set_data(filter_by_currency(balance_registers, currency));
+	// 	})()
+	// }
+
+	function concat_balances(){
+		if(balance_registers && balance_registers1){
 			let id_balances = balance_registers.map(data => data.id_balance)
+			id_balances.push(...balance_registers1.map(data => data.id_balance))
+			console.log('id_balances', id_balances)
 			id_balances = [...new Set(id_balances)]
 			
+			console.log('balance_registers1', balance_registers1)
 			balance_registers.unshift(...balance_registers1.filter(x => id_balances.includes(x.id_balance)))
-			
+			console.log('balance_registers', balance_registers)
 			set_data(filter_by_currency(balance_registers, currency));
-		})()
+		}
 	}
 
 	function set_data(balance_registers){
@@ -59,6 +77,7 @@
 			if(id_entity && selectedIndex === 0) {
 				id_entity_value = id_entity.map(x => x.value)
 				balance_registers_filtered = balance_registers.filter(x => id_entity_value.includes(x.id_entity))
+				console.log('balance_registers_filtered', balance_registers_filtered)
 			}
 
 			if(account && selectedIndex === 1){
@@ -66,8 +85,8 @@
 				balance_registers_filtered = balance_registers.filter(x => account_value.includes(x.id_account))
 			}
 
+			if(!balance_registers_filtered || balance_registers_filtered.length==0) return 
 			total = []
-
 			for (const balance_register of balance_registers_filtered) {
 				const { balance, created_at, id_balance, account_name, symbol, entity_name } = balance_register
 				if (!accounts[id_balance]) {
@@ -101,7 +120,10 @@
 				accounts[key].push(end_balance)
 			}
 
+			console.log('total', total)
 			const end_total = structuredClone(total.at(-1))
+			console.log('end_total', end_total)
+			console.log('end_date', end_date)
 			end_total.x = end_date
 			total.push(end_total)
 
@@ -197,10 +219,10 @@
 	<div>
 		<div class="OnSameLine">
 			{#if DatePicker}
-				<svelte:component this={DatePicker} bind:value={start_date} datePickerType="single" locale={navigator.language}>
+				<svelte:component this={DatePicker} bind:value={start_date} datePickerType="single" locale={navigator.language}  on:change={get_balances}>
 					<DatePickerInput placeholder="Fecha inicial" />
 				</svelte:component>
-				<svelte:component this={DatePicker} bind:value={end_date} datePickerType="single" locale={navigator.language}>
+				<svelte:component this={DatePicker} bind:value={end_date} datePickerType="single" locale={navigator.language} on:change={get_balances}>
 					<DatePickerInput placeholder="Fecha final" />
 				</svelte:component>
 			{/if}	
@@ -210,12 +232,12 @@
 			<Switch text="Cuentas" />
 		</ContentSwitcher>
 		{#if selectedIndex === 0}
-			<Entitys bind:entity={id_entity} isMulti={true} default_entity={1}/>  <!--  Default value for Taionca-->
+			<Entitys bind:entity={id_entity} isMulti={true} default_entity={1} on:select={concat_balances}/>  <!--  Default value for Taionca-->
 			<Currency bind:currency={currency} default_selection={1} on:change={set_data}/> <!--  Default value for dollars-->
 		{/if}
 
 		{#if selectedIndex === 1}
-			<Accounts orientation="vertical" isMulti={true} bind:account={account} default_account={1}/>  <!--  Default value for Caja Chica-->
+			<Accounts orientation="vertical" isMulti={true} bind:account={account} default_account={1} on:select={concat_balances}/>  <!--  Default value for Caja Chica-->
 		{/if}
 
 		<div style="min-width: 500px; max-width: 1500px; min-height: 350px;">

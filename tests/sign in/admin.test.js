@@ -4,9 +4,9 @@ test('login', async ({ page }) => {
     await page.goto('http://localhost:3000/login');
 
     await page.getByPlaceholder('Ingrese su usuario...').click();
-    await page.getByPlaceholder('Ingrese su usuario...').fill('user');
+    await page.getByPlaceholder('Ingrese su usuario...').fill('admin');
     await page.getByPlaceholder('Ingrese su contraseña...').click();
-    await page.getByPlaceholder('Ingrese su contraseña...').fill('user');
+    await page.getByPlaceholder('Ingrese su contraseña...').fill('admin');
     
     expect(await page.context().cookies()).toHaveLength(0);
     
@@ -17,4 +17,5 @@ test('login', async ({ page }) => {
 
     // check cookie has been set
     expect(await page.context().cookies()).toHaveLength(1);
+    await page.context().storageState({ path: 'tests/.auth/admin.json' });
 });

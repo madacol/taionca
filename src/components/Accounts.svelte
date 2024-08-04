@@ -40,4 +40,4 @@
 	}
 </script>
 
-<SelectSearch on:select placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList} isMulti={isMulti} {default_account}/>
+<SelectSearch on:select on:change placeholder="Cuentas..." bind:selected={account} on:change={get_accounts} items={accountsToList} isMulti={isMulti} {default_account}/>

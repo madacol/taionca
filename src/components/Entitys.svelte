@@ -33,4 +33,4 @@
 
 </script>
 
-<SelectSearch placeholder="Entidades..." bind:selected={entity} isMulti={isMulti} items={entitysToList} {default_entity}/>
+<SelectSearch placeholder="Entidades..." bind:selected={entity} isMulti={isMulti} items={entitysToList} {default_entity} on:select on:change/>
