@@ -9,6 +9,7 @@
     import Closed_odts_review from '../components/Closed_odts_review.svelte';
     import Currency from '../components/Currency.svelte';
     import Accounts from '../components/Accounts.svelte';
+    import Loans from '../components/Loans.svelte';
 	
 	let DatePicker;
 	let start_date = new Date(new Date()-1000*60*60*24*30); // 30 days ago
@@ -20,8 +21,9 @@
 	let reset_zoom = false;
 	let selectedIndex;
 	let account;
-	let balance_registers1
-	let balance_registers
+	let balance_registers1;
+	let balance_registers;
+	let selectedIndexODT;
 
 	onMount(async ()=>{
         if (!DatePicker) DatePicker = (await import('carbon-components-svelte/src/DatePicker/DatePicker.svelte')).default;
@@ -38,20 +40,6 @@
 			return balance_registers.filter(x => x.id_currency === currency.id_currency)
 		}
 	}
-	// $: if((id_entity || account)){
-	// 	(async ()=>{
-			
-	// 		let id_balances = balance_registers.map(data => data.id_balance)
-	// 		id_balances.push(...balance_registers1.map(data => data.id_balance))
-	// 		console.log('id_balances', id_balances)
-	// 		id_balances = [...new Set(id_balances)]
-			
-	// 		console.log('balance_registers1', balance_registers1)
-	// 		balance_registers.unshift(...balance_registers1.filter(x => id_balances.includes(x.id_balance)))
-	// 		console.log('balance_registers', balance_registers)
-	// 		set_data(filter_by_currency(balance_registers, currency));
-	// 	})()
-	// }
 
 	function concat_balances(){
 		if(balance_registers && balance_registers1){
@@ -250,13 +238,31 @@
 				<h5>Saldo Final: {currency.symbol} {total.at(-1).y.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h5>
 			{/if}
 		</div>
-		{#if start_date && end_date}
-			<Closed_odts_review is_filtered={true} start_date={start_date} end_date={end_date}/>
-		{/if}
 	</div>
 
 	<div>
-		<OpenOdts is_filtered={true} start_date={start_date} end_date={end_date}/>
+		<ContentSwitcher bind:selectedIndex={selectedIndexODT} >
+			<Switch text="ODTs abiertas en el período" />
+			<Switch text="ODTs abiertas" />
+			<Switch text="ODTs cerradas" />
+		</ContentSwitcher>
+
+		{#if selectedIndexODT === 0}
+			<OpenOdts is_filtered={false}/>
+		{/if}
+
+		{#if start_date && end_date}
+			{#if selectedIndexODT === 1}
+				<OpenOdts is_filtered={true} start_date={start_date} end_date={end_date}/>
+			{/if}
+
+			{#if selectedIndexODT === 2}
+				<Closed_odts_review is_filtered={true} start_date={start_date} end_date={end_date}/>
+			{/if}
+		{/if}
+
+		<Loans/>
+
 		<div style="min-width: 500px; max-width: 1500px; min-height: 350px;">
 			<!-- <Chart {doughnut_chart_settings}/> -->
 		</div>
