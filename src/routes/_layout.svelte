@@ -17,7 +17,8 @@
 			USERS_CREATE,
 			PRESIDENT,
 			ODT_READ,
-			USERS_READ
+			USERS_READ,
+			ODT_DELETE
 		} from '../constants/PERMISSIONS';
 
 	import {
@@ -108,14 +109,14 @@
 
 			<SideNavMenu text="Gestión de usuarios">
 				{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="signup" text="Crear usuario" />{/if}
-				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_clients" text="Crear cliente" />{/if}
-				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="asignar_responsabilities" text="Asignar responsabilidad" />{/if}
-				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="ingreso_responsabilities" text="Crear responsabilidad" />{/if}
-				{#if checkPermissions([USERS_READ[1]], user_permissions)}<SideNavMenuItem href="approve_responsabilities" text="Aprobar responsabilidad" />{/if}
+				{#if checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_clients" text="Crear cliente" />{/if}
+				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="asignar_responsabilities" text="Asignar responsabilidad" />{/if}
+				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="ingreso_responsabilities" text="Crear responsabilidad" />{/if}
+				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="approve_responsabilities" text="Aprobar responsabilidad" />{/if}
 				<SideNavMenuItem href="responsabilities" text="Responsabilidades" />
 				<SideNavMenuItem href="attendance" text="Asistencia" />
-				{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="asign_hours_odt" text="Horas por ODT" />{/if}
-				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="loans" text="Gestión de deudas" />{/if}
+				{#if checkPermissions([ODT_UPDATE[1]], user_permissions)}<SideNavMenuItem href="asign_hours_odt" text="Horas por ODT" />{/if}
+				<SideNavMenuItem href="loans" text="Gestión de deudas" />
 				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="give_loans" text="Dar préstamos" />{/if}
 				{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="pay_loans" text="Pagar préstamos" />{/if}
 			</SideNavMenu>
@@ -123,11 +124,11 @@
 			{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}
 				<SideNavMenu text="Gestión de ODTs">
 					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="limit_resources" text="Limitación de recursos" />{/if}
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="odt_quotation" text="Nueva cotización"/>{/if}
-					{#if checkPermissions([ODT_CREATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="nueva_odt" text="Nueva ODT"/>{/if}
-					{#if checkPermissions([ODT_UPDATE[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="cerrar_odt" text="Cerrar ODT"/>{/if}
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="odts_review" text="Registro ODTs"/>{/if}
-					{#if checkPermissions([ODT_READ[1]], user_permissions) || checkPermissions([ADMIN_EXPENSES_CREATE[1]], user_permissions)}<SideNavMenuItem href="quotations_review" text="Registro cotizaciones"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="odt_quotation" text="Nueva cotización"/>{/if}
+					{#if checkPermissions([ODT_CREATE[1]], user_permissions)}<SideNavMenuItem href="nueva_odt" text="Nueva ODT"/>{/if}
+					{#if checkPermissions([ODT_UPDATE[1]], user_permissions)}<SideNavMenuItem href="cerrar_odt" text="Cerrar ODT"/>{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions)}<SideNavMenuItem href="odts_review" text="Registro ODTs"/>{/if}
+					{#if checkPermissions([ODT_READ[1]], user_permissions)}<SideNavMenuItem href="quotations_review" text="Registro cotizaciones"/>{/if}
 				</SideNavMenu>
 			{/if}
 
@@ -144,24 +145,24 @@
 					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="investments" text="Inversiones"/>{/if}
 					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="money_incomes" text="Ingreso de dinero"/>{/if}
 					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="cambio_moneda" text="Cambios de moneda"/>{/if}
-					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions)}<SideNavMenuItem href="money_transfer" text="Transferencias"/>{/if}
-					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
-					{#if checkPermissions([EXCHANGE_CURRENCY_CREATE[1]], user_permissions) || checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="balance_registers" text="Registros de balances"/>{/if}
+					{#if checkPermissions([ODT_UPDATE[1]], user_permissions)}<SideNavMenuItem href="money_transfer" text="Transferencias"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="balances" text="Balance"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="balance_registers" text="Registros de balances"/>{/if}
 					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="create_account" text="Crear cuenta bancaria"/>{/if}
 					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="movements_review" text="Cierre"/>{/if}
-					{#if checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="payroll" text="Nómina"/>{/if}
+					{#if checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="payroll" text="Nómina"/>{/if}
 				</SideNavMenu>
 			{/if}
 
 			{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions) || checkPermissions([STOCKS_CREATE[1]], user_permissions) || checkPermissions([STORAGES_CREATE[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}
 				<SideNavMenu text="Gestión de inventario">
-					{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="inventory_review" text="Registro de iventario"/>{/if}
-					{#if checkPermissions([STOCKS_READ[1]], user_permissions) || checkPermissions([PRESIDENT[1]], user_permissions)}<SideNavMenuItem href="control_inv" text="Control de inventario"/>{/if}
+					{#if checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="inventory_review" text="Registro de inventario"/>{/if}
+					{#if checkPermissions([STOCKS_READ[1]], user_permissions)}<SideNavMenuItem href="control_inv" text="Control de inventario"/>{/if}
 					{#if checkPermissions([INV_PURCHASES_CREATE[1]], user_permissions)}<SideNavMenuItem href="reposicion_inv" text="Reposicion de Inventario"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_spendable_inv" text="Ingreso de Inventario consumible"/>{/if}
 					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_no_spendable_inv" text="Ingreso de Inventario no consumible"/>{/if}
-					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_storages" text="Registrar almacenes"/>{/if}
-					{#if checkPermissions([USERS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_suppliers" text="Registrar proveedores"/>{/if}
+					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_storages" text="Registrar almacenes"/>{/if}
+					{#if checkPermissions([STOCKS_CREATE[1]], user_permissions)}<SideNavMenuItem href="ingreso_suppliers" text="Registrar proveedores"/>{/if}
 				</SideNavMenu>
 			{/if}
 			

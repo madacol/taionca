@@ -31,7 +31,6 @@
 			})
 		})
 		if(is_filtered){
-			console.log('odtsToList', odtsToList)
 			odtsToList = odtsToList.filter(odt => new Date(odt.created_at) >= new Date(start_date) && new Date(odt.created_at) <= new Date(end_date));
 		}
 	}

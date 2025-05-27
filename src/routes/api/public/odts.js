@@ -13,7 +13,8 @@ export const get =
             join currencys using(id_currency)
             join clients using(id_client)
             left join closure_odts using(id_odt)
-            where id_closure_odt is null AND (odts.id_user = ${user_id} OR odts.id_user = 1 OR ${user_id} = 1);
+            where id_closure_odt is null AND (odts.id_user = ${user_id} OR odts.id_user = 1 OR ${user_id} = 1 OR ${user_id} = 11) --11 is Diego
+            ORDER BY odts.created_at DESC;
             `
         );
         res.json({
